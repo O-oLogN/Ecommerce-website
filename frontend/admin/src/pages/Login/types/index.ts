@@ -1,18 +1,12 @@
-export interface LoginContextStates {
-    authenticated: boolean | undefined
-    loginRequest: ILoginRequest
-}
-
-export interface LoginContextSetStates {
-    setLoginRequest: React.Dispatch<React.SetStateAction<ILoginRequest>>
-}
-
-export interface LoginContextProps extends LoginContextStates, LoginContextSetStates {
-}
+import {ILoginRequest} from 'src/services/types'
 
 export interface LoginForm {
     username: string
     password: string
 }
-export interface ILoginRequest extends LoginForm {
+
+export interface LoginContextProps {
+    authenticated: boolean | undefined
+    loginRequest: ILoginRequest
+    setLoginRequest: React.Dispatch<React.SetStateAction<ILoginRequest>>
 }

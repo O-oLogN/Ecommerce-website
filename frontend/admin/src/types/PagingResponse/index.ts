@@ -1,4 +1,3 @@
-
 export interface IPagingResponse<T> {
     pageNumber: number
     pageSize: number

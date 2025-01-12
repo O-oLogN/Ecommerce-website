@@ -1,10 +1,9 @@
-
-interface IPageInfo {
+export interface IPageInfo {
     pageNumber: number
     pageSize : number
 }
 
-interface IOrderBy {
+export interface IOrderBy {
     property: string
     orderBy: string
 }

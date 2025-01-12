@@ -1,8 +1,9 @@
 import React, {ReactNode, useContext, useState} from "react"
-import {ILoginRequest, LoginContextProps } from "../types"
-import {useLogin} from "../../../services"
-import {localStorageKeys} from "../../../constants";
-import {HttpStatusCode} from "axios";
+import {LoginContextProps} from "../types"
+import {ILoginRequest} from "src/services/types"
+import {useLogin} from "src/services"
+import {localStorageKeys} from "src/constants"
+import {HttpStatusCode} from "axios"
 
 const LoginContext = React.createContext<LoginContextProps>({
     authenticated: undefined,
@@ -13,7 +14,7 @@ const LoginContext = React.createContext<LoginContextProps>({
     setLoginRequest: () => {},
 })
 
-export const LoginContextProvider = ({children }: {children: ReactNode }) => {
+export const LoginContextProvider = ({children}: {children: ReactNode }) => {
     const [loginRequest, setLoginRequest] = useState<ILoginRequest>({
         username: '',
         password: '',

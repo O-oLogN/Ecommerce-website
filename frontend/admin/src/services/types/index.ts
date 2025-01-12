@@ -1,14 +1,9 @@
+export * from './Auth'
+export * from './User'
 
-export interface IBase {
-    createUser?: string
-    createDatetime?: string
-    modifyUser?: string
-    modifyDatetime?: string
-}
-
-export interface IUserInfo extends IBase {
-    userId?: string
-    username?: string
-    password?: string
-    email?: string
+export interface IBaseResponse<T> {
+    status: number
+    timestamp: string
+    message: string
+    data: T
 }

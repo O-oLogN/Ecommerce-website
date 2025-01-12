@@ -1,10 +1,11 @@
 import { Form, Button, Input, FormInstance } from 'antd'
 import { useLoginContext }  from './hooks/LoginContext.tsx'
+import {LoginContextProvider} from "./hooks/LoginContext.tsx";
 import { UserOutlined, EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons'
 import { LoginContextProps, LoginForm} from "./types";
 import React, { useState } from "react";
 
-export const LoginPage = () => {
+const Login = () => {
     const [formInstance] = Form.useForm()
     const form: FormInstance<LoginForm> = formInstance
     const {
@@ -77,5 +78,13 @@ export const LoginPage = () => {
                 {(authenticated === false && <p style={{color: 'red'}}>Invalid username or password!</p>)}
             </div>
         </>
+    )
+}
+
+export const LoginPage = () => {
+    return (
+        <LoginContextProvider>
+            <Login />
+        </LoginContextProvider>
     )
 }

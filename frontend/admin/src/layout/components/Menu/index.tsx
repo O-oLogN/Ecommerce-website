@@ -2,8 +2,18 @@ import {UserOutlined, FilterOutlined, ProductOutlined, FileTextOutlined} from '@
 import {Menu, MenuProps} from 'antd'
 import {useNavigate} from 'react-router-dom'
 
+const navigate = useNavigate()
 const onClickUserManagement = () => {
-    useNavigate('/user-management')
+    navigate('/user-management')
+}
+const onClickCategoryManagement = () => {
+    navigate('/category-management')
+}
+const onClickItemManagement = () => {
+    navigate('/item-management')
+}
+const onClickOrderManagement = () => {
+    navigate('/order-management')
 }
 const items: MenuProps['items'] = [
     {
@@ -18,7 +28,7 @@ const items: MenuProps['items'] = [
                 key: 'user-managemnet',
                 icon: <UserOutlined />,
                 label: 'User management',
-                onClick:
+                onClick: () => onClickUserManagement,
             },
             {
                 type: 'divider',
@@ -27,6 +37,7 @@ const items: MenuProps['items'] = [
                 key: 'category-managemnet',
                 icon: <FilterOutlined />,
                 label: 'Category management',
+                onClick: () => onClickCategoryManagement,
             },
             {
                 type: 'divider',
@@ -35,6 +46,7 @@ const items: MenuProps['items'] = [
                 key: 'item-managemnet',
                 icon: <ProductOutlined />,
                 label: 'Item management',
+                onClick: () => onClickItemManagement,
             },
             {
                 type: 'divider',
@@ -43,6 +55,7 @@ const items: MenuProps['items'] = [
                 key: 'order-managemnet',
                 icon: <FileTextOutlined />,
                 label: 'Order management',
+                onClick: () => onClickOrderManagement,
             },
         ]
     },
