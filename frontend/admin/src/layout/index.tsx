@@ -1,9 +1,13 @@
-import {SideMenu} from './components/Menu'
+import {SideMenu} from './components/SideMenu'
+import {Outlet} from 'react-router-dom'
 
-export * from './components/Menu'
+export * from './components/SideMenu'
 
 export default function Layout() {
     return (
-        <SideMenu />
+        <>
+            <SideMenu />
+            <Outlet />
+        </>
     )
 }

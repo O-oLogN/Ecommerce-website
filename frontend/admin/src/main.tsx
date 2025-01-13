@@ -3,7 +3,7 @@ import {LoginPage} from "./pages/Login";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import {UserManagementPage} from './pages/UserManagementPage';
-import Layout from './layout/index.tsx'
+import Layout from './layout'
 
 const App = () => {
     const queryClient = new QueryClient()
@@ -11,9 +11,9 @@ const App = () => {
         <QueryClientProvider client={ queryClient }>
             <Router>
                 <Routes>
-                    <Route element={<Layout />}>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/user-management" element={<UserManagementPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/" element={<Layout />}>
+                        <Route path="user-management" element={<UserManagementPage />} />
                     </Route>
                 </Routes>
             </Router>

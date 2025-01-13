@@ -6,4 +6,3 @@ export const axiosInstance = axios.create({
 
 export * from './User'
 export * from './Auth'
-

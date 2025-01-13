@@ -1,29 +1,45 @@
 import {UserManagementContextProps} from '../types'
-import {ISearchUserRequest} from 'src/services/types'
+import {ISearchUserRequest} from '../../../services/types'
 import React, {useContext, useState} from 'react'
-import {useSearchUser} from 'src/services'
-import {HttpStatusCode} from "axios"
-import {UserInfo} from 'src/types'
+import {useSearchUser} from '../../../services/User'
+import {HttpStatusCode} from 'axios'
+import {UserInfo, IQueryRequest} from 'src/types'
 
 const UserManagementContext = React.createContext<UserManagementContextProps>({
-    userList: undefined,
+    userList: [],
     searchRequest: {
-        username: '',
-        ordersBy: undefined
+        sample: {
+            username: ''
+        },
+        // pageInfo: {
+        //     pageNumber: 0,
+        //     pageSize: 10
+        // },
+        // ordersBy: {
+        //
+        // }
     },
     setSearchRequest: () => {}
 })
 
 export const UserManagementContextProvider = ({children}: {children: React.ReactNode}) => {
-    const [userList, setUserList] = useState<UserInfo[] | undefined>()
-    const [searchRequest, setSearchRequest] = useState<ISearchUserRequest>
+    const [userList, setUserList] = useState<UserInfo[]>([])
+    const [searchRequest, setSearchRequest] = useState<IQueryRequest<ISearchUserRequest>>
     ({
-        username: '',
-        ordersBy: undefined
+        sample: {
+            username: ''
+        },
+        // pageInfo: {
+        //     pageNumber: 0,
+        //     pageSize: 10
+        // },
+        // ordersBy: {
+        //
+        // }
     })
-    
+
     const response = useSearchUser(searchRequest)
-    
+
     React.useEffect(() => {
         if (!response) {
             console.log('Response is undefined')
@@ -35,26 +51,26 @@ export const UserManagementContextProvider = ({children}: {children: React.React
             if ('content' in response.data) {
                 if (response.data.content.status === HttpStatusCode.Ok || response.data.content.status === HttpStatusCode.Accepted) {
                     console.log('CONTEXT - Paging - search user list successfully')
-                    setUserList(response.data.content.data as UserInfo[])
+                    setUserList(response.data.content.data.users as UserInfo[])
                 }
                 else {
                     console.log('CONTEXT - Paging - user not found')
-                    setUserList(undefined)
+                    setUserList([])
                 }
             }
             else {
                 if (response.data.status === HttpStatusCode.Ok || response.data.status === HttpStatusCode.Accepted) {
                     console.log('CONTEXT - NON-Paging - search user list successfully')
-                    setUserList(response.data.data as UserInfo[])
+                    setUserList(response.data.data.users as UserInfo[])
                 }
                 else {
                     console.log('CONTEXT - NON-Paging - user not found')
-                    setUserList(undefined)
+                    setUserList([])
                 }
             }
         }
-    }, [response.data])
-    
+    }, [response.isSuccess, response.data])
+
     const value = {
         userList: userList,
         searchRequest: searchRequest,
