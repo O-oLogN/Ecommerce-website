@@ -5,7 +5,8 @@ import { useItemManagementContext } from '../../hooks/ItemManagementContext.tsx'
 import React, { useState, useEffect } from 'react'
 import { SearchBar } from '../SearchBar'
 import { EditItemForm } from '../modal/EditItemForm.tsx'
-import {HttpStatusCode} from 'axios'
+import { CreateItemForm } from '../modal/CreateItemForm.tsx'
+import { HttpStatusCode } from 'axios'
 
 interface TableData extends ItemInfo {
     key: string
@@ -20,16 +21,17 @@ interface TableColumn {
 
 export const ItemList = () => {
     const [columns, setColumns] = useState<TableColumn[]>([])
-    const [isOpenForm, setIsOpenForm] = useState<boolean>(false)
+    const [isOpenEditForm, setIsOpenEditForm] = useState<boolean>(false)
+    const [isOpenCreateForm, setIsOpenCreateForm] = useState<boolean>(false)
     const [modalFormInitialValues, setModalFormInitialValues] = useState<ItemInfo | undefined>()
     const [data, setData] = useState<TableData[]>([])
     const {
         itemList,
         searchRequest: prevSearchRequest,
         setSearchRequest,
-        setItemList,
         editHelper,
         deleteHelper,
+        createHelper,
         refetchItemList,
     } = useItemManagementContext()
     const columnNames = ['Item ID', 'Item code', 'Item name', 'Item price', 'Image URL', 'Quantity', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
@@ -59,7 +61,7 @@ export const ItemList = () => {
     
     const handleOpenEditForm = (row: ItemInfo) => {
         setModalFormInitialValues(row)
-        setIsOpenForm(true)
+        setIsOpenEditForm(true)
     }
 
     const handleDelete = async (row: ItemInfo) => {
@@ -83,6 +85,15 @@ export const ItemList = () => {
         }
         
         refetchItemList()
+    }
+
+    const handleCreate = () => {
+        setIsOpenCreateForm(true)
+    }
+
+    const addBtnStyle = {
+        width: '500px',
+        marginLeft: '35%'
     }
 
     useEffect(() => {
@@ -128,12 +139,22 @@ export const ItemList = () => {
             <SearchBar onClick={onClickSearchBtn} onKeyDown={onKeyDown} />
             <Table dataSource={data} columns={columns} />
             <EditItemForm initialValues={modalFormInitialValues}
-                          isOpenForm={isOpenForm}
-                          setIsOpenForm={setIsOpenForm}
+                          isOpenForm={isOpenEditForm}
+                          setIsOpenForm={setIsOpenEditForm}
                           editHelper={editHelper}
-                          setItemList={setItemList}
                           refetchItemList={refetchItemList}
             />
+            <CreateItemForm isOpenForm={isOpenCreateForm}
+                          setIsOpenForm={setIsOpenCreateForm}
+                          createHelper={createHelper}
+                          refetchItemList={refetchItemList}
+            />
+            <Button type="primary"
+                    style={addBtnStyle}
+                    onClick={handleCreate}
+            >
+                Add
+            </Button>
         </>
     )
 };

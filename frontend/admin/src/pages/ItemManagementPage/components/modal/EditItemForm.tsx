@@ -10,8 +10,6 @@ interface EditItemFormProps {
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     editHelper: ReturnType<typeof useEditItem>
-    itemList?: ItemInfo[] | undefined
-    setItemList: React.Dispatch<React.SetStateAction<ItemInfo[] | undefined>>
     refetchItemList: () => void
 }
 

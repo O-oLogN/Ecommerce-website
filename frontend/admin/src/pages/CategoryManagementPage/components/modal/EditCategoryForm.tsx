@@ -10,8 +10,6 @@ interface EditCategoryFormProps {
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     editHelper: ReturnType<typeof useEditCategory>
-    categoryList?: CategoryInfo[] | undefined
-    setCategoryList: React.Dispatch<React.SetStateAction<CategoryInfo[] | undefined>>
     refetchCategoryList: () => void
 }
 

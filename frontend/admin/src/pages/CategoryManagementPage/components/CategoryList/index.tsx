@@ -5,6 +5,7 @@ import { useCategoryManagementContext } from '../../hooks/CategoryManagementCont
 import React, { useState, useEffect } from 'react'
 import { SearchBar } from '../SearchBar'
 import { EditCategoryForm } from '../modal/EditCategoryForm.tsx'
+import { CreateCategoryForm } from '../modal/CreateCategoryForm.tsx'
 import {HttpStatusCode} from 'axios'
 
 interface TableData extends CategoryInfo {
@@ -20,16 +21,17 @@ interface TableColumn {
 
 export const CategoryList = () => {
     const [columns, setColumns] = useState<TableColumn[]>([])
-    const [isOpenForm, setIsOpenForm] = useState<boolean>(false)
+    const [isOpenEditForm, setIsOpenEditForm] = useState<boolean>(false)
+    const [isOpenCreateForm, setIsOpenCreateForm] = useState<boolean>(false)
     const [modalFormInitialValues, setModalFormInitialValues] = useState<CategoryInfo | undefined>()
     const [data, setData] = useState<TableData[]>([])
     const {
         categoryList,
         searchRequest: prevSearchRequest,
         setSearchRequest,
-        setCategoryList,
         editHelper,
         deleteHelper,
+        createHelper,
         refetchCategoryList,
     } = useCategoryManagementContext()
     const columnNames = ['Category ID', 'Category code', 'Category name', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
@@ -59,7 +61,7 @@ export const CategoryList = () => {
     
     const handleOpenEditForm = (row: CategoryInfo) => {
         setModalFormInitialValues(row)
-        setIsOpenForm(true)
+        setIsOpenEditForm(true)
     }
 
     const handleDelete = async (row: CategoryInfo) => {
@@ -83,6 +85,15 @@ export const CategoryList = () => {
         }
         
         refetchCategoryList()
+    }
+
+    const handleCreate = () => {
+        setIsOpenCreateForm(true)
+    }
+
+    const addBtnStyle = {
+        width: '500px',
+        marginLeft: '35%'
     }
 
     useEffect(() => {
@@ -128,12 +139,22 @@ export const CategoryList = () => {
             <SearchBar onClick={onClickSearchBtn} onKeyDown={onKeyDown} />
             <Table dataSource={data} columns={columns} />
             <EditCategoryForm initialValues={modalFormInitialValues}
-                          isOpenForm={isOpenForm}
-                          setIsOpenForm={setIsOpenForm}
+                          isOpenForm={isOpenEditForm}
+                          setIsOpenForm={setIsOpenEditForm}
                           editHelper={editHelper}
-                          setCategoryList={setCategoryList}
                           refetchCategoryList={refetchCategoryList}
             />
+            <CreateCategoryForm isOpenForm={isOpenCreateForm}
+                              setIsOpenForm={setIsOpenCreateForm}
+                              createHelper={createHelper}
+                              refetchCategoryList={refetchCategoryList}
+            />
+            <Button type="primary"
+                    style={addBtnStyle}
+                    onClick={handleCreate}
+            >
+                Add
+            </Button>
         </>
     )
 };

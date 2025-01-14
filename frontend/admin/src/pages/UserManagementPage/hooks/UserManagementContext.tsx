@@ -3,9 +3,10 @@ import {
     ISearchUserRequest, 
     IEditUserRequest,
     IDeleteUserRequest,
+    ICreateUserRequest,
 } from '../../../services/types'
 import React, {useContext, useState} from 'react'
-import {useSearchUser, useEditUser, useDeleteUser} from '../../../services/User'
+import {useSearchUser, useEditUser, useDeleteUser, useCreateUser} from '../../../services/User'
 import {HttpStatusCode} from 'axios'
 import {UserInfo, IQueryRequest} from 'src/types'
 
@@ -31,10 +32,16 @@ const UserManagementContext = React.createContext<UserManagementContextProps>({
     deleteRequest: {
         userId: '',
     },
+    createRequest: {
+        username: '',
+        password: '',
+        email: '',
+    },
     setUserList: () => {},
     setSearchRequest: () => {},
     setEditRequest: () => {},
     setDeleteRequest: () => {},
+    setCreateRequest:() => {},
     editHelper: {
         mutate: () => {},
         isLoading: false,
@@ -45,6 +52,11 @@ const UserManagementContext = React.createContext<UserManagementContextProps>({
         isLoading: false,
         isSuccess: false,
     } as unknown as ReturnType<typeof useDeleteUser>,
+    createHelper: {
+        mutate: () => {},
+        isLoading: false,
+        isSuccess: false,
+    } as unknown as ReturnType<typeof useCreateUser>,
     refetchUserList: () => {},
 })
 
@@ -60,6 +72,12 @@ export const UserManagementContextProvider = ({children}: {children: React.React
     ({
         userId: '',
     })
+    const [createRequest, setCreateRequest] = useState<ICreateUserRequest>
+    ({
+        username: '',
+        password: '',
+        email: '',
+    })
     const [searchRequest, setSearchRequest] = useState<IQueryRequest<ISearchUserRequest>>
     ({
         sample: {
@@ -74,7 +92,7 @@ export const UserManagementContextProvider = ({children}: {children: React.React
         // }
     })
 
-                                    /* Search */
+                                        /* Search */
     const searchResponse = useSearchUser(searchRequest)
     const refetchUserList = searchResponse.refetch
 
@@ -108,20 +126,24 @@ export const UserManagementContextProvider = ({children}: {children: React.React
                                         /* Edit - will be used in index.ts */
     const editHelper = useEditUser()
                                         /* Delete - will be used in index.ts */
-
     const deleteHelper = useDeleteUser()
+                                        /* Create - will be used in index.ts */
+    const createHelper = useCreateUser()
     
     const value = {
         userList,
         searchRequest,
         editRequest,
         deleteRequest,
+        createRequest,
         setUserList,
         setSearchRequest,
         setEditRequest,
         setDeleteRequest,
+        setCreateRequest,
         editHelper,
         deleteHelper,
+        createHelper,
         refetchUserList,
     }
     

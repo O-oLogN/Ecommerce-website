@@ -9,6 +9,8 @@ import {
     IEditUserResponse,
     IDeleteUserRequest,
     IDeleteUserResponse,
+    ICreateUserRequest,
+    ICreateUserResponse,
     IBaseResponse,
 } from "src/services/types";
 
@@ -54,6 +56,18 @@ export const useDeleteUser= () => {
             return axiosInstance.post<IBaseResponse<IDeleteUserResponse>>(
                 REQUEST_MAPPING.USER + REQUEST_PATH.DELETE_USER,
                 queryParams
+            )
+        },
+    )
+}
+
+export const useCreateUser= () => {
+    return useMutation(
+        'create-user',
+        (params: ICreateUserRequest) => {
+            return axiosInstance.post<IBaseResponse<ICreateUserResponse>>(
+                REQUEST_MAPPING.USER + REQUEST_PATH.CREATE_USER,
+                params
             )
         },
     )

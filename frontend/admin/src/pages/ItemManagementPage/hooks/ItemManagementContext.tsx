@@ -3,9 +3,10 @@ import {
     ISearchItemRequest, 
     IEditItemRequest,
     IDeleteItemRequest,
+    ICreateItemRequest,
 } from '../../../services/types'
 import React, {useContext, useState} from 'react'
-import {useSearchItem, useEditItem, useDeleteItem} from '../../../services/Item'
+import {useSearchItem, useEditItem, useDeleteItem, useCreateItem} from '../../../services/Item'
 import {HttpStatusCode} from 'axios'
 import {ItemInfo, IQueryRequest} from 'src/types'
 
@@ -34,10 +35,18 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
     deleteRequest: {
         itemId: '',
     },
+    createRequest: {
+        categoryId: '',
+        name: '',
+        price: 0,
+        imageUrl: '',
+        quantity: 0,
+    },
     setItemList: () => {},
     setSearchRequest: () => {},
     setEditRequest: () => {},
     setDeleteRequest: () => {},
+    setCreateRequest: () => {},
     editHelper: {
         mutate: () => {},
         isLoading: false,
@@ -48,6 +57,11 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
         isLoading: false,
         isSuccess: false,
     } as unknown as ReturnType<typeof useDeleteItem>,
+    createHelper: {
+        mutate: () => {},
+        isLoading: false,
+        isSuccess: false,
+    } as unknown as ReturnType<typeof useCreateItem>,
     refetchItemList: () => {},
 })
 
@@ -65,6 +79,14 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
     const [deleteRequest, setDeleteRequest] = useState<IDeleteItemRequest>
     ({
         itemId: '',
+    })
+    const [createRequest, setCreateRequest] = useState<ICreateItemRequest>
+    ({
+        categoryId: '',
+        name: '',
+        price: 0,
+        imageUrl: '',
+        quantity: 0,
     })
     const [searchRequest, setSearchRequest] = useState<IQueryRequest<ISearchItemRequest>>
     ({
@@ -115,18 +137,23 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
     const editHelper = useEditItem()
                                         /* Delete - will be used in index.ts */
     const deleteHelper = useDeleteItem()
-    
+                                        /* Create - will be used in index.ts */
+    const createHelper = useCreateItem()
+
     const value = {
         itemList,
         searchRequest,
         editRequest,
         deleteRequest,
+        createRequest,
         setItemList,
         setSearchRequest,
         setEditRequest,
         setDeleteRequest,
+        setCreateRequest,
         editHelper,
         deleteHelper,
+        createHelper,
         refetchItemList,
     }
     

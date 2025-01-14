@@ -14,6 +14,12 @@ export interface IDeleteUserRequest {
     userId: string
 }
 
+export interface ICreateUserRequest {
+    username: string
+    password: string
+    email: string | undefined
+}
+
                                     /* RESPONSES */                          
 export interface ISearchUserResponse {
     size?: number 
@@ -23,3 +29,5 @@ export interface ISearchUserResponse {
 export interface IEditUserResponse extends UserInfo {}
 
 export interface IDeleteUserResponse extends UserInfo {}
+
+export interface ICreateUserResponse extends UserInfo {}

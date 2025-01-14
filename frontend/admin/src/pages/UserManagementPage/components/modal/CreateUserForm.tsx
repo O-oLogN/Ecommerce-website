@@ -2,51 +2,48 @@ import {Modal, Form, Input} from 'antd'
 import React, {useState} from 'react'
 import {UserInfo} from 'src/types'
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons'
-import {useEditUser} from '../../../../services'
+import {useCreateUser} from '../../../../services'
 import {HttpStatusCode} from 'axios'
-import {IEditUserRequest} from 'src/services/types'
+import {ICreateUserRequest} from 'src/services/types'
 
-interface EditUserFormProps {
-    initialValues: UserInfo | undefined
+interface CreateUserFormProps {
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
-    editHelper: ReturnType<typeof useEditUser>
-    userList?: UserInfo[] | undefined
+    createHelper: ReturnType<typeof useCreateUser>
     refetchUserList: () => void
 }
 
 const handleSubmitForm = async (
-    editHelper: ReturnType<typeof useEditUser>,
+    createHelper: ReturnType<typeof useCreateUser>,
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
-    editRequest: IEditUserRequest,
+    createRequest: ICreateUserRequest,
     refetchUserList: () => void,
 ) => {
-    const editResponse = await editHelper.mutateAsync(editRequest)
-    if (!editResponse) {
-        console.log('editResponse is undefined')
+    const createResponse = await createHelper.mutateAsync(createRequest)
+    if (!createResponse) {
+        console.log('createResponse is undefined')
     }
-    else if (!editResponse.data) {
-        console.log('editResponse.data is undefined')
+    else if (!createResponse.data) {
+        console.log('createResponse.data is undefined')
     }
     else {
-        if (editResponse.data.status === HttpStatusCode.Ok) {
-            console.log('FORM - user edited successfully!')
+        if (createResponse.data.status === HttpStatusCode.Ok) {
+            console.log('FORM - user created successfully!')
         }
         else {
-            console.log('FORM - user edited failed!')
+            console.log('FORM - user created failed!')
         }
     }
     setIsOpenForm(false)
     refetchUserList()
 }
 
-export const EditUserForm: React.FC<EditUserFormProps> = ({
-  initialValues,
-  isOpenForm,
-  setIsOpenForm,
-  editHelper,
-  refetchUserList,
-}) => {
+export const CreateUserForm: React.FC<CreateUserFormProps> = ({
+                                                              isOpenForm,
+                                                              setIsOpenForm,
+                                                              createHelper,
+                                                              refetchUserList,
+                                                          }) => {
     const [form] = Form.useForm()
     const [visiblePassword, setVisiblePassword] = useState<boolean>(false)
     const onClickVisiblePassword = (visiblePassword: boolean) => {
@@ -57,45 +54,37 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
         setIsOpenForm(false)
     }
     return (
-        <Modal title="Update user form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
+        <Modal title="Create user form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
             <Form form={form}
                   onFinish={async() => {
                       const formVal = await form.validateFields() as UserInfo
-                      const userId = formVal.userId
                       const username= formVal.username
+                      const password = formVal.password
                       const email = formVal.email
-                      
+
                       handleSubmitForm(
-                          editHelper,
+                          createHelper,
                           setIsOpenForm,
                           {
-                              userId,
                               username,
+                              password,
                               email
                           },
                           refetchUserList,
                       )
                   }}
-                  initialValues={initialValues}
             >
-                <Form.Item
-                    name="userId"
-                    label="User ID"
-                >
-                    <Input disabled />
-                </Form.Item>
                 <Form.Item
                     name="username"
                     label="Username"
                 >
-                    <Input/>
+                    <Input />
                 </Form.Item>
                 <Form.Item
                     name="password"
                     label="Password"
                 >
-                    <Input.Password 
-                        readOnly
+                    <Input.Password
                         suffix={visiblePassword
                             ? <EyeOutlined onClick={() => onClickVisiblePassword(visiblePassword)} />
                             : <EyeInvisibleOutlined onClick={() => onClickVisiblePassword(visiblePassword)}/>}
@@ -106,30 +95,6 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
                     label="Email"
                 >
                     <Input type="email" />
-                </Form.Item>
-                <Form.Item
-                    name="createUser"
-                    label="Create user"
-                >
-                    <Input disabled />
-                </Form.Item>
-                <Form.Item
-                    name="createDatetime"
-                    label="Create date time"
-                >
-                    <Input disabled />
-                </Form.Item>
-                <Form.Item
-                    name="modifyUser"
-                    label="Modify user"
-                >
-                    <Input disabled />
-                </Form.Item>
-                <Form.Item
-                    name="modifyDatetime"
-                    label="Modify date time"
-                >
-                    <Input disabled />
                 </Form.Item>
             </Form>
         </Modal>

@@ -9,6 +9,8 @@ import {
     IEditItemResponse,
     IDeleteItemRequest,
     IDeleteItemResponse,
+    ICreateItemRequest,
+    ICreateItemResponse,
     IBaseResponse,
 } from "src/services/types"
 
@@ -54,6 +56,18 @@ export const useDeleteItem= () => {
             return axiosInstance.post<IBaseResponse<IDeleteItemResponse>>(
                 REQUEST_MAPPING.ITEM + REQUEST_PATH.DELETE_ITEM,
                 queryParams
+            )
+        },
+    )
+}
+
+export const useCreateItem= () => {
+    return useMutation(
+        'create-item',
+        (params: ICreateItemRequest) => {
+            return axiosInstance.post<IBaseResponse<ICreateItemResponse>>(
+                REQUEST_MAPPING.ITEM + REQUEST_PATH.CREATE_ITEM,
+                params
             )
         },
     )

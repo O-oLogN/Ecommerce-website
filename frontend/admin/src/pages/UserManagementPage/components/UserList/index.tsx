@@ -5,7 +5,8 @@ import { useUserManagementContext } from '../../hooks/UserManagementContext.tsx'
 import React, { useState, useEffect } from 'react'
 import { SearchBar } from '../SearchBar'
 import { EditUserForm } from '../modal/EditUserForm.tsx'
-import {HttpStatusCode} from 'axios'
+import { CreateUserForm } from '../modal/CreateUserForm.tsx'
+import { HttpStatusCode } from 'axios'
 
 interface TableData extends UserInfo {
     key: string
@@ -20,16 +21,17 @@ interface TableColumn {
 
 export const UserList = () => {
     const [columns, setColumns] = useState<TableColumn[]>([])
-    const [isOpenForm, setIsOpenForm] = useState<boolean>(false)
+    const [isOpenEditForm, setIsOpenEditForm] = useState<boolean>(false)
+    const [isOpenCreateForm, setIsOpenCreateForm] = useState<boolean>(false)
     const [modalFormInitialValues, setModalFormInitialValues] = useState<UserInfo | undefined>()
     const [data, setData] = useState<TableData[]>([])
     const {
         userList,
         searchRequest: prevSearchRequest,
         setSearchRequest,
-        setUserList,
         editHelper,
         deleteHelper,
+        createHelper,
         refetchUserList,
     } = useUserManagementContext()
     const columnNames = ['User ID', 'Username', 'Password', 'Email', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
@@ -59,7 +61,7 @@ export const UserList = () => {
     
     const handleOpenEditForm = (row: UserInfo) => {
         setModalFormInitialValues(row)
-        setIsOpenForm(true)
+        setIsOpenEditForm(true)
     }
 
     const handleDelete = async (row: UserInfo) => {
@@ -83,6 +85,15 @@ export const UserList = () => {
         }
         
         refetchUserList()
+    }
+
+    const handleCreate = () => {
+        setIsOpenCreateForm(true)
+    }
+
+    const addBtnStyle = {
+        width: '500px',
+        marginLeft: '35%'
     }
 
     useEffect(() => {
@@ -128,12 +139,22 @@ export const UserList = () => {
             <SearchBar onClick={onClickSearchBtn} onKeyDown={onKeyDown} />
             <Table dataSource={data} columns={columns} />
             <EditUserForm initialValues={modalFormInitialValues}
-                          isOpenForm={isOpenForm}
-                          setIsOpenForm={setIsOpenForm}
+                          isOpenForm={isOpenEditForm}
+                          setIsOpenForm={setIsOpenEditForm}
                           editHelper={editHelper}
-                          setUserList={setUserList}
                           refetchUserList={refetchUserList}
             />
+            <CreateUserForm isOpenForm={isOpenCreateForm}
+                            setIsOpenForm={setIsOpenCreateForm}
+                            createHelper={createHelper}
+                            refetchUserList={refetchUserList}
+            />
+            <Button type="primary"
+                    style={addBtnStyle}
+                    onClick={handleCreate}
+            >
+                Add
+            </Button>
         </>
     )
 };

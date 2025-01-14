@@ -3,9 +3,10 @@ import {
     ISearchCategoryRequest, 
     IEditCategoryRequest,
     IDeleteCategoryRequest,
+    ICreateCategoryRequest,
 } from '../../../services/types'
 import React, {useContext, useState} from 'react'
-import {useSearchCategory, useEditCategory, useDeleteCategory} from '../../../services/Category'
+import {useSearchCategory, useEditCategory, useDeleteCategory, useCreateCategory} from '../../../services/Category'
 import {HttpStatusCode} from 'axios'
 import {CategoryInfo, IQueryRequest} from 'src/types'
 
@@ -31,10 +32,15 @@ const CategoryManagementContext = React.createContext<CategoryManagementContextP
     deleteRequest: {
         categoryId: '',
     },
+    createRequest: {
+        code: '',
+        name: '',
+    },
     setCategoryList: () => {},
     setSearchRequest: () => {},
     setEditRequest: () => {},
     setDeleteRequest: () => {},
+    setCreateRequest: () => {},
     editHelper: {
         mutate: () => {},
         isLoading: false,
@@ -45,6 +51,11 @@ const CategoryManagementContext = React.createContext<CategoryManagementContextP
         isLoading: false,
         isSuccess: false,
     } as unknown as ReturnType<typeof useDeleteCategory>,
+    createHelper: {
+        mutate: () => {},
+        isLoading: false,
+        isSuccess: false,
+    } as unknown as ReturnType<typeof useCreateCategory>,
     refetchCategoryList: () => {},
 })
 
@@ -59,6 +70,11 @@ export const CategoryManagementContextProvider = ({children}: {children: React.R
     const [deleteRequest, setDeleteRequest] = useState<IDeleteCategoryRequest>
     ({
         categoryId: '',
+    })
+    const [createRequest, setCreateRequest] = useState<ICreateCategoryRequest>
+    ({
+        code: '',
+        name: '',
     })
     const [searchRequest, setSearchRequest] = useState<IQueryRequest<ISearchCategoryRequest>>
     ({
@@ -109,18 +125,23 @@ export const CategoryManagementContextProvider = ({children}: {children: React.R
     const editHelper = useEditCategory()
                                         /* Delete - will be used in index.ts */
     const deleteHelper = useDeleteCategory()
+                                        /* Create - will be used in index.ts */
+    const createHelper = useCreateCategory()
     
     const value = {
         categoryList,
         searchRequest,
         editRequest,
         deleteRequest,
+        createRequest,
         setCategoryList,
         setSearchRequest,
         setEditRequest,
         setDeleteRequest,
+        setCreateRequest,
         editHelper,
         deleteHelper,
+        createHelper,
         refetchCategoryList,
     }
     

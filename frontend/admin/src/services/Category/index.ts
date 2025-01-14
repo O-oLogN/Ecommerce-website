@@ -9,6 +9,8 @@ import {
     IEditCategoryResponse,
     IDeleteCategoryRequest,
     IDeleteCategoryResponse,
+    ICreateCategoryRequest,
+    ICreateCategoryResponse,
     IBaseResponse,
 } from "src/services/types";
 
@@ -54,6 +56,18 @@ export const useDeleteCategory= () => {
             return axiosInstance.post<IBaseResponse<IDeleteCategoryResponse>>(
                 REQUEST_MAPPING.CATEGORY + REQUEST_PATH.DELETE_CATEGORY,
                 queryParams
+            )
+        },
+    )
+}
+
+export const useCreateCategory= () => {
+    return useMutation(
+        'create-category',
+        (params: ICreateCategoryRequest) => {
+            return axiosInstance.post<IBaseResponse<ICreateCategoryResponse>>(
+                REQUEST_MAPPING.CATEGORY + REQUEST_PATH.CREATE_CATEGORY,
+                params
             )
         },
     )
