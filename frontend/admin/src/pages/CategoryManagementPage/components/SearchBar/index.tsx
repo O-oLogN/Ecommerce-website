@@ -1,5 +1,5 @@
 import {Input, Button} from 'antd'
-import {UserOutlined} from '@ant-design/icons'
+import {FilterOutlined} from '@ant-design/icons'
 
 interface SearchBarProps {
     onClick: () => void
@@ -10,9 +10,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({onClick, onKeyDown}) => {
     return (
         <div style={{ position: 'absolute', right: 20, top: 100}}>
             <Input type="text"
-                   id="user-search-bar"
-                   placeholder="Username"
-                   prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+                   id="category-search-bar"
+                   placeholder="Categoryname"
+                   prefix={<FilterOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                    size="middle"
                    style={{width: 500}}
                    onKeyDown={onKeyDown}

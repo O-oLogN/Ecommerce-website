@@ -2,7 +2,7 @@ import {createRoot} from 'react-dom/client'
 import {LoginPage} from "./pages/Login";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import {UserManagementPage} from './pages/UserManagementPage';
+import {UserManagementPage, CategoryManagementPage} from './pages';
 import Layout from './layout'
 
 const App = () => {
@@ -14,6 +14,7 @@ const App = () => {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/" element={<Layout />}>
                         <Route path="user-management" element={<UserManagementPage />} />
+                        <Route path="category-management" element={<CategoryManagementPage />} />
                     </Route>
                 </Routes>
             </Router>

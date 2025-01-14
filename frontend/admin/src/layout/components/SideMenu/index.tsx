@@ -1,9 +1,11 @@
 import { UserOutlined, FilterOutlined, ProductOutlined, FileTextOutlined } from '@ant-design/icons'
 import { Menu, MenuProps } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 export const SideMenu = () => {
     const navigate = useNavigate()
+    const [selectedKeys, setSelectedKeys] = useState<string[]>([])
 
     const items: MenuProps['items'] = [
         {
@@ -18,7 +20,10 @@ export const SideMenu = () => {
                     key: 'user-management',
                     icon: <UserOutlined />,
                     label: 'User management',
-                    onClick: () => navigate('/user-management'),
+                    onClick: () => {
+                        setSelectedKeys(['user-management'])
+                        return navigate('/user-management')
+                    },
                 },
                 {
                     type: 'divider',
@@ -27,7 +32,10 @@ export const SideMenu = () => {
                     key: 'category-management',
                     icon: <FilterOutlined />,
                     label: 'Category management',
-                    onClick: () => navigate('/category-management'),
+                    onClick: () => {
+                        setSelectedKeys(['category-management'])
+                        return navigate('/category-management')
+                    },
                 },
                 {
                     type: 'divider',
@@ -36,7 +44,10 @@ export const SideMenu = () => {
                     key: 'item-management',
                     icon: <ProductOutlined />,
                     label: 'Item management',
-                    onClick: () => navigate('/item-management'),
+                    onClick: () => {
+                        setSelectedKeys(['item-management'])
+                        return navigate('/item-management')
+                    },
                 },
                 {
                     type: 'divider',
@@ -45,7 +56,10 @@ export const SideMenu = () => {
                     key: 'order-management',
                     icon: <FileTextOutlined />,
                     label: 'Order management',
-                    onClick: () => navigate('/order-management'),
+                    onClick: () => {
+                        setSelectedKeys(['order-management'])
+                        return navigate('/order-management')
+                    },
                 },
             ],
         },
@@ -63,6 +77,7 @@ export const SideMenu = () => {
             style={{
                 width: 256,
             }}
+            selectedKeys={selectedKeys}
             mode="inline"
             items={items}
         />

@@ -1,6 +1,6 @@
 import { Form, Button, Input, FormInstance } from 'antd'
 import { useLoginContext }  from './hooks/LoginContext.tsx'
-import {LoginContextProvider} from "./hooks/LoginContext.tsx";
+import { LoginContextProvider } from "./hooks/LoginContext.tsx";
 import { UserOutlined, LockOutlined, EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons'
 import { LoginContextProps, LoginForm} from "./types";
 import React, { useState } from "react";
@@ -55,6 +55,7 @@ const Login = () => {
                     rules={[{required: true, message: 'Please input your username'}]}>
                     <Input
                         placeholder="Enter your username"
+                        required
                         prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                     />
                 </Form.Item>
@@ -63,6 +64,7 @@ const Login = () => {
                     label="Password"
                     rules={[{required: true, message: 'Please input your password'}]}>
                     <Input.Password
+                        required
                         placeholder="Enter your password"
                         prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                         suffix={visiblePassword

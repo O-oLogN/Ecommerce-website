@@ -1,7 +1,11 @@
 import {UserManagementContextProps} from '../types'
-import {ISearchUserRequest} from '../../../services/types'
+import {
+    ISearchUserRequest, 
+    IEditUserRequest,
+    IDeleteUserRequest,
+} from '../../../services/types'
 import React, {useContext, useState} from 'react'
-import {useSearchUser} from '../../../services/User'
+import {useSearchUser, useEditUser, useDeleteUser} from '../../../services/User'
 import {HttpStatusCode} from 'axios'
 import {UserInfo, IQueryRequest} from 'src/types'
 
@@ -19,11 +23,43 @@ const UserManagementContext = React.createContext<UserManagementContextProps>({
         //
         // }
     },
-    setSearchRequest: () => {}
+    editRequest: {
+        userId: '',
+        username: '',
+        email: '',
+    },
+    deleteRequest: {
+        userId: '',
+    },
+    setUserList: () => {},
+    setSearchRequest: () => {},
+    setEditRequest: () => {},
+    setDeleteRequest: () => {},
+    editHelper: {
+        mutate: () => {},
+        isLoading: false,
+        isSuccess: false,
+    } as unknown as ReturnType<typeof useEditUser>,
+    deleteHelper: {
+        mutate: () => {},
+        isLoading: false,
+        isSuccess: false,
+    } as unknown as ReturnType<typeof useDeleteUser>,
+    refetchUserList: () => {},
 })
 
 export const UserManagementContextProvider = ({children}: {children: React.ReactNode}) => {
-    const [userList, setUserList] = useState<UserInfo[]>([])
+    const [userList, setUserList] = useState<UserInfo[] | undefined>([])
+    const [editRequest, setEditRequest] = useState<IEditUserRequest>
+    ({
+        userId: '',
+        username: '',
+        email: '',
+    })
+    const [deleteRequest, setDeleteRequest] = useState<IDeleteUserRequest>
+    ({
+        userId: '',
+    })
     const [searchRequest, setSearchRequest] = useState<IQueryRequest<ISearchUserRequest>>
     ({
         sample: {
@@ -38,43 +74,55 @@ export const UserManagementContextProvider = ({children}: {children: React.React
         // }
     })
 
-    const response = useSearchUser(searchRequest)
+                                    /* Search */
+    const searchResponse = useSearchUser(searchRequest)
+    const refetchUserList = searchResponse.refetch
 
+    console.log('searchResponse', searchResponse)
     React.useEffect(() => {
-        if (!response) {
-            console.log('Response is undefined')
-        }
-        else if (!response.data) {
-            console.log('response.data is undefined')
-        }
-        else {
-            if ('content' in response.data) {
-                if (response.data.content.status === HttpStatusCode.Ok || response.data.content.status === HttpStatusCode.Accepted) {
+        if (!searchResponse) {
+            console.log('searchResponse is undefined')
+        } else if (!searchResponse.data) {
+            console.log('searchResponse.data is undefined')
+        } else {
+            if ('content' in searchResponse.data) {
+                if (searchResponse.data.content.status === HttpStatusCode.Ok || searchResponse.data.content.status === HttpStatusCode.Accepted) {
                     console.log('CONTEXT - Paging - search user list successfully')
-                    setUserList(response.data.content.data.users as UserInfo[])
-                }
-                else {
+                    setUserList(searchResponse.data.content.data.users as UserInfo[])
+                } else {
                     console.log('CONTEXT - Paging - user not found')
                     setUserList([])
                 }
-            }
-            else {
-                if (response.data.status === HttpStatusCode.Ok || response.data.status === HttpStatusCode.Accepted) {
+            } else {
+                if (searchResponse.data.status === HttpStatusCode.Ok || searchResponse.data.status === HttpStatusCode.Accepted) {
                     console.log('CONTEXT - NON-Paging - search user list successfully')
-                    setUserList(response.data.data.users as UserInfo[])
-                }
-                else {
+                    setUserList(searchResponse.data.data.users as UserInfo[])
+                } else {
                     console.log('CONTEXT - NON-Paging - user not found')
                     setUserList([])
                 }
             }
         }
-    }, [response.isSuccess, response.data])
+    }, [searchResponse.isSuccess, searchResponse.data])
 
+                                        /* Edit - will be used in index.ts */
+    const editHelper = useEditUser()
+                                        /* Delete - will be used in index.ts */
+
+    const deleteHelper = useDeleteUser()
+    
     const value = {
-        userList: userList,
-        searchRequest: searchRequest,
-        setSearchRequest: setSearchRequest,
+        userList,
+        searchRequest,
+        editRequest,
+        deleteRequest,
+        setUserList,
+        setSearchRequest,
+        setEditRequest,
+        setDeleteRequest,
+        editHelper,
+        deleteHelper,
+        refetchUserList,
     }
     
     return (
