@@ -7,3 +7,4 @@ export const axiosInstance = axios.create({
 export * from './User'
 export * from './Auth'
 export * from './Category'
+export * from './Item'

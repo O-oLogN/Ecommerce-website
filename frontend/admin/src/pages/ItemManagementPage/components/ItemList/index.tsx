@@ -1,13 +1,13 @@
 import { Table, Space, Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import { CategoryInfo } from 'src/types'
-import { useCategoryManagementContext } from '../../hooks/CategoryManagementContext.tsx'
+import { ItemInfo } from 'src/types'
+import { useItemManagementContext } from '../../hooks/ItemManagementContext.tsx'
 import React, { useState, useEffect } from 'react'
 import { SearchBar } from '../SearchBar'
-import { EditCategoryForm } from '../modal/EditCategoryForm.tsx'
+import { EditItemForm } from '../modal/EditItemForm.tsx'
 import {HttpStatusCode} from 'axios'
 
-interface TableData extends CategoryInfo {
+interface TableData extends ItemInfo {
     key: string
 }
 
@@ -15,31 +15,31 @@ interface TableColumn {
     title: string
     dataIndex?: string
     key: string
-    render?: (text: any, record: CategoryInfo, index: number) => React.ReactNode
+    render?: (text: any, record: ItemInfo, index: number) => React.ReactNode
 }
 
-export const CategoryList = () => {
+export const ItemList = () => {
     const [columns, setColumns] = useState<TableColumn[]>([])
     const [isOpenForm, setIsOpenForm] = useState<boolean>(false)
-    const [modalFormInitialValues, setModalFormInitialValues] = useState<CategoryInfo | undefined>()
+    const [modalFormInitialValues, setModalFormInitialValues] = useState<ItemInfo | undefined>()
     const [data, setData] = useState<TableData[]>([])
     const {
-        categoryList,
+        itemList,
         searchRequest: prevSearchRequest,
         setSearchRequest,
-        setCategoryList,
+        setItemList,
         editHelper,
         deleteHelper,
-        refetchCategoryList,
-    } = useCategoryManagementContext()
-    const columnNames = ['Category ID', 'Category code', 'Category name', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
+        refetchItemList,
+    } = useItemManagementContext()
+    const columnNames = ['Item ID', 'Item code', 'Item name', 'Item price', 'Image URL', 'Quantity', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
     
     const onClickSearchBtn = () => {
-        const searchBar = document.getElementById('category-search-bar') as HTMLInputElement
+        const searchBar = document.getElementById('item-search-bar') as HTMLInputElement
         setSearchRequest({
             ...prevSearchRequest,
             sample: {
-                 categoryName: searchBar?.value || ''
+                 itemName: searchBar?.value || ''
             },
             // pageInfo: {
             //     pageNumber: 0,
@@ -57,14 +57,14 @@ export const CategoryList = () => {
         }
     }
     
-    const handleOpenEditForm = (row: CategoryInfo) => {
+    const handleOpenEditForm = (row: ItemInfo) => {
         setModalFormInitialValues(row)
         setIsOpenForm(true)
     }
 
-    const handleDelete = async (row: CategoryInfo) => {
+    const handleDelete = async (row: ItemInfo) => {
         const deleteRequest = {
-            categoryId: row.categoryId
+            itemId: row.itemId
         }
         const deleteResponse = await deleteHelper.mutateAsync(deleteRequest)
         if (!deleteResponse) {
@@ -75,35 +75,35 @@ export const CategoryList = () => {
         }
         else {
             if (deleteResponse.data.status === HttpStatusCode.Ok) {
-                console.log('INDEX - Category deleted successfully!')
+                console.log('INDEX - Item deleted successfully!')
             }
             else {
-                console.log('INDEX - Category deleted failed!')
+                console.log('INDEX - Item deleted failed!')
             }
         }
         
-        refetchCategoryList()
+        refetchItemList()
     }
 
     useEffect(() => {
         setData(
-            (categoryList || []).map((category, index) => ({
+            (itemList || []).map((item, index) => ({
                 key: index.toString(),
-                ...category,
+                ...item,
             }))
         )
 
-        if (categoryList && categoryList.length > 0) {
-            const categoryColumns: TableColumn[] = Object.keys(categoryList[0]).map((key, index) => ({
+        if (itemList && itemList.length > 0) {
+            const itemColumns: TableColumn[] = Object.keys(itemList[0]).map((key, index) => ({
                 title: columnNames[index],
                 dataIndex: key,
                 key: index.toString(),
             }))
 
-            categoryColumns.push({
+            itemColumns.push({
                 title: 'Actions',
                 key: 'actions',
-                render: (record: CategoryInfo) => (
+                render: (record: ItemInfo) => (
                     <Space>
                         <Button type="link" onClick={() => handleOpenEditForm(record)}>
                             <EditOutlined>
@@ -119,20 +119,20 @@ export const CategoryList = () => {
                 ),
             });
 
-            setColumns(categoryColumns);
+            setColumns(itemColumns);
         }
-    }, [categoryList]);
+    }, [itemList]);
 
     return (
         <>
             <SearchBar onClick={onClickSearchBtn} onKeyDown={onKeyDown} />
             <Table dataSource={data} columns={columns} />
-            <EditCategoryForm initialValues={modalFormInitialValues}
+            <EditItemForm initialValues={modalFormInitialValues}
                           isOpenForm={isOpenForm}
                           setIsOpenForm={setIsOpenForm}
                           editHelper={editHelper}
-                          setCategoryList={setCategoryList}
-                          refetchCategoryList={refetchCategoryList}
+                          setItemList={setItemList}
+                          refetchItemList={refetchItemList}
             />
         </>
     )

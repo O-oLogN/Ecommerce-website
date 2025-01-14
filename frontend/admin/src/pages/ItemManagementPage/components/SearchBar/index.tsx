@@ -10,8 +10,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({onClick, onKeyDown}) => {
     return (
         <div style={{ position: 'absolute', right: 20, top: 100}}>
             <Input type="text"
-                   id="category-search-bar"
-                   placeholder="Category name"
+                   id="item-search-bar"
+                   placeholder="Item name"
                    prefix={<FilterOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                    size="middle"
                    style={{width: 500}}
