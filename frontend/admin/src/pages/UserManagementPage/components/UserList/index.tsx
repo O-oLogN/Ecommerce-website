@@ -34,7 +34,7 @@ export const UserList = () => {
         createHelper,
         refetchUserList,
     } = useUserManagementContext()
-    const columnNames = ['User ID', 'Username', 'Password', 'Email', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
+    const columnNames = ['Username', 'Email', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
     
     const onClickSearchBtn = () => {
         const searchBar = document.getElementById('user-search-bar') as HTMLInputElement
@@ -59,12 +59,12 @@ export const UserList = () => {
         }
     }
     
-    const handleOpenEditForm = (row: UserInfo) => {
+    const handleOpenEditForm = (row: TableData) => {
         setModalFormInitialValues(row)
         setIsOpenEditForm(true)
     }
 
-    const handleDelete = async (row: UserInfo) => {
+    const handleDelete = async (row: TableData) => {
         const deleteRequest = {
             userId: row.userId
         }
@@ -92,8 +92,9 @@ export const UserList = () => {
     }
 
     const addBtnStyle = {
-        width: '500px',
-        marginLeft: '35%'
+        width: '100px',
+        marginLeft: '90%',
+        marginBottom: '10px'
     }
 
     useEffect(() => {
@@ -105,7 +106,9 @@ export const UserList = () => {
         )
 
         if (userList && userList.length > 0) {
-            const userColumns: TableColumn[] = Object.keys(userList[0]).map((key, index) => ({
+            let objectKeys = Object.keys(userList[0])
+            objectKeys = objectKeys.slice(1, 2).concat(objectKeys.slice(3))
+            const userColumns: TableColumn[] = objectKeys.map((key, index) => ({
                 title: columnNames[index],
                 dataIndex: key,
                 key: index.toString(),
@@ -114,7 +117,7 @@ export const UserList = () => {
             userColumns.push({
                 title: 'Actions',
                 key: 'actions',
-                render: (record: UserInfo) => (
+                render: (record: TableData) => (
                     <Space>
                         <Button type="link" onClick={() => handleOpenEditForm(record)}>
                             <EditOutlined>
@@ -137,6 +140,12 @@ export const UserList = () => {
     return (
         <>
             <SearchBar onClick={onClickSearchBtn} onKeyDown={onKeyDown} />
+            <Button type="primary"
+                    style={addBtnStyle}
+                    onClick={handleCreate}
+            >
+                Add
+            </Button>
             <Table dataSource={data} columns={columns} />
             <EditUserForm initialValues={modalFormInitialValues}
                           isOpenForm={isOpenEditForm}
@@ -149,12 +158,6 @@ export const UserList = () => {
                             createHelper={createHelper}
                             refetchUserList={refetchUserList}
             />
-            <Button type="primary"
-                    style={addBtnStyle}
-                    onClick={handleCreate}
-            >
-                Add
-            </Button>
         </>
     )
 };

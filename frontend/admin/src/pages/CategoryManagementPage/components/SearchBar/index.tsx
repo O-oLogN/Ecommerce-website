@@ -8,7 +8,7 @@ interface SearchBarProps {
 
 export const SearchBar: React.FC<SearchBarProps> = ({onClick, onKeyDown}) => {
     return (
-        <div style={{ position: 'absolute', right: 20, top: 100}}>
+        <div style={{marginLeft: '500px', marginTop: '20px', marginBottom: '50px' }}>
             <Input type="text"
                    id="category-search-bar"
                    placeholder="Category name"
@@ -19,7 +19,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({onClick, onKeyDown}) => {
             />
             <Button type="primary" 
                     htmlType="submit" 
-                    style={{marginLeft: 20}} 
+                    style={{marginLeft: 10}}
                     onClick={onClick}
             >
                 Search

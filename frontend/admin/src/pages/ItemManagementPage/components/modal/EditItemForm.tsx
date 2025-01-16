@@ -1,12 +1,15 @@
-import {Modal, Form, Input} from 'antd'
-import React from 'react'
+import {Modal, Form, Input, Upload, message} from 'antd'
+import {UploadOutlined} from '@ant-design/icons'
+import React, {useState} from 'react'
 import {ItemInfo} from 'src/types'
-import {useEditItem} from '../../../../services'
+import {useEditItem} from 'src/services'
 import {HttpStatusCode} from 'axios'
 import {IEditItemRequest} from 'src/services/types'
+import {TableData} from '../types'
+const {Dragger} = Upload
 
 interface EditItemFormProps {
-    initialValues: ItemInfo | undefined
+    initialValues: TableData | undefined
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     editHelper: ReturnType<typeof useEditItem>
@@ -19,7 +22,6 @@ const handleSubmitForm = async (
     editRequest: IEditItemRequest,
     refetchItemList: () => void,
 ) => {
-    console.log(editRequest)
     const editResponse = await editHelper.mutateAsync(editRequest)
     if (!editResponse) {
         console.log('editResponse is undefined')
@@ -47,20 +49,21 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
   refetchItemList,
 }) => {
     const [form] = Form.useForm()
+    const [imagesUploaded, setImagesUploaded] = useState<File[] | undefined>()
     const handleCancel = () => {
         form.resetFields()
         setIsOpenForm(false)
     }
     return (
-        <Modal title="Update Item form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
+        <Modal title="Update item form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
             <Form form={form}
                   onFinish={async() => {
                       const formVal = await form.validateFields() as ItemInfo
-                      const itemId = formVal.itemId
-                      const categoryId = formVal.categoryId
+                      const itemId = initialValues?.itemId as string
+                      const categoryId = initialValues?.categoryId as string
                       const name = formVal.name
                       const price = formVal.price
-                      const imageUrl = formVal.imageUrl
+                      const image = imagesUploaded![0]
                       const quantity = formVal.quantity
                       
                       handleSubmitForm(
@@ -71,7 +74,7 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                               categoryId,
                               name,
                               price,
-                              imageUrl,
+                              image,
                               quantity
                           },
                           refetchItemList,
@@ -79,18 +82,6 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                   }}
                   initialValues={initialValues}
             >
-                <Form.Item
-                    name="itemId"
-                    label="Item ID"
-                >
-                    <Input disabled />
-                </Form.Item>
-                <Form.Item
-                    name="categoryId"
-                    label="Category ID"
-                >
-                    <Input disabled />
-                </Form.Item>
                 <Form.Item
                     name="name"
                     label="Item name"
@@ -104,10 +95,26 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                     <Input type="number"/>
                 </Form.Item>
                 <Form.Item
-                    name="imageUrl"
-                    label="Image URL"
+                    name="image"
+                    label="Image"
                 >
-                    <Input/>
+                    <Dragger
+                        name="file"
+                        accept="image/png"
+                        fileList={imagesUploaded as any}
+                        onChange={(info: any) => {
+                            const {status} = info.file
+                            if (status === 'error') {
+                                message.error(`${info.file.name} file upload failed.`)
+                                return
+                            }
+                            setImagesUploaded([info.file])
+                        }}
+                        beforeUpload={() => false}  // Prevent automatic upload
+                    >
+                        <UploadOutlined style={{fontSize: '3em'}}/>
+                        <p>Click or drag file to this area to upload</p>
+                    </Dragger>
                 </Form.Item>
                 <Form.Item
                     name="quantity"

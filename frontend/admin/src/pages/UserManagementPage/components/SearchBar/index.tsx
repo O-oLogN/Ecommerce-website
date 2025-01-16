@@ -8,7 +8,7 @@ interface SearchBarProps {
 
 export const SearchBar: React.FC<SearchBarProps> = ({onClick, onKeyDown}) => {
     return (
-        <div style={{ position: 'absolute', right: 20, top: 100}}>
+        <div style={{marginLeft: '500px', marginTop: '20px', marginBottom: '50px' }}>
             <Input type="text"
                    id="user-search-bar"
                    placeholder="Username"

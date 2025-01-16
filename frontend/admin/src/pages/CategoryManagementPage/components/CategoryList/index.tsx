@@ -34,7 +34,7 @@ export const CategoryList = () => {
         createHelper,
         refetchCategoryList,
     } = useCategoryManagementContext()
-    const columnNames = ['Category ID', 'Category code', 'Category name', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
+    const columnNames = ['Category code', 'Category name', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
     
     const onClickSearchBtn = () => {
         const searchBar = document.getElementById('category-search-bar') as HTMLInputElement
@@ -92,8 +92,9 @@ export const CategoryList = () => {
     }
 
     const addBtnStyle = {
-        width: '500px',
-        marginLeft: '35%'
+        width: '100px',
+        marginLeft: '90%',
+        marginBottom: '10px'
     }
 
     useEffect(() => {
@@ -105,7 +106,8 @@ export const CategoryList = () => {
         )
 
         if (categoryList && categoryList.length > 0) {
-            const categoryColumns: TableColumn[] = Object.keys(categoryList[0]).map((key, index) => ({
+            const objectKeys = Object.keys(categoryList[0]).slice(1)
+            const categoryColumns: TableColumn[] = objectKeys.map((key, index) => ({
                 title: columnNames[index],
                 dataIndex: key,
                 key: index.toString(),
@@ -137,7 +139,17 @@ export const CategoryList = () => {
     return (
         <>
             <SearchBar onClick={onClickSearchBtn} onKeyDown={onKeyDown} />
-            <Table dataSource={data} columns={columns} />
+            <Button type="primary"
+                    style={addBtnStyle}
+                    onClick={handleCreate}
+            >
+                Add
+            </Button>
+            <Table
+                dataSource={data}
+                columns={columns}
+                scroll={{x: 'max-content'}}
+            />
             <EditCategoryForm initialValues={modalFormInitialValues}
                           isOpenForm={isOpenEditForm}
                           setIsOpenForm={setIsOpenEditForm}
@@ -149,12 +161,6 @@ export const CategoryList = () => {
                               createHelper={createHelper}
                               refetchCategoryList={refetchCategoryList}
             />
-            <Button type="primary"
-                    style={addBtnStyle}
-                    onClick={handleCreate}
-            >
-                Add
-            </Button>
         </>
     )
-};
+}

@@ -11,28 +11,46 @@ import {
     IDeleteCategoryResponse,
     ICreateCategoryRequest,
     ICreateCategoryResponse,
+    ISearchCategoryByIdRequest,
+    ISearchCategoryByIdResponse,
     IBaseResponse,
 } from "src/services/types";
 
 export const useSearchCategory=
     (params: IQueryRequest<ISearchCategoryRequest>) => {
-        return useQuery<IPagingResponse<IBaseResponse<ISearchCategoryResponse>> | IBaseResponse<ISearchCategoryResponse>>(
-            ['search-category', params],
-            async () => {
-                const response = await axiosInstance.post<IPagingResponse<IBaseResponse<ISearchCategoryResponse>> | IBaseResponse<ISearchCategoryResponse>>(
-                    REQUEST_MAPPING.CATEGORY + REQUEST_PATH.SEARCH_CATEGORY,
-                    params
-                )
-                return response.data
-            },
-            {
-                enabled: !!params,
-                // refetchInterval: 1000,
-                refetchOnWindowFocus: false,
-                refetchOnReconnect: false,
-            }
-        )
-    }
+    return useQuery<IPagingResponse<IBaseResponse<ISearchCategoryResponse>> | IBaseResponse<ISearchCategoryResponse>>(
+        ['search-category-by-name', params],
+        async () => {
+            const response = await axiosInstance.post<IPagingResponse<IBaseResponse<ISearchCategoryResponse>> | IBaseResponse<ISearchCategoryResponse>>(
+                REQUEST_MAPPING.CATEGORY + REQUEST_PATH.SEARCH_CATEGORY_BY_NAME,
+                params
+            )
+            return response.data
+        },
+        {
+            enabled: !!params,
+            // refetchInterval: 1000,
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+        }
+    )
+}
+
+export const useSearchCategoryById = () => {
+    return useMutation(
+        async (params: ISearchCategoryByIdRequest) => {
+            const queryParams = new URLSearchParams({
+                categoryId: params.categoryId,
+            }).toString()
+
+            const response = await axiosInstance.get<IBaseResponse<ISearchCategoryByIdResponse>>(
+                `${REQUEST_MAPPING.CATEGORY}${REQUEST_PATH.SEARCH_CATEGORY_BY_ID}?${queryParams}`
+            );
+
+            return response.data
+        }
+    )
+}
 
 export const useEditCategory= () => {
     return useMutation(
@@ -52,7 +70,7 @@ export const useDeleteCategory= () => {
         (params: IDeleteCategoryRequest) => {
             const queryParams = new URLSearchParams({
                 categoryId: params.categoryId,
-            }).toString();
+            }).toString()
             return axiosInstance.post<IBaseResponse<IDeleteCategoryResponse>>(
                 REQUEST_MAPPING.CATEGORY + REQUEST_PATH.DELETE_CATEGORY,
                 queryParams

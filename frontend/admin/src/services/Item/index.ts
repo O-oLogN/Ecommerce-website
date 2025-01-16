@@ -23,6 +23,9 @@ export const useSearchItem=
                     REQUEST_MAPPING.ITEM + REQUEST_PATH.SEARCH_ITEM,
                     params
                 )
+                // if (!('content' in response.data)) {
+                //     console.log(response.data.data.items![3].image)
+                // }
                 return response.data
             },
             {
@@ -34,13 +37,27 @@ export const useSearchItem=
         )
     }
 
-export const useEditItem= () => {
+export const useEditItem = () => {
     return useMutation(
         'edit-item',
         (params: IEditItemRequest) => {
+            const formData = new FormData()
+            formData.append('itemId', params.itemId)
+            formData.append('categoryId', params.categoryId)
+            formData.append('name', params.name)
+            formData.append('price', params.price!.toString())
+            formData.append('quantity', params.quantity.toString())
+            if (params.image) {
+                formData.append('image', params.image);
+            }
             return axiosInstance.post<IBaseResponse<IEditItemResponse>>(
                 REQUEST_MAPPING.ITEM + REQUEST_PATH.UPDATE_ITEM,
-                params
+                params,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
             )
         },
     )
@@ -65,6 +82,14 @@ export const useCreateItem= () => {
     return useMutation(
         'create-item',
         (params: ICreateItemRequest) => {
+            const formData = new FormData()
+            formData.append('categoryId', params.categoryId)
+            formData.append('name', params.name)
+            formData.append('price', params.price!.toString())
+            formData.append('quantity', params.quantity.toString())
+            if (params.image) {
+                formData.append('image', params.image);
+            }
             return axiosInstance.post<IBaseResponse<ICreateItemResponse>>(
                 REQUEST_MAPPING.ITEM + REQUEST_PATH.CREATE_ITEM,
                 params

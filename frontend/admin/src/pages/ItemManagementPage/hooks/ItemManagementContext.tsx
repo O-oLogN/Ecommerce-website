@@ -6,7 +6,7 @@ import {
     ICreateItemRequest,
 } from '../../../services/types'
 import React, {useContext, useState} from 'react'
-import {useSearchItem, useEditItem, useDeleteItem, useCreateItem} from '../../../services/Item'
+import {useSearchItem, useEditItem, useDeleteItem, useCreateItem, useSearchCategoryById} from '../../../services'
 import {HttpStatusCode} from 'axios'
 import {ItemInfo, IQueryRequest} from 'src/types'
 
@@ -24,12 +24,15 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
         //
         // }
     },
+    // searchCategoryByIdRequest: {
+    //     categoryId: ''
+    // },
     editRequest: {
         itemId: '',
         categoryId: '',
         name: '',
         price: 0,
-        imageUrl: '',
+        image: undefined,
         quantity: 0,
     },
     deleteRequest: {
@@ -39,7 +42,7 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
         categoryId: '',
         name: '',
         price: 0,
-        imageUrl: '',
+        image: undefined,
         quantity: 0,
     },
     setItemList: () => {},
@@ -62,6 +65,11 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
         isLoading: false,
         isSuccess: false,
     } as unknown as ReturnType<typeof useCreateItem>,
+    searchCategoryHelper: {
+        mutate: () => {},
+        isLoading: false,
+        isSuccess: false,
+    } as unknown as ReturnType<typeof useSearchCategoryById>,
     refetchItemList: () => {},
 })
 
@@ -73,7 +81,7 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         categoryId: '',
         name: '',
         price: 0,
-        imageUrl: '',
+        image: undefined,
         quantity: 0,
     })
     const [deleteRequest, setDeleteRequest] = useState<IDeleteItemRequest>
@@ -85,7 +93,7 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         categoryId: '',
         name: '',
         price: 0,
-        imageUrl: '',
+        image: undefined,
         quantity: 0,
     })
     const [searchRequest, setSearchRequest] = useState<IQueryRequest<ISearchItemRequest>>
@@ -101,7 +109,6 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         //
         // }
     })
-
                                     /* Search */
     const searchResponse = useSearchItem(searchRequest)
     const refetchItemList = searchResponse.refetch
@@ -132,6 +139,8 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
             }
         }
     }, [searchResponse.isSuccess, searchResponse.data])
+    
+    const searchCategoryHelper = useSearchCategoryById()
 
                                         /* Edit - will be used in index.ts */
     const editHelper = useEditItem()
@@ -154,6 +163,7 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         editHelper,
         deleteHelper,
         createHelper,
+        searchCategoryHelper,
         refetchItemList,
     }
     

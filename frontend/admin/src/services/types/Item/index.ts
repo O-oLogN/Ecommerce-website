@@ -9,7 +9,7 @@ export interface IEditItemRequest {
     categoryId: string
     name: string
     price: number | undefined
-    imageUrl: string | undefined
+    image: File | undefined
     quantity: number
 }
 
@@ -21,7 +21,7 @@ export interface ICreateItemRequest {
     categoryId: string
     name: string
     price: number | undefined
-    imageUrl: string | undefined
+    image: File | undefined
     quantity: number
 }
 

@@ -1,29 +1,26 @@
 import { Table, Space, Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import { ItemInfo } from 'src/types'
 import { useItemManagementContext } from '../../hooks/ItemManagementContext.tsx'
 import React, { useState, useEffect } from 'react'
 import { SearchBar } from '../SearchBar'
 import { EditItemForm } from '../modal/EditItemForm.tsx'
 import { CreateItemForm } from '../modal/CreateItemForm.tsx'
 import { HttpStatusCode } from 'axios'
-
-interface TableData extends ItemInfo {
-    key: string
-}
+import { imageToUrl } from '../../../../tools/ImageUtils.ts'
+import { TableData } from '../types'
 
 interface TableColumn {
     title: string
     dataIndex?: string
     key: string
-    render?: (text: any, record: ItemInfo, index: number) => React.ReactNode
+    render?: (text: any, record: TableData, index: number) => React.ReactNode
 }
 
 export const ItemList = () => {
     const [columns, setColumns] = useState<TableColumn[]>([])
     const [isOpenEditForm, setIsOpenEditForm] = useState<boolean>(false)
     const [isOpenCreateForm, setIsOpenCreateForm] = useState<boolean>(false)
-    const [modalFormInitialValues, setModalFormInitialValues] = useState<ItemInfo | undefined>()
+    const [modalFormInitialValues, setModalFormInitialValues] = useState<TableData | undefined>()
     const [data, setData] = useState<TableData[]>([])
     const {
         itemList,
@@ -32,10 +29,12 @@ export const ItemList = () => {
         editHelper,
         deleteHelper,
         createHelper,
+        searchCategoryHelper,
         refetchItemList,
     } = useItemManagementContext()
-    const columnNames = ['Item ID', 'Item code', 'Item name', 'Item price', 'Image URL', 'Quantity', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
-    
+    const columnNames = ['Item name', 'Category code', 'Category name', 'Item price', 'Image', 'Quantity', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
+    const columnDataIndexes = ['name', 'categoryCode', 'categoryName', 'price', 'imageUrl', 'quantity', 'createUser', 'createDatetime', 'modifyUser', 'modifyDatetime']
+
     const onClickSearchBtn = () => {
         const searchBar = document.getElementById('item-search-bar') as HTMLInputElement
         setSearchRequest({
@@ -59,12 +58,12 @@ export const ItemList = () => {
         }
     }
     
-    const handleOpenEditForm = (row: ItemInfo) => {
+    const handleOpenEditForm = (row: TableData) => {
         setModalFormInitialValues(row)
         setIsOpenEditForm(true)
     }
 
-    const handleDelete = async (row: ItemInfo) => {
+    const handleDelete = async (row: TableData) => {
         const deleteRequest = {
             itemId: row.itemId
         }
@@ -92,51 +91,95 @@ export const ItemList = () => {
     }
 
     const addBtnStyle = {
-        width: '500px',
-        marginLeft: '35%'
+        width: '100px',
+        marginLeft: '90%',
+        marginBottom: '10px'
     }
 
     useEffect(() => {
-        setData(
-            (itemList || []).map((item, index) => ({
-                key: index.toString(),
-                ...item,
-            }))
-        )
+        const setUpData = async() => {
+            const categoryPromies = itemList!.map(async (item) => {
+                const searchCategoryResponse = await searchCategoryHelper.mutateAsync({
+                    categoryId: item.categoryId
+                })
+                return searchCategoryResponse.data
+            })
+            const resolvedCategories =  await Promise.all(categoryPromies)
 
-        if (itemList && itemList.length > 0) {
-            const itemColumns: TableColumn[] = Object.keys(itemList[0]).map((key, index) => ({
-                title: columnNames[index],
-                dataIndex: key,
-                key: index.toString(),
-            }))
+            const updatedData = itemList!.map((item, index) => {
+                return {
+                    key: index.toString(),
+                    categoryName: resolvedCategories[index]?.name,
+                    categoryCode: resolvedCategories[index]?.code,
+                    itemId: item.itemId,
+                    categoryId: item.categoryId,
+                    name: item.name,
+                    price: item.price,
+                    imageUrl: imageToUrl(item.image!) || '',
+                    quantity: item.quantity,
+                    createUser: item.createUser,
+                    createDatetime: item.createDatetime,
+                    modifyUser: item.modifyUser,
+                    modifyDatetime: item.modifyDatetime,
+                } as TableData
+            })
 
-            itemColumns.push({
-                title: 'Actions',
-                key: 'actions',
-                render: (record: ItemInfo) => (
-                    <Space>
-                        <Button type="link" onClick={() => handleOpenEditForm(record)}>
-                            <EditOutlined>
-                                Edit
-                            </EditOutlined>
-                        </Button>
-                        <Button type="link" danger onClick={() => handleDelete(record)}>
-                            <DeleteOutlined>
-                                Delete
-                            </DeleteOutlined>
-                        </Button>
-                    </Space>
-                ),
-            });
+            if (updatedData && updatedData.length > 0) {
+                const tableColumns: TableColumn[] = [
+                    ...(columnNames.map((columnName, index) => ({
+                        title: columnName,
+                        dataIndex: columnDataIndexes[index],
+                        key: index.toString(),
+                    })))
+                ]
 
-            setColumns(itemColumns);
+                tableColumns[tableColumns.findIndex(col => col.dataIndex === 'imageUrl')]
+                    = {
+                    title: 'Image',
+                    dataIndex: '',
+                    key: tableColumns.findIndex(col => col.dataIndex === 'image').toString(),
+                    render: (record: TableData) => {
+                        if (record.imageUrl)
+                            return <img src={record.imageUrl} style={{width: '100px', height: 'auto'}}/>
+                        return <></>
+                    }
+                }
+
+                tableColumns.push({
+                    title: 'Actions',
+                    key: 'actions',
+                    render: (record: TableData) => (
+                        <Space>
+                            <Button type="link" onClick={() => handleOpenEditForm(record)}>
+                                <EditOutlined>
+                                    Edit
+                                </EditOutlined>
+                            </Button>
+                            <Button type="link" danger onClick={() => handleDelete(record)}>
+                                <DeleteOutlined>
+                                    Delete
+                                </DeleteOutlined>
+                            </Button>
+                        </Space>
+                    ),
+                })
+
+                setData(updatedData)
+                setColumns(tableColumns);
+            }
         }
-    }, [itemList]);
 
+        setUpData()
+    }, [itemList]);
     return (
         <>
             <SearchBar onClick={onClickSearchBtn} onKeyDown={onKeyDown} />
+            <Button type="primary"
+                    style={addBtnStyle}
+                    onClick={handleCreate}
+            >
+                Add
+            </Button>
             <Table dataSource={data} columns={columns} />
             <EditItemForm initialValues={modalFormInitialValues}
                           isOpenForm={isOpenEditForm}
@@ -149,12 +192,6 @@ export const ItemList = () => {
                           createHelper={createHelper}
                           refetchItemList={refetchItemList}
             />
-            <Button type="primary"
-                    style={addBtnStyle}
-                    onClick={handleCreate}
-            >
-                Add
-            </Button>
         </>
     )
-};
+}

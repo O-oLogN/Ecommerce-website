@@ -1,9 +1,11 @@
-import {Modal, Form, Input, Select} from 'antd'
+import {Modal, Form, Input, Select, Upload, message} from 'antd'
+import {UploadOutlined} from '@ant-design/icons'
 import React, {useState} from 'react'
 import {ItemInfo, CategoryInfo} from 'src/types'
 import {useCreateItem, useSearchCategory} from '../../../../services'
 import {HttpStatusCode} from 'axios'
 import {ICreateItemRequest} from 'src/services/types'
+const {Dragger} = Upload
 
 interface CreateItemFormProps {
     isOpenForm: boolean
@@ -50,6 +52,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
     }
     const[categoryNameSelected, setCategoryNameSelected] = useState<string>('')
     const [categories, setCategories] = useState<CategoryInfo[] | undefined>([])
+    const [imagesUploaded, setImagesUploaded] = useState<File[] | undefined>()
     const searchCategoryResponse = useSearchCategory({
         sample: {
             categoryName: '',
@@ -70,10 +73,9 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                   onFinish={async() => {
                       const formVal = await form.validateFields() as ItemInfo
                       const categoryId =  categories![categories!.findIndex(category => category.name === categoryNameSelected)].categoryId
-                      console.log(categoryId)
                       const name = formVal.name
                       const price = formVal.price
-                      const imageUrl = formVal.imageUrl
+                      const image = imagesUploaded![0]
                       const quantity = formVal.quantity
 
                       handleSubmitForm(
@@ -83,7 +85,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                               categoryId,
                               name,
                               price,
-                              imageUrl,
+                              image,
                               quantity
                           },
                           refetchItemList,
@@ -92,7 +94,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
             >
                 <Form.Item
                     name="categoryId"
-                    label="Category ID"
+                    label="Category name"
                 >
                     {categories && categories.length > 0
                     ? <Select
@@ -136,10 +138,26 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                     <Input type="number"/>
                 </Form.Item>
                 <Form.Item
-                    name="imageUrl"
-                    label="Image URL"
+                    name="image"
+                    label="Image"
                 >
-                    <Input/>
+                    <Dragger
+                        name="file"
+                        accept="image/png"
+                        fileList={imagesUploaded as any}
+                        onChange={(info: any) => {
+                            const {status} = info.file
+                            if (status === 'error') {
+                                message.error(`${info.file.name} file upload failed.`)
+                                return
+                            }
+                            setImagesUploaded([info.file])
+                        }}
+                        beforeUpload={() => false}  // Prevent automatic upload
+                    >
+                        <UploadOutlined style={{fontSize: '3em'}}/>
+                        <p>Click or drag file to this area to upload</p>
+                    </Dragger>
                 </Form.Item>
                 <Form.Item
                     name="quantity"

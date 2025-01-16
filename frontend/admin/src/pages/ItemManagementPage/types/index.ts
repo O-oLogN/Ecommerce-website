@@ -5,7 +5,7 @@ import {
     IDeleteItemRequest,
     ICreateItemRequest,
 } from 'src/services/types'
-import {useEditItem, useDeleteItem, useCreateItem} from 'src/services'
+import {useEditItem, useDeleteItem, useCreateItem, useSearchCategoryById} from 'src/services'
 
 export interface ItemManagementContextProps {
     itemList: ItemInfo[] | undefined
@@ -21,5 +21,6 @@ export interface ItemManagementContextProps {
     editHelper: ReturnType<typeof useEditItem>
     deleteHelper: ReturnType<typeof useDeleteItem>
     createHelper: ReturnType<typeof useCreateItem>
+    searchCategoryHelper: ReturnType<typeof useSearchCategoryById>
     refetchItemList: () => void
 }

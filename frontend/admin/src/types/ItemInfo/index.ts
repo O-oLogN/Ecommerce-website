@@ -5,6 +5,6 @@ export interface ItemInfo extends IBaseData {
     categoryId: string
     name: string
     price: number | undefined
-    imageUrl: string | undefined
+    image: File | undefined
     quantity: number
 }

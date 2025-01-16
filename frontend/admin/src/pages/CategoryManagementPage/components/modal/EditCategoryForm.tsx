@@ -56,7 +56,7 @@ export const EditCategoryForm: React.FC<EditCategoryFormProps> = ({
             <Form form={form}
                   onFinish={async() => {
                       const formVal = await form.validateFields() as CategoryInfo
-                      const categoryId = formVal.categoryId
+                      const categoryId = initialValues!.categoryId
                       const code = formVal.code
                       const name= formVal.name
                       
@@ -73,12 +73,6 @@ export const EditCategoryForm: React.FC<EditCategoryFormProps> = ({
                   }}
                   initialValues={initialValues}
             >
-                <Form.Item
-                    name="categoryId"
-                    label="Category ID"
-                >
-                    <Input disabled />
-                </Form.Item>
                 <Form.Item
                     name="code"
                     label="Category code"

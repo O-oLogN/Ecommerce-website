@@ -7,6 +7,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchCategoryRequest {
-    private String keyword;
+public class SearchCategoryRequestByName {
+    private String categoryName;
 }

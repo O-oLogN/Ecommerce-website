@@ -4,6 +4,10 @@ export interface ISearchCategoryRequest {
     categoryName: string | null | undefined
 }
 
+export interface ISearchCategoryByIdRequest {
+    categoryId: string
+}
+
 export interface IEditCategoryRequest {
     categoryId: string
     code: string | undefined
@@ -24,6 +28,8 @@ export interface ISearchCategoryResponse {
     size?: number
     categories?: CategoryInfo[] | undefined
 }
+
+export interface ISearchCategoryByIdResponse extends CategoryInfo {}
 
 export interface IEditCategoryResponse extends CategoryInfo {}
 

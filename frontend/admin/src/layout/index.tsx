@@ -5,9 +5,11 @@ export * from './components/SideMenu'
 
 export default function Layout() {
     return (
-        <>
+        <div style={{display: 'flex'}}>
             <SideMenu />
-            <Outlet />
-        </>
+            <div style={{marginLeft: '40px'}}>
+                <Outlet />
+            </div>
+        </div>
     )
 }

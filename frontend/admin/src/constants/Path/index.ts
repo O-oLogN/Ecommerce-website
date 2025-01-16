@@ -18,7 +18,8 @@ export const REQUEST_PATH = {
     UPDATE_CATEGORY: "/update",
     DELETE_CATEGORY: "/delete",
     CREATE_CATEGORY: "/create",
-    SEARCH_CATEGORY: "/search",
+    SEARCH_CATEGORY_BY_NAME: "/search-by-name",
+    SEARCH_CATEGORY_BY_ID: "/search-by-id",
 
     UPDATE_USER: "/update",
     DELETE_USER: "/delete",

@@ -1,7 +1,6 @@
 import {Modal, Form, Input} from 'antd'
-import React, {useState} from 'react'
+import React from 'react'
 import {UserInfo} from 'src/types'
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons'
 import {useEditUser} from '../../../../services'
 import {HttpStatusCode} from 'axios'
 import {IEditUserRequest} from 'src/services/types'
@@ -48,10 +47,6 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
   refetchUserList,
 }) => {
     const [form] = Form.useForm()
-    const [visiblePassword, setVisiblePassword] = useState<boolean>(false)
-    const onClickVisiblePassword = (visiblePassword: boolean) => {
-        setVisiblePassword(!visiblePassword)
-    }
     const handleCancel = () => {
         form.resetFields()
         setIsOpenForm(false)
@@ -61,7 +56,7 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
             <Form form={form}
                   onFinish={async() => {
                       const formVal = await form.validateFields() as UserInfo
-                      const userId = formVal.userId
+                      const userId = initialValues!.userId
                       const username= formVal.username
                       const email = formVal.email
                       
@@ -79,27 +74,10 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
                   initialValues={initialValues}
             >
                 <Form.Item
-                    name="userId"
-                    label="User ID"
-                >
-                    <Input disabled />
-                </Form.Item>
-                <Form.Item
                     name="username"
                     label="Username"
                 >
                     <Input/>
-                </Form.Item>
-                <Form.Item
-                    name="password"
-                    label="Password"
-                >
-                    <Input.Password 
-                        readOnly
-                        suffix={visiblePassword
-                            ? <EyeOutlined onClick={() => onClickVisiblePassword(visiblePassword)} />
-                            : <EyeInvisibleOutlined onClick={() => onClickVisiblePassword(visiblePassword)}/>}
-                    />
                 </Form.Item>
                 <Form.Item
                     name="email"
