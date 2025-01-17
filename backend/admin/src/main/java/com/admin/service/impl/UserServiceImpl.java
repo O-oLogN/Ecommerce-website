@@ -4,29 +4,34 @@ import com.admin.constant.CoreConstants;
 import com.admin.dto.request.auth.CreateUserRequest;
 import com.admin.dto.request.user.SearchUserRequest;
 import com.admin.dto.request.user.UpdateUserRequest;
-import com.admin.dto.response.user.UserResponse;
 import com.admin.entities.User;
 import com.admin.exception.UserNotFoundException;
 import com.admin.helper.MessageHelper;
 import com.admin.helper.ResponseHelper;
-import com.admin.model.OrderBy;
+import com.admin.model.PageInfo;
+import com.admin.model.PagingResponse;
 import com.admin.model.QueryRequest;
 import com.admin.repository.UserRepository;
 import com.admin.service.UserService;
+import com.admin.specification.UserSpecification;
 import com.admin.utils.PasswordUtils;
+import com.admin.utils.SortUtils;
 import com.admin.utils.ValidationUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +41,8 @@ import java.util.UUID;
 @Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+
+    private final UserSpecification userSpecification;
 
     private final EntityManager entityManager;
 
@@ -114,39 +121,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<?> searchUser(QueryRequest<SearchUserRequest> searchUserRequest) {
         String username = searchUserRequest.getSample().getUsername();
+        PageInfo pageInfo = searchUserRequest.getPageInfo();
 
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> cq = cb.createQuery(User.class);
+        Specification<User> specification = userSpecification.specification(username);
+        Sort sort = SortUtils.buildSort(searchUserRequest.getOrders());
 
-        Root<User> u = cq.from(User.class);
+        Page<User> page = userRepository.findAll(specification, PageRequest.of(pageInfo.getPageNumber(), pageInfo.getPageSize(), sort));
+        List<User> users = page.getContent();
 
-        Predicate predicate;
-        if (ValidationUtils.isNullOrEmpty(username)) {
-            predicate = cb.conjunction();
-        } else {
-            predicate = cb.like(u.get("username"), "%" + username + "%");
-        }
-
-        cq.where(predicate);
-
-        if (!ValidationUtils.isNullOrEmpty(searchUserRequest.getOrders())) {
-            List<Order> orderList = new ArrayList<>();
-            for (OrderBy orderBy : searchUserRequest.getOrders()) {
-                if ("ASC".equalsIgnoreCase(orderBy.getDirection())) {
-                    orderList.add(cb.asc(u.get(orderBy.getProperty())));
-                } else if ("DESC".equalsIgnoreCase(orderBy.getDirection())) {
-                    orderList.add(cb.desc(u.get(orderBy.getProperty())));
-                }
-            }
-            cq.orderBy(orderList);
-        }
-
-        List<User> users = entityManager.createQuery(cq).getResultList();
-        return ResponseHelper.ok(UserResponse
-                .builder()
-                .size(users.size())
-                .users(users)
-                .build(),
-            HttpStatus.OK, "");
+        return ResponseHelper.ok(PagingResponse.<User>
+                        builder()
+                        .totalElements(page.getTotalElements())
+                        .totalPages(page.getTotalPages())
+                        .numberOfElements(users.size())
+                        .pageNumber(pageInfo.getPageNumber())
+                        .pageSize(pageInfo.getPageSize())
+                        .content(users)
+                        .build(),
+                HttpStatus.OK, "");
     }
 }

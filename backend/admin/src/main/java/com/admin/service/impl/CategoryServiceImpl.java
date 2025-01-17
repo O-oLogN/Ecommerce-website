@@ -2,31 +2,33 @@ package com.admin.service.impl;
 
 import com.admin.constant.CoreConstants;
 import com.admin.dto.request.category.CreateCategoryRequest;
-import com.admin.dto.request.category.SearchCategoryRequest;
+import com.admin.dto.request.category.SearchCategoryRequestByName;
 import com.admin.dto.request.category.UpdateCategoryRequest;
-import com.admin.dto.response.category.ItemCategoryResponse;
 import com.admin.entities.ItemCategory;
 import com.admin.exception.CategoryNotFoundException;
 import com.admin.exception.UserNotFoundException;
 import com.admin.helper.MessageHelper;
 import com.admin.helper.ResponseHelper;
 import com.admin.model.OrderBy;
+import com.admin.model.PageInfo;
+import com.admin.model.PagingResponse;
 import com.admin.model.QueryRequest;
 import com.admin.repository.ItemCategoryRepository;
 import com.admin.service.CategoryService;
+import com.admin.specification.CategorySpecification;
+import com.admin.utils.SortUtils;
 import com.admin.utils.ValidationUtils;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.*;
 import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +39,7 @@ import java.util.UUID;
 public class CategoryServiceImpl implements CategoryService {
     private final ItemCategoryRepository itemCategoryRepository;
 
-    private final EntityManager entityManager;
+    private final CategorySpecification categorySpecification;
 
     private final MessageHelper messageHelper;
 
@@ -69,43 +71,45 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseEntity<?> searchCategory(QueryRequest<SearchCategoryRequest> searchCategoryRequest) {
-        String categoryName = searchCategoryRequest.getSample().getKeyword();
+    public ResponseEntity<?> searchCategoryByName(QueryRequest<SearchCategoryRequestByName> searchCategoryRequest) {
+        String categoryName = searchCategoryRequest.getSample().getCategoryName();
+        PageInfo pageInfo = searchCategoryRequest.getPageInfo();
+        List<OrderBy> orders = searchCategoryRequest.getOrders();
 
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ItemCategory> cq = cb.createQuery(ItemCategory.class);
+        Page<ItemCategory> page = itemCategoryRepository.findAll(
+                categorySpecification.specification(categoryName),
+                PageRequest.of(
+                        pageInfo.getPageNumber(),
+                        pageInfo.getPageSize(),
+                        SortUtils.buildSort(orders)
+                )
+        );
+        List<ItemCategory> categories = page.getContent();
 
-        Root<ItemCategory> ic = cq.from(ItemCategory.class);
-
-        Predicate predicate;
-        if (ValidationUtils.isNullOrEmpty(categoryName)) {
-            predicate = cb.conjunction();
-        } else {
-            predicate = cb.like(ic.get("name"), "%" + categoryName + "%");
+        return ResponseHelper.ok(
+                PagingResponse.<ItemCategory>builder()
+                        .totalPages(page.getTotalPages())
+                        .totalElements(page.getTotalElements())
+                        .pageNumber(pageInfo.getPageNumber())
+                        .pageSize(pageInfo.getPageSize())
+                        .numberOfElements(page.getNumberOfElements())
+                        .content(categories)
+                        .build(),
+                HttpStatus.OK, ""
+        );
+    }
+    
+    @Override
+    public ResponseEntity<?> searchCategoryById(String categoryId) throws Exception {
+        if (ValidationUtils.isNullOrEmpty(categoryId)) {
+            throw new ValidationException(
+                messageHelper.getMessage("admin.categoryController.search.error.validation.categoryId")
+            );
         }
-
-        cq.where(predicate);
-
-        if (!ValidationUtils.isNullOrEmpty(searchCategoryRequest.getOrders())) {
-            List<Order> orderList = new ArrayList<>();
-            for (OrderBy orderBy : searchCategoryRequest.getOrders()) {
-                if ("ASC".equalsIgnoreCase(orderBy.getDirection())) {
-                    orderList.add(cb.asc(ic.get(orderBy.getProperty())));
-                } else if ("DESC".equalsIgnoreCase(orderBy.getDirection())) {
-                    orderList.add(cb.desc(ic.get(orderBy.getProperty())));
-                }
-            }
-            cq.orderBy(orderList);
-        }
-
-        List<ItemCategory> categories = entityManager.createQuery(cq).getResultList();
-
-        return ResponseHelper.ok(ItemCategoryResponse
-                .builder()
-                .size(categories.size())
-                .categories(categories)
-                .build()
-                , HttpStatus.OK, "");
+        return ResponseHelper.ok(
+            itemCategoryRepository.findItemCategoryByCategoryId(categoryId),
+            HttpStatus.OK, ""
+        );
     }
 
     @Override

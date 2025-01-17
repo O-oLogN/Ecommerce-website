@@ -2,11 +2,10 @@ package com.admin.controller;
 
 import com.admin.constant.AppRoutes;
 import com.admin.dto.request.category.CreateCategoryRequest;
-import com.admin.dto.request.category.SearchCategoryRequest;
+import com.admin.dto.request.category.SearchCategoryRequestByName;
 import com.admin.dto.request.category.UpdateCategoryRequest;
 import com.admin.model.QueryRequest;
 import com.admin.service.CategoryService;
-import io.micrometer.common.lang.Nullable;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -45,14 +44,24 @@ public class CategoryController {
         return categoryService.updateCategory(updateCategoryRequest);
     }
 
-    @Operation(summary = "Search category")
+    @Operation(summary = "Search category by name")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "500", description = "Fail")
     })
-    @PostMapping(AppRoutes.REQUEST_PATH.SEARCH_CATEGORY)
-    public ResponseEntity<?> searchCategory(@Valid @RequestBody QueryRequest<SearchCategoryRequest> searchCategoryRequest) {
-        return categoryService.searchCategory(searchCategoryRequest);
+    @PostMapping(AppRoutes.REQUEST_PATH.SEARCH_CATEGORY_BY_NAME)
+    public ResponseEntity<?> searchCategoryByName(@Valid @RequestBody QueryRequest<SearchCategoryRequestByName> searchCategoryRequest) {
+        return categoryService.searchCategoryByName(searchCategoryRequest);
+    }
+
+    @Operation(summary = "Search category by id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Fail")
+    })
+    @GetMapping(AppRoutes.REQUEST_PATH.SEARCH_CATEGORY_BY_ID)
+    public ResponseEntity<?> searchCategoryById(@Valid @RequestParam String categoryId) throws Exception {
+        return categoryService.searchCategoryById(categoryId);
     }
 
     @Operation(summary = "Delete category")
@@ -60,7 +69,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "500", description = "Fail")
     })
-    @PostMapping(AppRoutes.REQUEST_PATH.DELETE_CATEGORY)
+    @GetMapping(AppRoutes.REQUEST_PATH.DELETE_CATEGORY)
     public ResponseEntity<?> deleteCategory(@Valid @RequestParam String categoryId) throws Exception {
         return categoryService.deleteCategory(categoryId);
     }

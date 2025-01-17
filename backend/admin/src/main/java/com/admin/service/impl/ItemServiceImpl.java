@@ -1,32 +1,34 @@
 package com.admin.service.impl;
 
 import com.admin.constant.CoreConstants;
-import com.admin.dto.request.item.CreateItemsRequest;
+import com.admin.dto.request.item.CreateItemRequest;
 import com.admin.dto.request.item.SearchItemRequest;
 import com.admin.dto.request.item.UpdateItemRequest;
-import com.admin.dto.response.item.ItemResponse;
 import com.admin.entities.Item;
 import com.admin.exception.ItemNotFoundException;
 import com.admin.helper.MessageHelper;
 import com.admin.helper.ResponseHelper;
-import com.admin.model.NewItem;
 import com.admin.model.OrderBy;
+import com.admin.model.PageInfo;
+import com.admin.model.PagingResponse;
 import com.admin.model.QueryRequest;
 import com.admin.repository.ItemRepository;
 import com.admin.service.ItemService;
+import com.admin.specification.ItemSpecification;
+import com.admin.utils.SortUtils;
 import com.admin.utils.ValidationUtils;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.*;
 import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,94 +39,80 @@ import java.util.UUID;
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
 
-    private final EntityManager entityManager;
+    private final ItemSpecification itemSpecification;
 
     private final MessageHelper messageHelper;
 
     @Override
     public ResponseEntity<?> searchItem(QueryRequest<SearchItemRequest> searchItemRequest) {
         String itemName = searchItemRequest.getSample().getItemName();
+        PageInfo pageInfo = searchItemRequest.getPageInfo();
+        List<OrderBy> orders = searchItemRequest.getOrders();
 
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Item> cq = cb.createQuery(Item.class);
-
-        Root<Item> it = cq.from(Item.class);
-
-        Predicate predicate;
-        if (ValidationUtils.isNullOrEmpty(itemName)) {
-            predicate = cb.conjunction();
-        } else {
-            predicate = cb.like(it.get("name"), "%" + itemName + "%");
-        }
-
-        cq.where(predicate);
-
-        if (!ValidationUtils.isNullOrEmpty(searchItemRequest.getOrders())) {
-            List<Order> orderList = new ArrayList<>();
-            for (OrderBy orderBy : searchItemRequest.getOrders()) {
-                if ("ASC".equalsIgnoreCase(orderBy.getDirection())) {
-                    orderList.add(cb.asc(it.get(orderBy.getProperty())));
-                } else if ("DESC".equalsIgnoreCase(orderBy.getDirection())) {
-                    orderList.add(cb.desc(it.get(orderBy.getProperty())));
-                }
-            }
-            cq.orderBy(orderList);
-        }
-
-        List<Item> items = entityManager.createQuery(cq).getResultList();
-        return ResponseHelper.ok(ItemResponse
-                .builder()
-                .size(items.size())
-                .items(items)
-                .build(),
-            HttpStatus.OK, "");
+        Page<Item> page = itemRepository.findAll(
+            itemSpecification.specification(itemName),
+            PageRequest.of(
+                    pageInfo.getPageNumber(),
+                    pageInfo.getPageSize(),
+                    SortUtils.buildSort(orders)
+            )
+        );
+        List<Item> items = page.getContent();
+        return ResponseHelper.ok(
+            PagingResponse.<Item>builder()
+                    .totalPages(page.getTotalPages())
+                    .totalElements(page.getTotalElements())
+                    .pageNumber(pageInfo.getPageNumber())
+                    .pageSize(pageInfo.getPageSize())
+                    .numberOfElements(page.getNumberOfElements())
+                    .content(items)
+                    .build(),
+            HttpStatus.OK, ""
+        );
     }
 
     @Override
-    public ResponseEntity<?> createItem(CreateItemsRequest createItemsRequest) throws Exception {
-        List<Item> newItems = new ArrayList<>();
+    public ResponseEntity<?> createItem(CreateItemRequest createItemRequest) throws Exception {
 
-        for (NewItem item : createItemsRequest.getItems()) {
-            String categoryId = item.getCategoryId();
-            String name = item.getName();
-            Float price = item.getPrice();
-            String imageUrl = item.getImageUrl();
-            Integer quantity = item.getQuantity();
-            String createUser = CoreConstants.ADMINISTRATOR.ADMIN;
-            LocalDateTime createDatetime = LocalDateTime.now();
+        String categoryId = createItemRequest.getCategoryId();
+        String name = createItemRequest.getName();
+        Float price = createItemRequest.getPrice();
+        MultipartFile image = createItemRequest.getImage();
+        Integer quantity = createItemRequest.getQuantity();
+        String createUser = CoreConstants.ADMINISTRATOR.ADMIN;
+        LocalDateTime createDatetime = LocalDateTime.now();
 
-            if (ValidationUtils.isNullOrEmpty(categoryId)) {
-                throw new ValidationException(
-                        messageHelper.getMessage("admin.itemController.create.error.validation.categoryId")
-                );
-            }
-            if (ValidationUtils.isNullOrEmpty(name)) {
-                throw new ValidationException(
-                        messageHelper.getMessage("admin.itemController.create.error.validation.name")
-                );
-            }
-            if (ValidationUtils.isNullOrEmpty(quantity)) {
-                throw new ValidationException(
-                        messageHelper.getMessage("admin.itemController.create.error.validation.quantity")
-                );
-            }
-
-            Item newItem = Item
-                    .builder()
-                    .itemId(UUID.randomUUID().toString())
-                    .categoryId(categoryId)
-                    .name(name)
-                    .price(price)
-                    .imageUrl(imageUrl)
-                    .quantity(quantity)
-                    .createUser(createUser)
-                    .createDatetime(createDatetime)
-                    .build();
-
-            itemRepository.save(newItem);
-            newItems.add(newItem);
+        if (ValidationUtils.isNullOrEmpty(categoryId)) {
+            throw new ValidationException(
+                    messageHelper.getMessage("admin.itemController.create.error.validation.categoryId")
+            );
         }
-        return ResponseHelper.ok(newItems, HttpStatus.CREATED, messageHelper.getMessage("admin.itemController.create.info.success"));
+        if (ValidationUtils.isNullOrEmpty(name)) {
+            throw new ValidationException(
+                    messageHelper.getMessage("admin.itemController.create.error.validation.name")
+            );
+        }
+        if (ValidationUtils.isNullOrEmpty(quantity)) {
+            throw new ValidationException(
+                    messageHelper.getMessage("admin.itemController.create.error.validation.quantity")
+            );
+        }
+
+        Item newItem = Item
+                .builder()
+                .itemId(UUID.randomUUID().toString())
+                .categoryId(categoryId)
+                .name(name)
+                .price(price)
+                .image(image.getBytes())
+                .quantity(quantity)
+                .createUser(createUser)
+                .createDatetime(createDatetime)
+                .build();
+
+        itemRepository.save(newItem);
+
+        return ResponseHelper.ok(newItem, HttpStatus.OK, messageHelper.getMessage("admin.itemController.create.info.success"));
     }
 
     @Override
@@ -133,7 +121,7 @@ public class ItemServiceImpl implements ItemService {
         String categoryId = updateItemRequest.getCategoryId();
         String name = updateItemRequest.getName();
         float price = updateItemRequest.getPrice();
-        String imageUrl = updateItemRequest.getImageUrl();
+        MultipartFile image = updateItemRequest.getImage();
         Integer quantity = updateItemRequest.getQuantity();
         String modifyUser = CoreConstants.ADMINISTRATOR.ADMIN;
         LocalDateTime modifyDatetime = LocalDateTime.now();
@@ -165,7 +153,7 @@ public class ItemServiceImpl implements ItemService {
                 .categoryId(categoryId)
                 .name(name)
                 .price(price)
-                .imageUrl(imageUrl)
+                .image(image.getBytes())
                 .quantity(quantity)
                 .createUser(itemRepository.findItemByItemId(itemId).getCreateUser())
                 .createDatetime(itemRepository.findItemByItemId(itemId).getCreateDatetime())

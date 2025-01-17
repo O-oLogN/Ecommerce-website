@@ -1,7 +1,7 @@
 package com.admin.dto.request.item;
 
-import com.admin.model.NewItem;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Getter
@@ -10,5 +10,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateItemRequest {
-    private NewItem newItem;
+    private String categoryId;
+    private String name;
+    private Float price;
+    private MultipartFile image;
+    private Integer quantity;
 }

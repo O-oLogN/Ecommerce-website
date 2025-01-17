@@ -35,9 +35,9 @@ public class Item {
     @Column(name = "price")
     private float price;
 
-    @Size(max = 300)
-    @Column(name = "image_url", length = 300)
-    private String imageUrl;
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
 
     @NotNull
     @Column(name = "quantity", nullable = false)

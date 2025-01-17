@@ -9,6 +9,4 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, String> {
     List<Order> findOrdersByParentId(@Size(max = 50) @NotNull String parentId);
-
-    Order findOrderByOrderId(@Size(max = 50) String orderId);
 }

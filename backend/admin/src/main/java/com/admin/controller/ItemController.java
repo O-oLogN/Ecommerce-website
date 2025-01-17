@@ -1,12 +1,11 @@
 package com.admin.controller;
 
 import com.admin.constant.AppRoutes;
-import com.admin.dto.request.item.CreateItemsRequest;
+import com.admin.dto.request.item.CreateItemRequest;
 import com.admin.dto.request.item.SearchItemRequest;
 import com.admin.dto.request.item.UpdateItemRequest;
 import com.admin.model.QueryRequest;
 import com.admin.service.ItemService;
-import io.micrometer.common.lang.Nullable;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -31,8 +31,21 @@ public class ItemController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.UPDATE_ITEM)
-    public ResponseEntity<?> updateItem(@Valid @RequestBody UpdateItemRequest updateItemRequest) throws Exception {
-        return itemService.updateItem(updateItemRequest);
+    public ResponseEntity<?> updateItem(
+                                        @RequestParam("itemId") String itemId,
+                                        @RequestParam("categoryId") String categoryId,
+                                        @RequestParam("name") String name,
+                                        @RequestParam("price") Float price,
+                                        @RequestParam("quantity") Integer quantity,
+                                        @RequestParam(value = "image", required = false) MultipartFile image) throws Exception {
+        return itemService.updateItem(UpdateItemRequest.builder()
+                                                        .itemId(itemId)
+                                                        .categoryId(categoryId)
+                                                        .name(name)
+                                                        .price(price)
+                                                        .quantity(quantity)
+                                                        .image(image)
+                                                        .build());
     }
 
     @Operation(summary = "Create item")
@@ -41,8 +54,19 @@ public class ItemController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.CREATE_ITEM)
-    public ResponseEntity<?> createItem(@Valid @RequestBody CreateItemsRequest createItemsRequest) throws Exception {
-        return itemService.createItem(createItemsRequest);
+    public ResponseEntity<?> createItem(@RequestParam String categoryId,
+                                        @RequestParam String name,
+                                        @RequestParam Float price,
+                                        @RequestParam Integer quantity,
+                                        @RequestParam MultipartFile image
+    ) throws Exception {
+        return itemService.createItem(CreateItemRequest.builder()
+                                                        .categoryId(categoryId)
+                                                        .name(name)
+                                                        .price(price)
+                                                        .quantity(quantity)
+                                                        .image(image)
+                                                        .build());
     }
 
     @Operation(summary = "Delete item")

@@ -21,7 +21,8 @@ public final class AppRoutes {
         public static final String UPDATE_CATEGORY = "/update";    // TESTED
         public static final String DELETE_CATEGORY = "/delete";    // TESTED
         public static final String CREATE_CATEGORY = "/create";    // TESTED
-        public static final String SEARCH_CATEGORY = "/search";    // TESTED
+        public static final String SEARCH_CATEGORY_BY_NAME = "/search-by-name";    // TESTED
+        public static final String SEARCH_CATEGORY_BY_ID = "/search-by-id";    // TESTED
 
         public static final String UPDATE_USER = "/update";    // TESTED
         public static final String DELETE_USER = "/delete";    // TESTED

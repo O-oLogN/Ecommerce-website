@@ -11,8 +11,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QueryRequest<T> {
-    private T sample;
-    private PageInfo pageInfo;
-    private List<OrderBy> orders;
+public class PagingResponse<T> {
+    private int pageNumber;
+    private int pageSize;
+    private int totalPages;
+    private int numberOfElements;
+    private long totalElements;
+    private List<T> content;
 }
