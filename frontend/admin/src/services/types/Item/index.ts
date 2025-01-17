@@ -26,10 +26,7 @@ export interface ICreateItemRequest {
 }
 
                                     /* RESPONSES */
-export interface ISearchItemResponse {
-    size?: number
-    items?: ItemInfo[] | undefined
-}
+export interface ISearchItemResponse extends ItemInfo {}
 
 export interface IEditItemResponse extends ItemInfo {}
 

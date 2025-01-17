@@ -9,6 +9,7 @@ import {useEditUser, useDeleteUser, useCreateUser} from 'src/services'
 
 export interface UserManagementContextProps {
     userList: UserInfo[] | undefined
+    totalElements: number
     searchRequest: IQueryRequest<ISearchUserRequest>
     editRequest: IEditUserRequest
     deleteRequest: IDeleteUserRequest

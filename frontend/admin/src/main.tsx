@@ -1,16 +1,20 @@
 import {createRoot} from 'react-dom/client'
-import {LoginPage} from "./pages/Login";
-import {QueryClient, QueryClientProvider} from "react-query";
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {message} from 'antd'
+import {LoginPage} from "./pages/Login"
+import {QueryClient, QueryClientProvider} from "react-query"
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {
     UserManagementPage, 
     CategoryManagementPage,
     ItemManagementPage,
-} from './pages';
+} from './pages'
 import Layout from './layout'
 
 const App = () => {
     const queryClient = new QueryClient()
+    message.config({
+        maxCount: 1,
+    })
     return (
         <QueryClientProvider client={ queryClient }>
             <Router>

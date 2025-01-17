@@ -1,8 +1,8 @@
 export interface IPagingResponse<T> {
+    totalPages: number
+    totalElements: number
     pageNumber: number
     pageSize: number
-    totalPages: number
     numberOfElements: number
-    totalElements: number
-    content: T
+    content: T[] | undefined
 }

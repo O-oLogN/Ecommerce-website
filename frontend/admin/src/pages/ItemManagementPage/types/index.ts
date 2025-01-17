@@ -9,6 +9,7 @@ import {useEditItem, useDeleteItem, useCreateItem, useSearchCategoryById} from '
 
 export interface ItemManagementContextProps {
     itemList: ItemInfo[] | undefined
+    totalElements: number
     searchRequest: IQueryRequest<ISearchItemRequest>
     editRequest: IEditItemRequest
     deleteRequest: IDeleteItemRequest

@@ -16,10 +16,10 @@ import {
 
 export const useSearchUser=
     (params: IQueryRequest<ISearchUserRequest>) => {
-    return useQuery<IPagingResponse<IBaseResponse<ISearchUserResponse>> | IBaseResponse<ISearchUserResponse>>(
+    return useQuery<IBaseResponse<IPagingResponse<ISearchUserResponse>>>(
         ['search-user', params],
         async () => {
-            const response = await axiosInstance.post<IPagingResponse<IBaseResponse<ISearchUserResponse>> | IBaseResponse<ISearchUserResponse>>(
+            const response = await axiosInstance.post<IBaseResponse<IPagingResponse<ISearchUserResponse>>>(
                 REQUEST_MAPPING.USER + REQUEST_PATH.SEARCH_USER,
                 params
             )

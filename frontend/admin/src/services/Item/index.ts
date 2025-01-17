@@ -16,16 +16,14 @@ import {
 
 export const useSearchItem=
     (params: IQueryRequest<ISearchItemRequest>) => {
-        return useQuery<IPagingResponse<IBaseResponse<ISearchItemResponse>> | IBaseResponse<ISearchItemResponse>>(
+        return useQuery<IBaseResponse<IPagingResponse<ISearchItemResponse>>>(
             ['search-item', params],
             async () => {
-                const response = await axiosInstance.post<IPagingResponse<IBaseResponse<ISearchItemResponse>> | IBaseResponse<ISearchItemResponse>>(
+                const response = await axiosInstance.post<IBaseResponse<IPagingResponse<ISearchItemResponse>>>(
                     REQUEST_MAPPING.ITEM + REQUEST_PATH.SEARCH_ITEM,
                     params
                 )
-                // if (!('content' in response.data)) {
-                //     console.log(response.data.data.items![3].image)
-                // }
+                // console.log(response.data.data.content![3].image)
                 return response.data
             },
             {

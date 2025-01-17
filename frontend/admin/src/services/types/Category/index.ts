@@ -24,10 +24,7 @@ export interface IDeleteCategoryRequest {
 }
 
                                     /* RESPONSES */
-export interface ISearchCategoryResponse {
-    size?: number
-    categories?: CategoryInfo[] | undefined
-}
+export interface ISearchCategoryResponse extends CategoryInfo {}
 
 export interface ISearchCategoryByIdResponse extends CategoryInfo {}
 

@@ -14,14 +14,14 @@ import {
     ISearchCategoryByIdRequest,
     ISearchCategoryByIdResponse,
     IBaseResponse,
-} from "src/services/types";
+} from "src/services/types"
 
 export const useSearchCategory=
     (params: IQueryRequest<ISearchCategoryRequest>) => {
-    return useQuery<IPagingResponse<IBaseResponse<ISearchCategoryResponse>> | IBaseResponse<ISearchCategoryResponse>>(
+    return useQuery<IBaseResponse<IPagingResponse<ISearchCategoryResponse>>>(
         ['search-category-by-name', params],
         async () => {
-            const response = await axiosInstance.post<IPagingResponse<IBaseResponse<ISearchCategoryResponse>> | IBaseResponse<ISearchCategoryResponse>>(
+            const response = await axiosInstance.post<IBaseResponse<IPagingResponse<ISearchCategoryResponse>>>(
                 REQUEST_MAPPING.CATEGORY + REQUEST_PATH.SEARCH_CATEGORY_BY_NAME,
                 params
             )

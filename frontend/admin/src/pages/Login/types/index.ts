@@ -9,4 +9,5 @@ export interface LoginContextProps {
     authenticated: boolean | undefined
     loginRequest: ILoginRequest
     setLoginRequest: React.Dispatch<React.SetStateAction<ILoginRequest>>
+    setAuthenticated: React.Dispatch<React.SetStateAction<boolean | undefined>>
 }

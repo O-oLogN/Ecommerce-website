@@ -12,17 +12,18 @@ import {CategoryInfo, IQueryRequest} from 'src/types'
 
 const CategoryManagementContext = React.createContext<CategoryManagementContextProps>({
     categoryList: [],
+    totalElements: 0,
     searchRequest: {
         sample: {
             categoryName: ''
         },
-        // pageInfo: {
-        //     pageNumber: 0,
-        //     pageSize: 10
-        // },
-        // ordersBy: {
-        //
-        // }
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 10
+        },
+        ordersBy: {
+
+        }
     },
     editRequest: {
         categoryId: '',
@@ -61,6 +62,7 @@ const CategoryManagementContext = React.createContext<CategoryManagementContextP
 
 export const CategoryManagementContextProvider = ({children}: {children: React.ReactNode}) => {
     const [categoryList, setCategoryList] = useState<CategoryInfo[] | undefined>([])
+    const [totalElements, setTotalElements] = useState<number>(0)
     const [editRequest, setEditRequest] = useState<IEditCategoryRequest>
     ({
         categoryId: '',
@@ -81,13 +83,13 @@ export const CategoryManagementContextProvider = ({children}: {children: React.R
         sample: {
             categoryName: ''
         },
-        // pageInfo: {
-        //     pageNumber: 0,
-        //     pageSize: 10
-        // },
-        // ordersBy: {
-        //
-        // }
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 10
+        },
+        ordersBy: {
+
+        }
     })
 
                                     /* Search */
@@ -101,22 +103,14 @@ export const CategoryManagementContextProvider = ({children}: {children: React.R
         } else if (!searchResponse.data) {
             console.log('searchResponse.data is undefined')
         } else {
-            if ('content' in searchResponse.data) {
-                if (searchResponse.data.content.status === HttpStatusCode.Ok || searchResponse.data.content.status === HttpStatusCode.Accepted) {
-                    console.log('CONTEXT - Paging - search category list successfully')
-                    setCategoryList(searchResponse.data.content.data.categories as CategoryInfo[])
-                } else {
-                    console.log('CONTEXT - Paging - category not found')
-                    setCategoryList([])
-                }
+            if (searchResponse.data.status === HttpStatusCode.Ok || searchResponse.data.status === HttpStatusCode.Accepted) {
+                console.log('CONTEXT - Paging - search category list successfully')
+                setCategoryList(searchResponse.data.data.content as CategoryInfo[])
+                setTotalElements(searchResponse.data.data.totalElements)
             } else {
-                if (searchResponse.data.status === HttpStatusCode.Ok || searchResponse.data.status === HttpStatusCode.Accepted) {
-                    console.log('CONTEXT - NON-Paging - search category list successfully')
-                    setCategoryList(searchResponse.data.data.categories as CategoryInfo[])
-                } else {
-                    console.log('CONTEXT - NON-Paging - category not found')
-                    setCategoryList([])
-                }
+                console.log('CONTEXT - Paging - category not found')
+                setCategoryList([])
+                setTotalElements(0)
             }
         }
     }, [searchResponse.isSuccess, searchResponse.data])
@@ -130,6 +124,7 @@ export const CategoryManagementContextProvider = ({children}: {children: React.R
     
     const value = {
         categoryList,
+        totalElements,
         searchRequest,
         editRequest,
         deleteRequest,

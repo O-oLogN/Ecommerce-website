@@ -12,17 +12,18 @@ import {UserInfo, IQueryRequest} from 'src/types'
 
 const UserManagementContext = React.createContext<UserManagementContextProps>({
     userList: [],
+    totalElements: 0,
     searchRequest: {
         sample: {
             username: ''
         },
-        // pageInfo: {
-        //     pageNumber: 0,
-        //     pageSize: 10
-        // },
-        // ordersBy: {
-        //
-        // }
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 10
+        },
+        ordersBy: {
+
+        }
     },
     editRequest: {
         userId: '',
@@ -62,6 +63,7 @@ const UserManagementContext = React.createContext<UserManagementContextProps>({
 
 export const UserManagementContextProvider = ({children}: {children: React.ReactNode}) => {
     const [userList, setUserList] = useState<UserInfo[] | undefined>([])
+    const [totalElements, setTotalElements] = useState<number>(0)
     const [editRequest, setEditRequest] = useState<IEditUserRequest>
     ({
         userId: '',
@@ -83,13 +85,13 @@ export const UserManagementContextProvider = ({children}: {children: React.React
         sample: {
             username: ''
         },
-        // pageInfo: {
-        //     pageNumber: 0,
-        //     pageSize: 10
-        // },
-        // ordersBy: {
-        //
-        // }
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 10
+        },
+        ordersBy: {
+
+        }
     })
 
                                         /* Search */
@@ -103,22 +105,14 @@ export const UserManagementContextProvider = ({children}: {children: React.React
         } else if (!searchResponse.data) {
             console.log('searchResponse.data is undefined')
         } else {
-            if ('content' in searchResponse.data) {
-                if (searchResponse.data.content.status === HttpStatusCode.Ok || searchResponse.data.content.status === HttpStatusCode.Accepted) {
-                    console.log('CONTEXT - Paging - search user list successfully')
-                    setUserList(searchResponse.data.content.data.users as UserInfo[])
-                } else {
-                    console.log('CONTEXT - Paging - user not found')
-                    setUserList([])
-                }
+            if (searchResponse.data.status === HttpStatusCode.Ok || searchResponse.data.status === HttpStatusCode.Accepted) {
+                console.log('CONTEXT - Paging - search user list successfully')
+                setUserList(searchResponse.data.data.content! as UserInfo[])
+                setTotalElements(searchResponse.data.data.totalElements)
             } else {
-                if (searchResponse.data.status === HttpStatusCode.Ok || searchResponse.data.status === HttpStatusCode.Accepted) {
-                    console.log('CONTEXT - NON-Paging - search user list successfully')
-                    setUserList(searchResponse.data.data.users as UserInfo[])
-                } else {
-                    console.log('CONTEXT - NON-Paging - user not found')
-                    setUserList([])
-                }
+                console.log('CONTEXT - Paging - user not found')
+                setUserList([])
+                setTotalElements(0)
             }
         }
     }, [searchResponse.isSuccess, searchResponse.data])
@@ -132,6 +126,7 @@ export const UserManagementContextProvider = ({children}: {children: React.React
     
     const value = {
         userList,
+        totalElements,
         searchRequest,
         editRequest,
         deleteRequest,

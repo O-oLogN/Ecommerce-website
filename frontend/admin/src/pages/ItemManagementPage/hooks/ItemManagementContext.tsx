@@ -12,21 +12,19 @@ import {ItemInfo, IQueryRequest} from 'src/types'
 
 const ItemManagementContext = React.createContext<ItemManagementContextProps>({
     itemList: [],
+    totalElements: 0,
     searchRequest: {
         sample: {
             itemName: ''
         },
-        // pageInfo: {
-        //     pageNumber: 0,
-        //     pageSize: 10
-        // },
-        // ordersBy: {
-        //
-        // }
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 10
+        },
+        ordersBy: {
+
+        }
     },
-    // searchCategoryByIdRequest: {
-    //     categoryId: ''
-    // },
     editRequest: {
         itemId: '',
         categoryId: '',
@@ -75,6 +73,7 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
 
 export const ItemManagementContextProvider = ({children}: {children: React.ReactNode}) => {
     const [itemList, setItemList] = useState<ItemInfo[] | undefined>([])
+    const [totalElements, setTotalElements] = useState<number>(0)
     const [editRequest, setEditRequest] = useState<IEditItemRequest>
     ({
         itemId: '',
@@ -101,13 +100,13 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         sample: {
             itemName: ''
         },
-        // pageInfo: {
-        //     pageNumber: 0,
-        //     pageSize: 10
-        // },
-        // ordersBy: {
-        //
-        // }
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 10
+        },
+        ordersBy: {
+
+        }
     })
                                     /* Search */
     const searchResponse = useSearchItem(searchRequest)
@@ -120,22 +119,14 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         } else if (!searchResponse.data) {
             console.log('searchResponse.data is undefined')
         } else {
-            if ('content' in searchResponse.data) {
-                if (searchResponse.data.content.status === HttpStatusCode.Ok || searchResponse.data.content.status === HttpStatusCode.Accepted) {
-                    console.log('CONTEXT - Paging - search item list successfully')
-                    setItemList(searchResponse.data.content.data.items as ItemInfo[])
-                } else {
-                    console.log('CONTEXT - Paging - item not found')
-                    setItemList([])
-                }
+            if (searchResponse.data.status === HttpStatusCode.Ok || searchResponse.data.status === HttpStatusCode.Accepted) {
+                console.log('CONTEXT - Paging - search item list successfully')
+                setItemList(searchResponse.data.data.content as ItemInfo[])
+                setTotalElements(searchResponse.data.data.totalElements)
             } else {
-                if (searchResponse.data.status === HttpStatusCode.Ok || searchResponse.data.status === HttpStatusCode.Accepted) {
-                    console.log('CONTEXT - NON-Paging - search item list successfully')
-                    setItemList(searchResponse.data.data.items as ItemInfo[])
-                } else {
-                    console.log('CONTEXT - NON-Paging - item not found')
-                    setItemList([])
-                }
+                console.log('CONTEXT - Paging - item not found')
+                setItemList([])
+                setTotalElements(0)
             }
         }
     }, [searchResponse.isSuccess, searchResponse.data])
@@ -151,6 +142,7 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
 
     const value = {
         itemList,
+        totalElements,
         searchRequest,
         editRequest,
         deleteRequest,

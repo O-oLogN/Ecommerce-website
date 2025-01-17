@@ -21,10 +21,8 @@ export interface ICreateUserRequest {
 }
 
                                     /* RESPONSES */                          
-export interface ISearchUserResponse {
-    size?: number 
-    users?: UserInfo[] | undefined
-}
+
+export interface ISearchUserResponse extends UserInfo {}
 
 export interface IEditUserResponse extends UserInfo {}
 

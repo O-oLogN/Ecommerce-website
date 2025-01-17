@@ -1,9 +1,11 @@
 import { Form, Button, Input, FormInstance } from 'antd'
 import { useLoginContext }  from './hooks/LoginContext.tsx'
-import { LoginContextProvider } from "./hooks/LoginContext.tsx";
+import { LoginContextProvider } from "./hooks/LoginContext.tsx"
 import { UserOutlined, LockOutlined, EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons'
-import { LoginContextProps, LoginForm} from "./types";
-import React, { useState } from "react";
+import { LoginContextProps, LoginForm} from "./types"
+import { useMessageContext } from '../../components'
+import { MessageContextProps } from '../../components/MessageContext/types'
+import React, { useState } from "react"
 
 const Login = () => {
     const [formInstance] = Form.useForm()
@@ -12,7 +14,10 @@ const Login = () => {
         authenticated,
         loginRequest,
         setLoginRequest,
+        setAuthenticated,
     } = useLoginContext() as LoginContextProps
+
+    const { messageApi } = useMessageContext() as MessageContextProps
 
     const [prevUsername, setPrevUsername] = useState<string>('')
     const [prevPassword, setPrevPassword] = useState<string>('')
@@ -27,9 +32,10 @@ const Login = () => {
         const rawPassword = loginForm.password
 
         if (rawUsername === prevUsername && rawPassword === prevPassword) {
-            console.log('Stop spamming!')
+            messageApi.warning('Stop spamming!')
         }
         else {
+            setAuthenticated(undefined)
             setPrevUsername(rawUsername)
             setPrevPassword(rawPassword)
             setLoginRequest({
@@ -42,7 +48,10 @@ const Login = () => {
 
     React.useEffect(() => {
         if (authenticated) {
-            console.log('Login successfully =)))')
+            messageApi.success('Login successfully!')
+        }
+        else if (authenticated === false) {
+            messageApi.error('Invalid username or password!')
         }
     }, [authenticated])
 
@@ -77,9 +86,6 @@ const Login = () => {
                     <Button type="primary" htmlType="submit" className="login-btn">Submit</Button>
                 </Form.Item>
             </Form>
-            <div>
-                {(authenticated === false && <p style={{color: 'red'}}>Invalid username or password!</p>)}
-            </div>
         </>
     )
 }

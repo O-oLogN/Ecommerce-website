@@ -9,6 +9,7 @@ import {useEditCategory, useDeleteCategory, useCreateCategory} from 'src/service
 
 export interface CategoryManagementContextProps {
     categoryList: CategoryInfo[] | undefined
+    totalElements: number
     searchRequest: IQueryRequest<ISearchCategoryRequest>
     editRequest: IEditCategoryRequest
     deleteRequest: IDeleteCategoryRequest

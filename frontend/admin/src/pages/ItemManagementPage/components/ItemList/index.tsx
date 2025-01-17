@@ -22,8 +22,12 @@ export const ItemList = () => {
     const [isOpenCreateForm, setIsOpenCreateForm] = useState<boolean>(false)
     const [modalFormInitialValues, setModalFormInitialValues] = useState<TableData | undefined>()
     const [data, setData] = useState<TableData[]>([])
+    const [pageNumber, setPageNumber] = useState<number>(0)
+    const [pageSize, setPageSize] = useState<number>(10)
+    const [searchBarValue, setSearchBarValue] = useState<string>('')
     const {
         itemList,
+        totalElements,
         searchRequest: prevSearchRequest,
         setSearchRequest,
         editHelper,
@@ -37,18 +41,19 @@ export const ItemList = () => {
 
     const onClickSearchBtn = () => {
         const searchBar = document.getElementById('item-search-bar') as HTMLInputElement
+        setSearchBarValue(searchBar.value)
         setSearchRequest({
             ...prevSearchRequest,
             sample: {
                  itemName: searchBar?.value || ''
             },
-            // pageInfo: {
-            //     pageNumber: 0,
-            //     pageSize: 10
-            // },
-            // ordersBy: {
-            //
-            // }
+            pageInfo: {
+                pageNumber: 0,
+                pageSize: 10
+            },
+            ordersBy: {
+
+            }
         })
     }
     
@@ -88,6 +93,24 @@ export const ItemList = () => {
 
     const handleCreate = () => {
         setIsOpenCreateForm(true)
+    }
+
+    const handleTableChange = (pagination: any) => {
+        setPageNumber(pagination.current - 1)
+        setPageSize(pagination.pageSize)
+        setSearchRequest({
+            ...prevSearchRequest,
+            sample: {
+                itemName: searchBarValue || ''
+            },
+            pageInfo: {
+                pageNumber: pageNumber,
+                pageSize: pageSize
+            },
+            ordersBy: {
+
+            }
+        })
     }
 
     const addBtnStyle = {
@@ -180,7 +203,24 @@ export const ItemList = () => {
             >
                 Add
             </Button>
-            <Table dataSource={data} columns={columns} />
+            <Table
+                dataSource={data}
+                columns={columns}
+                pagination={{
+                    current: pageNumber + 1, // pageNumber page
+                    pageSize: pageSize, // Items per page
+                    total: totalElements, // Total number of items
+                    showSizeChanger: true, // Allow changing page size
+                    pageSizeOptions: ['2', '5', '10', '20', '50'], // Options for page size
+                    showQuickJumper: true, // Allow jumping to a specific page
+                    showTotal: (total, range) => (
+                        <div style={{ float: 'right' }}>
+                            <span>{`Showing ${range[0]}-${range[1]} of ${total} items`}</span>
+                        </div>
+                    ),
+                }}
+                onChange={handleTableChange}
+            />
             <EditItemForm initialValues={modalFormInitialValues}
                           isOpenForm={isOpenEditForm}
                           setIsOpenForm={setIsOpenEditForm}

@@ -12,6 +12,7 @@ const LoginContext = React.createContext<LoginContextProps>({
         password: '',
     },
     setLoginRequest: () => {},
+    setAuthenticated: () => {},
 })
 
 export const LoginContextProvider = ({children}: {children: ReactNode }) => {
@@ -31,27 +32,14 @@ export const LoginContextProvider = ({children}: {children: ReactNode }) => {
             console.log('response.data is undefined')
         }
         else {
-            if ('content' in response.data) {
-                if (response.data.content.status === HttpStatusCode.Ok || response.data.content.status === HttpStatusCode.Accepted) {
-                    console.log('CONTEXT - Paging - login successfully')
-                    setAuthenticated(true)
-                    localStorage.setItem(localStorageKeys.SESSION, JSON.stringify(response.data.content.data))
-                }
-                else {
-                    setAuthenticated(false)
-                    console.log('CONTEXT - Paging - invalid username or password')
-                }
+            if (response.data.status === HttpStatusCode.Ok || response.data.status === HttpStatusCode.Accepted) {
+                console.log('CONTEXT - login successfully')
+                setAuthenticated(true)
+                localStorage.setItem(localStorageKeys.SESSION, JSON.stringify(response.data.data))
             }
             else {
-                if (response.data.status === HttpStatusCode.Ok || response.data.status === HttpStatusCode.Accepted) {
-                    console.log('CONTEXT - NON-Paging - login successfully')
-                    setAuthenticated(true)
-                    localStorage.setItem(localStorageKeys.SESSION, JSON.stringify(response.data.data))
-                }
-                else {
-                    setAuthenticated(false)
-                    console.log('CONTEXT - NON-Paging - invalid username or password')
-                }
+                setAuthenticated(false)
+                console.log('CONTEXT - invalid username or password')
             }
         }
     }, [response.data])
@@ -60,6 +48,7 @@ export const LoginContextProvider = ({children}: {children: ReactNode }) => {
         authenticated,
         loginRequest,
         setLoginRequest,
+        setAuthenticated,
     }
 
     return (
