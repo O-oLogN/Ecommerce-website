@@ -34,7 +34,7 @@ public class User {
     private String password;
 
     @Size(max = 100)
-    @Column(name = "email", nullable = false, length = 100)
+    @Column(name = "email", length = 100)
     private String email;
 
     @Size(max = 100)

@@ -35,7 +35,7 @@ public class ItemController {
                                         @RequestParam("itemId") String itemId,
                                         @RequestParam("categoryId") String categoryId,
                                         @RequestParam("name") String name,
-                                        @RequestParam("price") Float price,
+                                        @RequestParam(value = "price", required = false) Float price,
                                         @RequestParam("quantity") Integer quantity,
                                         @RequestParam(value = "image", required = false) MultipartFile image) throws Exception {
         return itemService.updateItem(UpdateItemRequest.builder()
@@ -54,11 +54,11 @@ public class ItemController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.CREATE_ITEM)
-    public ResponseEntity<?> createItem(@RequestParam String categoryId,
-                                        @RequestParam String name,
-                                        @RequestParam Float price,
-                                        @RequestParam Integer quantity,
-                                        @RequestParam MultipartFile image
+    public ResponseEntity<?> createItem(@RequestParam("categoryId") String categoryId,
+                                        @RequestParam("name") String name,
+                                        @RequestParam(value = "price", required = false) Float price,
+                                        @RequestParam("quantity") Integer quantity,
+                                        @RequestParam(value = "image", required = false) MultipartFile image
     ) throws Exception {
         return itemService.createItem(CreateItemRequest.builder()
                                                         .categoryId(categoryId)

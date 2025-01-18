@@ -73,11 +73,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ResponseEntity<?> createItem(CreateItemRequest createItemRequest) throws Exception {
-
         String categoryId = createItemRequest.getCategoryId();
         String name = createItemRequest.getName();
         Float price = createItemRequest.getPrice();
-        MultipartFile image = createItemRequest.getImage();
+        MultipartFile image = null;
+        if (!ValidationUtils.isNullOrEmpty(createItemRequest.getImage())) {
+            image = createItemRequest.getImage();
+        }
         Integer quantity = createItemRequest.getQuantity();
         String createUser = CoreConstants.ADMINISTRATOR.ADMIN;
         LocalDateTime createDatetime = LocalDateTime.now();
@@ -104,7 +106,7 @@ public class ItemServiceImpl implements ItemService {
                 .categoryId(categoryId)
                 .name(name)
                 .price(price)
-                .image(image.getBytes())
+                .image(!ValidationUtils.isNullOrEmpty(image) ? image.getBytes() : null)
                 .quantity(quantity)
                 .createUser(createUser)
                 .createDatetime(createDatetime)
@@ -119,9 +121,12 @@ public class ItemServiceImpl implements ItemService {
     public ResponseEntity<?> updateItem(UpdateItemRequest updateItemRequest) throws Exception {
         String itemId = updateItemRequest.getItemId();
         String categoryId = updateItemRequest.getCategoryId();
+        Float price = updateItemRequest.getPrice();
         String name = updateItemRequest.getName();
-        float price = updateItemRequest.getPrice();
-        MultipartFile image = updateItemRequest.getImage();
+        MultipartFile image = null;
+        if (!ValidationUtils.isNullOrEmpty(updateItemRequest.getImage())) {
+            image = updateItemRequest.getImage();
+        }
         Integer quantity = updateItemRequest.getQuantity();
         String modifyUser = CoreConstants.ADMINISTRATOR.ADMIN;
         LocalDateTime modifyDatetime = LocalDateTime.now();
@@ -153,7 +158,7 @@ public class ItemServiceImpl implements ItemService {
                 .categoryId(categoryId)
                 .name(name)
                 .price(price)
-                .image(image.getBytes())
+                .image(!ValidationUtils.isNullOrEmpty(image) ? image.getBytes() : null)
                 .quantity(quantity)
                 .createUser(itemRepository.findItemByItemId(itemId).getCreateUser())
                 .createDatetime(itemRepository.findItemByItemId(itemId).getCreateDatetime())

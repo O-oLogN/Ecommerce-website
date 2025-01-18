@@ -33,7 +33,7 @@ public class Item {
     private String name;
 
     @Column(name = "price")
-    private float price;
+    private Float price;
 
     @Lob
     @Column(name = "image")

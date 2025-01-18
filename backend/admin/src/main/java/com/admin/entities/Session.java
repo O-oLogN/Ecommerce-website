@@ -33,7 +33,7 @@ public class Session {
     private LocalDateTime toTime;
 
     @NotNull
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private String userId;
 
     @Size(max = 100)
