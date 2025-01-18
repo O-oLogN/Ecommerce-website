@@ -12,6 +12,7 @@ import {CategoryInfo, IQueryRequest} from 'src/types'
 
 const CategoryManagementContext = React.createContext<CategoryManagementContextProps>({
     categoryList: [],
+    searchResponse: undefined,
     totalElements: 0,
     searchRequest: {
         sample: {
@@ -95,7 +96,6 @@ export const CategoryManagementContextProvider = ({children}: {children: React.R
                                     /* Search */
     const searchResponse = useSearchCategory(searchRequest)
     const refetchCategoryList = searchResponse.refetch
-
     console.log('searchResponse', searchResponse)
     React.useEffect(() => {
         if (!searchResponse) {
@@ -123,6 +123,7 @@ export const CategoryManagementContextProvider = ({children}: {children: React.R
     const createHelper = useCreateCategory()
     
     const value = {
+        searchResponse,
         categoryList,
         totalElements,
         searchRequest,

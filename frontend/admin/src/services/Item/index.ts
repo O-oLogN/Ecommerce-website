@@ -90,7 +90,12 @@ export const useCreateItem= () => {
             }
             return axiosInstance.post<IBaseResponse<ICreateItemResponse>>(
                 REQUEST_MAPPING.ITEM + REQUEST_PATH.CREATE_ITEM,
-                params
+                params,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
             )
         },
     )

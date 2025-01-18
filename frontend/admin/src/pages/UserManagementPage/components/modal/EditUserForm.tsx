@@ -58,7 +58,7 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
                       const formVal = await form.validateFields() as UserInfo
                       const userId = initialValues!.userId
                       const username= formVal.username
-                      const email = formVal.email
+                      const email = formVal.email || null
                       
                       handleSubmitForm(
                           editHelper,
@@ -76,6 +76,7 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
                 <Form.Item
                     name="username"
                     label="Username"
+                    rules={[{required: true, message: 'Username is required'}]}
                 >
                     <Input/>
                 </Form.Item>

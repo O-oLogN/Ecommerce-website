@@ -5,9 +5,10 @@ import {
     IDeleteUserRequest,
     ICreateUserRequest,
 } from 'src/services/types'
-import {useEditUser, useDeleteUser, useCreateUser} from 'src/services'
+import {useSearchUser, useEditUser, useDeleteUser, useCreateUser} from 'src/services'
 
 export interface UserManagementContextProps {
+    searchResponse: ReturnType<typeof useSearchUser> | undefined
     userList: UserInfo[] | undefined
     totalElements: number
     searchRequest: IQueryRequest<ISearchUserRequest>

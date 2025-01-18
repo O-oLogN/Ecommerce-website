@@ -71,9 +71,8 @@ export const useDeleteCategory= () => {
             const queryParams = new URLSearchParams({
                 categoryId: params.categoryId,
             }).toString()
-            return axiosInstance.post<IBaseResponse<IDeleteCategoryResponse>>(
-                REQUEST_MAPPING.CATEGORY + REQUEST_PATH.DELETE_CATEGORY,
-                queryParams
+            return axiosInstance.get<IBaseResponse<IDeleteCategoryResponse>>(
+                `${REQUEST_MAPPING.CATEGORY}${REQUEST_PATH.DELETE_CATEGORY}?${queryParams}`
             )
         },
     )

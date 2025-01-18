@@ -6,7 +6,7 @@ import {ILoginRequest, IBaseResponse} from "src/services/types";
 
 export const useLogin=
     (params: ILoginRequest) => {
-    return useQuery <IBaseResponse<IAuthResponse>>(
+    return useQuery<IBaseResponse<IAuthResponse>>(
         ['login', params],
         async () => {
             const response = await axiosInstance.post<IBaseResponse<IAuthResponse>>(

@@ -1,7 +1,7 @@
 import {CategoryInfo} from 'src/types'
                                     /* REQUESTS */
 export interface ISearchCategoryRequest {
-    categoryName: string | null | undefined
+    categoryName: string | null
 }
 
 export interface ISearchCategoryByIdRequest {
@@ -10,12 +10,12 @@ export interface ISearchCategoryByIdRequest {
 
 export interface IEditCategoryRequest {
     categoryId: string
-    code: string | undefined
+    code: string | null
     name: string
 }
 
 export interface ICreateCategoryRequest {
-    code: string | undefined
+    code: string | null
     name: string
 }
 

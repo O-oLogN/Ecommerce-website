@@ -29,6 +29,7 @@ export const CategoryList = () => {
     const [pageSize, setPageSize] = useState<number>(10)
     const [searchBarValue, setSearchBarValue] = useState<string>('')
     const {
+        searchResponse,
         categoryList,
         totalElements,
         searchRequest: prevSearchRequest,
@@ -105,8 +106,8 @@ export const CategoryList = () => {
                 categoryName: searchBarValue || ''
             },
             pageInfo: {
-                pageNumber: pageNumber,
-                pageSize: pageSize
+                pageNumber: pagination.current - 1,
+                pageSize: pagination.pageSize
             },
             ordersBy: {
 
@@ -185,6 +186,7 @@ export const CategoryList = () => {
                     ),
                 }}
                 onChange={handleTableChange}
+                loading={searchResponse!.isLoading}
             />
             <EditCategoryForm initialValues={modalFormInitialValues}
                           isOpenForm={isOpenEditForm}

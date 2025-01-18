@@ -11,6 +11,7 @@ import {HttpStatusCode} from 'axios'
 import {ItemInfo, IQueryRequest} from 'src/types'
 
 const ItemManagementContext = React.createContext<ItemManagementContextProps>({
+    searchResponse: undefined,
     itemList: [],
     totalElements: 0,
     searchRequest: {
@@ -30,7 +31,7 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
         categoryId: '',
         name: '',
         price: 0,
-        image: undefined,
+        image: null,
         quantity: 0,
     },
     deleteRequest: {
@@ -40,7 +41,7 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
         categoryId: '',
         name: '',
         price: 0,
-        image: undefined,
+        image: null,
         quantity: 0,
     },
     setItemList: () => {},
@@ -80,7 +81,7 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         categoryId: '',
         name: '',
         price: 0,
-        image: undefined,
+        image: null,
         quantity: 0,
     })
     const [deleteRequest, setDeleteRequest] = useState<IDeleteItemRequest>
@@ -92,7 +93,7 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         categoryId: '',
         name: '',
         price: 0,
-        image: undefined,
+        image: null,
         quantity: 0,
     })
     const [searchRequest, setSearchRequest] = useState<IQueryRequest<ISearchItemRequest>>
@@ -141,6 +142,7 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
     const createHelper = useCreateItem()
 
     const value = {
+        searchResponse,
         itemList,
         totalElements,
         searchRequest,

@@ -27,6 +27,7 @@ export const UserList = () => {
     const [modalFormInitialValues, setModalFormInitialValues] = useState<UserInfo | undefined>()
     const [data, setData] = useState<TableData[]>([])
     const {
+        searchResponse,
         userList,
         totalElements,
         searchRequest: prevSearchRequest,
@@ -106,8 +107,8 @@ export const UserList = () => {
                 username: searchBarValue || ''
             },
             pageInfo: {
-                pageNumber: pageNumber,
-                pageSize: pageSize
+                pageNumber: pagination.current - 1,
+                pageSize: pagination.pageSize,
             },
             ordersBy: {
 
@@ -187,6 +188,7 @@ export const UserList = () => {
                     ),
                 }}
                 onChange={handleTableChange}
+                loading={searchResponse!.isLoading}
             />
             <EditUserForm initialValues={modalFormInitialValues}
                           isOpenForm={isOpenEditForm}

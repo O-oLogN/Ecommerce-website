@@ -5,10 +5,11 @@ import {
     IDeleteCategoryRequest,
     ICreateCategoryRequest,
 } from 'src/services/types'
-import {useEditCategory, useDeleteCategory, useCreateCategory} from 'src/services'
+import {useSearchCategory, useEditCategory, useDeleteCategory, useCreateCategory} from 'src/services'
 
 export interface CategoryManagementContextProps {
     categoryList: CategoryInfo[] | undefined
+    searchResponse: ReturnType<typeof useSearchCategory> | undefined
     totalElements: number
     searchRequest: IQueryRequest<ISearchCategoryRequest>
     editRequest: IEditCategoryRequest

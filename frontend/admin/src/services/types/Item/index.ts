@@ -1,15 +1,15 @@
 import {ItemInfo} from 'src/types'
                                     /* REQUESTS */
 export interface ISearchItemRequest {
-    itemName: string | undefined
+    itemName: string | null
 }
 
 export interface IEditItemRequest {
     itemId: string
     categoryId: string
     name: string
-    price: number | undefined
-    image: File | undefined
+    price: number | null
+    image: File | null
     quantity: number
 }
 
@@ -20,8 +20,8 @@ export interface IDeleteItemRequest {
 export interface ICreateItemRequest {
     categoryId: string
     name: string
-    price: number | undefined
-    image: File | undefined
+    price: number | null
+    image: File | null
     quantity: number
 }
 

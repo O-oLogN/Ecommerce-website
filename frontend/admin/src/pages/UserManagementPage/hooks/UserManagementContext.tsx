@@ -11,6 +11,7 @@ import {HttpStatusCode} from 'axios'
 import {UserInfo, IQueryRequest} from 'src/types'
 
 const UserManagementContext = React.createContext<UserManagementContextProps>({
+    searchResponse: undefined,
     userList: [],
     totalElements: 0,
     searchRequest: {
@@ -125,6 +126,7 @@ export const UserManagementContextProvider = ({children}: {children: React.React
     const createHelper = useCreateUser()
     
     const value = {
+        searchResponse,
         userList,
         totalElements,
         searchRequest,

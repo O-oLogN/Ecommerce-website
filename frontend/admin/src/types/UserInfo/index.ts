@@ -4,5 +4,5 @@ export interface UserInfo extends IBaseData {
     userId: string
     username: string
     password: string
-    email: string | undefined
+    email: string | null
 }

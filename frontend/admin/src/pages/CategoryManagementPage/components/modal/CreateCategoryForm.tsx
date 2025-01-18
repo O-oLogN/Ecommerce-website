@@ -54,7 +54,7 @@ export const CreateCategoryForm: React.FC<CreateCategoryFormProps> = ({
             <Form form={form}
                   onFinish={async() => {
                       const formVal = await form.validateFields() as CategoryInfo
-                      const code = formVal.code
+                      const code = formVal.code || null
                       const name= formVal.name
 
                       handleSubmitForm(
@@ -77,6 +77,7 @@ export const CreateCategoryForm: React.FC<CreateCategoryFormProps> = ({
                 <Form.Item
                     name="name"
                     label="Category name"
+                    rules={[{required: true, message: 'Category name is required'}]}
                 >
                     <Input/>
                 </Form.Item>

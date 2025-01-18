@@ -1,7 +1,7 @@
-import {Modal, Form, Input, Upload, message} from 'antd'
+import {Modal, Form, Input, Upload, Select, message} from 'antd'
 import {UploadOutlined} from '@ant-design/icons'
 import React, {useState} from 'react'
-import {ItemInfo} from 'src/types'
+import {ItemInfo, CategoryInfo} from 'src/types'
 import {useEditItem} from 'src/services'
 import {HttpStatusCode} from 'axios'
 import {IEditItemRequest} from 'src/services/types'
@@ -9,11 +9,12 @@ import {TableData} from '../types'
 const {Dragger} = Upload
 
 interface EditItemFormProps {
-    initialValues: TableData | undefined
+    initialValue: TableData | undefined
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     editHelper: ReturnType<typeof useEditItem>
     refetchItemList: () => void
+    categories: CategoryInfo[]
 }
 
 const handleSubmitForm = async (
@@ -42,28 +43,43 @@ const handleSubmitForm = async (
 }
 
 export const EditItemForm: React.FC<EditItemFormProps> = ({
-  initialValues,
+  initialValue,
   isOpenForm,
   setIsOpenForm,
   editHelper,
   refetchItemList,
+  categories,
 }) => {
     const [form] = Form.useForm()
     const [imagesUploaded, setImagesUploaded] = useState<File[] | undefined>()
+    const [categorySelected, setCategorySelected] = useState<CategoryInfo | undefined>(undefined)
     const handleCancel = () => {
         form.resetFields()
         setIsOpenForm(false)
     }
+
+    React.useEffect(() => {
+        setCategorySelected(categories[0])
+    }, [categories])
+
+    React.useEffect(() => {
+        if (categorySelected) {
+            form.setFieldsValue({
+                categoryCode: categorySelected.code || '',
+            })
+        }
+    }, [categorySelected, form])
+
     return (
         <Modal title="Update item form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
             <Form form={form}
                   onFinish={async() => {
                       const formVal = await form.validateFields() as ItemInfo
-                      const itemId = initialValues?.itemId as string
-                      const categoryId = initialValues?.categoryId as string
+                      const itemId = initialValue?.itemId as string
+                      const categoryId = categorySelected!.categoryId
                       const name = formVal.name
-                      const price = formVal.price
-                      const image = imagesUploaded![0]
+                      const price = formVal.price || null
+                      const image = imagesUploaded && imagesUploaded.length > 0 ? imagesUploaded![0] : null
                       const quantity = formVal.quantity
                       
                       handleSubmitForm(
@@ -80,17 +96,55 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                           refetchItemList,
                       )
                   }}
-                  initialValues={initialValues}
             >
                 <Form.Item
                     name="name"
                     label="Item name"
+                    rules={[{required: true, message: 'Item name is required'}]}
+                    initialValue={initialValue ? initialValue.name : ''}
                 >
                     <Input/>
                 </Form.Item>
                 <Form.Item
+                    name="categoryName"
+                    label="Category name"
+                    initialValue = {{
+                        value: categories && categories.length > 0 ? categories[0].name : '',
+                        label: categories && categories.length > 0 ? categories[0].name : ''
+                    }}
+                >
+                    {categories && categories.length > 0
+                     ? <Select
+                            style={{
+                                width: 120,
+                            }}
+                            onChange={(value) => {
+                                const categoryFound = categories.find(category =>
+                                    category.name === value)
+                                setCategorySelected(categoryFound!)
+                            }}
+                            options={categories.map((category) => ({
+                                value: category.name,
+                                label: category.name,
+                            }))}
+                        />
+                        : <Select defaultValue={{
+                            value: '',
+                            label: ''
+                        }}/>
+                    }
+                </Form.Item>
+                <Form.Item
+                    name="categoryCode"
+                    label="Category code"
+                    initialValue={initialValue ? initialValue.categoryCode : ''}
+                >
+                    <Input disabled />
+                </Form.Item>
+                <Form.Item
                     name="price"
                     label="Item price"
+                    initialValue={initialValue ? initialValue.price : ''}
                 >
                     <Input type="number"/>
                 </Form.Item>
@@ -119,6 +173,8 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                 <Form.Item
                     name="quantity"
                     label="Quantity"
+                    initialValue={initialValue ? initialValue.quantity : ''}
+                    rules={[{required: true, message: 'Quantity is required'}]}
                 >
                     <Input type="number"/>
                 </Form.Item>

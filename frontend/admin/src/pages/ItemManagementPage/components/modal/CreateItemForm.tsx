@@ -50,32 +50,48 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
         form.resetFields()
         setIsOpenForm(false)
     }
-    const[categoryNameSelected, setCategoryNameSelected] = useState<string>('')
     const [categories, setCategories] = useState<CategoryInfo[] | undefined>([])
+    const [categorySelected, setCategorySelected] = useState<CategoryInfo | undefined>()
     const [imagesUploaded, setImagesUploaded] = useState<File[] | undefined>()
     const searchCategoryResponse = useSearchCategory({
         sample: {
             categoryName: '',
+        },
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 10,
+        },
+        ordersBy: {
+
         }
     })
     React.useEffect(() => {
-        if (searchCategoryResponse.data) {
-            if ('content' in searchCategoryResponse.data) {
-                setCategories(searchCategoryResponse.data.content.data.categories)
-            } else {
-                setCategories(searchCategoryResponse.data.data.categories)
-            }
+        if (!searchCategoryResponse.data) {
+            console.log('searchCategoryResponse.data is undefined')
+        }
+        else if (searchCategoryResponse.data!.status === HttpStatusCode.Ok) {
+            setCategories(searchCategoryResponse.data!.data.content)
+            setCategorySelected(searchCategoryResponse.data!.data.content![0])
         }
     }, [searchCategoryResponse.data, searchCategoryResponse.isSuccess])
+
+    React.useEffect(() => {
+        if (categorySelected) {
+            form.setFieldsValue({
+                categoryCode: categorySelected.code || '',
+            })
+        }
+    }, [categorySelected, form])
+
     return (
         <Modal title="Create item form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
             <Form form={form}
                   onFinish={async() => {
                       const formVal = await form.validateFields() as ItemInfo
-                      const categoryId =  categories![categories!.findIndex(category => category.name === categoryNameSelected)].categoryId
+                      const categoryId =  categorySelected!.categoryId
                       const name = formVal.name
-                      const price = formVal.price
-                      const image = imagesUploaded![0]
+                      const price = formVal.price || null
+                      const image = imagesUploaded && imagesUploaded.length > 0 ? imagesUploaded![0] : null
                       const quantity = formVal.quantity
 
                       handleSubmitForm(
@@ -95,18 +111,19 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                 <Form.Item
                     name="categoryId"
                     label="Category name"
+                    initialValue={{
+                        value: categories && categories.length > 0 ? categories[0].name : '',
+                        label: categories && categories.length > 0 ? categories[0].name : '',
+                    }}
                 >
                     {categories && categories.length > 0
                     ? <Select
-                            labelInValue
-                            defaultValue={{
-                                value: categories[0].name,
-                                label: categories[0].name,
-                            }}
                             style={{
                                 width: 120,
                             }}
-                            onChange={(value) => {setCategoryNameSelected(value.value)}}
+                            onChange={value => {
+                                setCategorySelected(categories.find(category => category.name === value))}
+                            }
                             options={categories.map((category) => ({
                                 value: category.name,
                                 label: category.name,
@@ -122,12 +139,19 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                                 width: 120,
                             }}
                         />
-
                     }
+                </Form.Item>
+                <Form.Item
+                    name="categoryCode"
+                    label="Category code"
+                    initialValue={categorySelected ? categorySelected.code : ''}
+                >
+                    <Input disabled />  
                 </Form.Item>
                 <Form.Item
                     name="name"
                     label="Item name"
+                    rules={[{required: true, message: 'Item name is required'}]}
                 >
                     <Input/>
                 </Form.Item>
@@ -162,6 +186,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                 <Form.Item
                     name="quantity"
                     label="Quantity"
+                    rules={[{required: true, message: 'Quantity is required'}]}
                 >
                     <Input type="number"/>
                 </Form.Item>

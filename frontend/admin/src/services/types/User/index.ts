@@ -1,13 +1,13 @@
 import {UserInfo} from 'src/types'
                                     /* REQUESTS */
 export interface ISearchUserRequest {
-    username: string | null | undefined
+    username: string | null
 }
 
 export interface IEditUserRequest {
     userId: string
     username: string
-    email: string | null | undefined
+    email: string | null
 }
 
 export interface IDeleteUserRequest {
@@ -17,7 +17,7 @@ export interface IDeleteUserRequest {
 export interface ICreateUserRequest {
     username: string
     password: string
-    email: string | undefined
+    email: string | null
 }
 
                                     /* RESPONSES */                          

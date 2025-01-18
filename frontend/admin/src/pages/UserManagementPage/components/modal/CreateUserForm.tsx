@@ -60,7 +60,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
                       const formVal = await form.validateFields() as UserInfo
                       const username= formVal.username
                       const password = formVal.password
-                      const email = formVal.email
+                      const email = formVal.email || null
 
                       handleSubmitForm(
                           createHelper,
@@ -77,17 +77,20 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
                 <Form.Item
                     name="username"
                     label="Username"
+                    rules={[{required: true, message: 'Username is required'}]}
                 >
-                    <Input />
+                    <Input/>
                 </Form.Item>
                 <Form.Item
                     name="password"
                     label="Password"
+                    rules={[{required: true, message: 'Password is required'}]}
                 >
                     <Input.Password
                         suffix={visiblePassword
                             ? <EyeOutlined onClick={() => onClickVisiblePassword(visiblePassword)} />
                             : <EyeInvisibleOutlined onClick={() => onClickVisiblePassword(visiblePassword)}/>}
+
                     />
                 </Form.Item>
                 <Form.Item

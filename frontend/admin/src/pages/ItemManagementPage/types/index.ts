@@ -5,9 +5,10 @@ import {
     IDeleteItemRequest,
     ICreateItemRequest,
 } from 'src/services/types'
-import {useEditItem, useDeleteItem, useCreateItem, useSearchCategoryById} from 'src/services'
+import {useSearchItem, useEditItem, useDeleteItem, useCreateItem, useSearchCategoryById} from 'src/services'
 
 export interface ItemManagementContextProps {
+    searchResponse: ReturnType<typeof useSearchItem>  | undefined 
     itemList: ItemInfo[] | undefined
     totalElements: number
     searchRequest: IQueryRequest<ISearchItemRequest>
