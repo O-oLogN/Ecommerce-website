@@ -16,7 +16,20 @@ interface TableColumn {
     dataIndex?: string
     key: string
     render?: (text: any, record: TableData, index: number) => React.ReactNode
+    sorter?: (a: any, b: any) => number
+    defaultSortOrder?: 'ascend' | 'descend'
 }
+
+const sortFunctions: Function[] = [
+    (a: string | null, b: string | null) => {
+       return a && b ? a.localeCompare(b)
+            : (a && !b ? 1 : (!a && b ? -1 : 0))
+    },
+
+    (a: number, b: number) => {
+        return a - b
+    }
+]
 
 export const ItemList = () => {
     const [columns, setColumns] = useState<TableColumn[]>([])
@@ -161,6 +174,16 @@ export const ItemList = () => {
                         title: columnName,
                         dataIndex: columnDataIndexes[index],
                         key: index.toString(),
+                        sorter: (a: any, b: any) => {
+                            const type = typeof a[columnDataIndexes[index]]
+                            if (type === null) {
+                                return 0
+                            }
+                            const valueA = a[columnDataIndexes[index]]
+                            const valueB = b[columnDataIndexes[index]]
+                            return type === 'string' ? sortFunctions[0](valueA, valueB)
+                                                     : sortFunctions[1](valueA, valueB)
+                        }
                     })))
                 ]
 
@@ -199,7 +222,6 @@ export const ItemList = () => {
                 setColumns(tableColumns);
             }
         }
-
         setUpData()
     }, [itemList]);
     return (
@@ -228,7 +250,7 @@ export const ItemList = () => {
                     ),
                 }}
                 onChange={handleTableChange}
-                loading={searchResponse!.isLoading}
+                loading={searchResponse!.isLoading || searchResponse!.isRefetching}
             />
             <EditItemForm initialValue={modalFormInitialValues}
                           isOpenForm={isOpenEditForm}

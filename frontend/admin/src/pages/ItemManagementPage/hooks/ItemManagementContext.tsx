@@ -114,7 +114,8 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
     const refetchItemList = searchResponse.refetch
 
     console.log('searchResponse', searchResponse)
-    React.useEffect(() => {
+
+    React.useEffect(() => { 
         if (!searchResponse) {
             console.log('searchResponse is undefined')
         } else if (!searchResponse.data) {

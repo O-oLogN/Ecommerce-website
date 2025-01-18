@@ -81,7 +81,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                 categoryCode: categorySelected.code || '',
             })
         }
-    }, [categorySelected, form])
+    }, [categorySelected])
 
     return (
         <Modal title="Create item form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>

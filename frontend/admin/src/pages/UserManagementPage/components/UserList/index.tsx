@@ -18,7 +18,15 @@ interface TableColumn {
     dataIndex?: string
     key: string
     render?: (text: any, record: UserInfo, index: number) => React.ReactNode
+    sorter?: (a: any, b: any) => number
+    defaultSortOrder?: 'ascend' | 'descend'
 }
+
+const sortFunctions: Function[] = [
+    (a: string | null, b: string | null) =>
+        a && b ? a.localeCompare(b)
+                : (a && !b ? 1 : (!a && b ? -1 : 0)),
+]
 
 export const UserList = () => {
     const [columns, setColumns] = useState<TableColumn[]>([])
@@ -137,6 +145,8 @@ export const UserList = () => {
                 title: columnNames[index],
                 dataIndex: key,
                 key: index.toString(),
+                sorter: (a, b) => sortFunctions[0](a[key], b[key]),
+                defaultSortOrder: 'ascend'
             }))
 
             userColumns.push({
@@ -188,7 +198,7 @@ export const UserList = () => {
                     ),
                 }}
                 onChange={handleTableChange}
-                loading={searchResponse!.isLoading}
+                loading={searchResponse!.isLoading || searchResponse!.isRefetching}
             />
             <EditUserForm initialValues={modalFormInitialValues}
                           isOpenForm={isOpenEditForm}
@@ -203,4 +213,4 @@ export const UserList = () => {
             />
         </>
     )
-};
+}

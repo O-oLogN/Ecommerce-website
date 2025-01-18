@@ -17,7 +17,15 @@ interface TableColumn {
     dataIndex?: string
     key: string
     render?: (text: any, record: CategoryInfo, index: number) => React.ReactNode
+    sorter?: (a: any, b: any) => number
+    defaultSortOrder?: 'ascend' | 'descend'
 }
+
+const sortFunctions: Function[] = [
+    (a: string | null, b: string | null) =>
+        a && b ? a.localeCompare(b)
+            : (a && !b ? 1 : (!a && b ? -1 : 0)),
+]
 
 export const CategoryList = () => {
     const [columns, setColumns] = useState<TableColumn[]>([])
@@ -135,6 +143,8 @@ export const CategoryList = () => {
                 title: columnNames[index],
                 dataIndex: key,
                 key: index.toString(),
+                sorter: (a, b) => sortFunctions[0](a[key], b[key]),
+                defaultSortOrder: 'ascend'
             }))
 
             categoryColumns.push({
@@ -186,7 +196,7 @@ export const CategoryList = () => {
                     ),
                 }}
                 onChange={handleTableChange}
-                loading={searchResponse!.isLoading}
+                loading={searchResponse!.isLoading || searchResponse!.isRefetching}
             />
             <EditCategoryForm initialValues={modalFormInitialValues}
                           isOpenForm={isOpenEditForm}
