@@ -1,4 +1,4 @@
-import {Modal, Form, Input} from 'antd'
+import {Modal, Form, Input, message} from 'antd'
 import React from 'react'
 import {CategoryInfo} from 'src/types'
 import {useCreateCategory} from '../../../../services'
@@ -10,6 +10,7 @@ interface CreateCategoryFormProps {
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     createHelper: ReturnType<typeof useCreateCategory>
     refetchCategoryList: () => void
+    messageApi: typeof message
 }
 
 const handleSubmitForm = async (
@@ -17,25 +18,35 @@ const handleSubmitForm = async (
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     createRequest: ICreateCategoryRequest,
     refetchCategoryList: () => void,
+    messageApi: typeof message,
 ) => {
-    console.log(createRequest)
-    const CreateResponse = await createHelper.mutateAsync(createRequest)
-    if (!CreateResponse) {
-        console.log('createResponse is undefined')
-    }
-    else if (!CreateResponse.data) {
-        console.log('createResponse.data is undefined')
-    }
-    else {
-        if (CreateResponse.data.status === HttpStatusCode.Ok) {
-            console.log('FORM - category created successfully!')
+    try {
+        const CreateResponse = await createHelper.mutateAsync(createRequest)
+        if (!CreateResponse) {
+            console.log('createResponse is undefined')
+        } else if (!CreateResponse.data) {
+            console.log('createResponse.data is undefined')
+        } else {
+            if (CreateResponse.data.status === HttpStatusCode.Ok) {
+                console.log('FORM - category created successfully!')
+            }
+            // else {
+            //     console.log('FORM - category created failed!')
+            // }
         }
-        else {
-            console.log('FORM - category created failed!')
-        }
     }
-    setIsOpenForm(false)
-    refetchCategoryList()
+    catch (error) {
+        console.log('ERROR - category created failed!')
+        const errObj = error as any
+        messageApi.error(errObj.status + '::'
+            + errObj.code + '::'
+            + errObj.response.data.error + '-'
+            + errObj.response.data.message)
+    }
+    finally {
+        setIsOpenForm(false)
+        refetchCategoryList()
+    }
 }
 
 export const CreateCategoryForm: React.FC<CreateCategoryFormProps> = ({
@@ -43,6 +54,7 @@ export const CreateCategoryForm: React.FC<CreateCategoryFormProps> = ({
                                                                       setIsOpenForm,
                                                                       createHelper,
                                                                       refetchCategoryList,
+                                                                      messageApi,
                                                                   }) => {
     const [form] = Form.useForm()
     const handleCancel = () => {
@@ -65,6 +77,7 @@ export const CreateCategoryForm: React.FC<CreateCategoryFormProps> = ({
                               name,
                           },
                           refetchCategoryList,
+                          messageApi,
                       )
                   }}
             >

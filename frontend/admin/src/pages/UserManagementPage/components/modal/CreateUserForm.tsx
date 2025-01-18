@@ -1,16 +1,18 @@
 import {Modal, Form, Input} from 'antd'
 import React, {useState} from 'react'
 import {UserInfo} from 'src/types'
-import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons'
+import {EyeOutlined, EyeInvisibleOutlined} from '@ant-design/icons'
 import {useCreateUser} from '../../../../services'
 import {HttpStatusCode} from 'axios'
 import {ICreateUserRequest} from 'src/services/types'
+import {message} from 'antd'
 
 interface CreateUserFormProps {
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     createHelper: ReturnType<typeof useCreateUser>
     refetchUserList: () => void
+    messageApi: typeof message
 }
 
 const handleSubmitForm = async (
@@ -18,24 +20,35 @@ const handleSubmitForm = async (
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     createRequest: ICreateUserRequest,
     refetchUserList: () => void,
+    messageApi: typeof message,
 ) => {
-    const createResponse = await createHelper.mutateAsync(createRequest)
-    if (!createResponse) {
-        console.log('createResponse is undefined')
-    }
-    else if (!createResponse.data) {
-        console.log('createResponse.data is undefined')
-    }
-    else {
-        if (createResponse.data.status === HttpStatusCode.Ok) {
-            console.log('FORM - user created successfully!')
+    try {
+        const createResponse = await createHelper.mutateAsync(createRequest)
+        if (!createResponse) {
+            console.log('createResponse is undefined')
+        } else if (!createResponse.data) {
+            console.log('createResponse.data is undefined')
+        } else {
+            if (createResponse.data.status === HttpStatusCode.Ok) {
+                console.log('FORM - user created successfully!')
+            }
+            // else {
+            //     console.log('FORM - user created failed!')
+            // }
         }
-        else {
-            console.log('FORM - user created failed!')
-        }
     }
-    setIsOpenForm(false)
-    refetchUserList()
+    catch (error) {
+        console.log('ERROR - user created failed!')
+        const errObj = error as any
+        messageApi.error(errObj.status + '::'
+            + errObj.code + '::'
+            + errObj.response.data.error + '-'
+            + errObj.response.data.message)
+    }
+    finally {
+        setIsOpenForm(false)
+        refetchUserList()
+    }
 }
 
 export const CreateUserForm: React.FC<CreateUserFormProps> = ({
@@ -43,6 +56,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
                                                               setIsOpenForm,
                                                               createHelper,
                                                               refetchUserList,
+                                                              messageApi,
                                                           }) => {
     const [form] = Form.useForm()
     const [visiblePassword, setVisiblePassword] = useState<boolean>(false)
@@ -71,6 +85,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
                               email
                           },
                           refetchUserList,
+                          messageApi,
                       )
                   }}
             >

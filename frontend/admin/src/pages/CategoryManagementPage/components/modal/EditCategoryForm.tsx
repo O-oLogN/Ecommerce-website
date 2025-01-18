@@ -1,4 +1,4 @@
-import {Modal, Form, Input} from 'antd'
+import {Modal, Form, Input, message} from 'antd'
 import React from 'react'
 import {CategoryInfo} from 'src/types'
 import {useEditCategory} from '../../../../services'
@@ -11,6 +11,7 @@ interface EditCategoryFormProps {
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     editHelper: ReturnType<typeof useEditCategory>
     refetchCategoryList: () => void
+    messageApi: typeof message
 }
 
 const handleSubmitForm = async (
@@ -18,25 +19,35 @@ const handleSubmitForm = async (
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     editRequest: IEditCategoryRequest,
     refetchCategoryList: () => void,
+    messageApi: typeof message,
 ) => {
-    console.log(editRequest)
-    const editResponse = await editHelper.mutateAsync(editRequest)
-    if (!editResponse) {
-        console.log('editResponse is undefined')
-    }
-    else if (!editResponse.data) {
-        console.log('editResponse.data is undefined')
-    }
-    else {
-        if (editResponse.data.status === HttpStatusCode.Ok) {
-            console.log('FORM - category edited successfully!')
+    try {
+        const editResponse = await editHelper.mutateAsync(editRequest)
+        if (!editResponse) {
+            console.log('editResponse is undefined')
+        } else if (!editResponse.data) {
+            console.log('editResponse.data is undefined')
+        } else {
+            if (editResponse.data.status === HttpStatusCode.Ok) {
+                console.log('FORM - category updated successfully!')
+            }
+            // else {
+            //     console.log('FORM - category updated failed!')
+            // }
         }
-        else {
-            console.log('FORM - category edited failed!')
-        }
     }
-    setIsOpenForm(false)
-    refetchCategoryList()
+    catch (error) {
+        console.log('ERROR - category updated failed!')
+        const errObj = error as any
+        messageApi.error(errObj.status + '::'
+            + errObj.code + '::'
+            + errObj.response.data.error + '-'
+            + errObj.response.data.message)
+    }
+    finally {
+        setIsOpenForm(false)
+        refetchCategoryList()
+    }
 }
 
 export const EditCategoryForm: React.FC<EditCategoryFormProps> = ({
@@ -44,7 +55,8 @@ export const EditCategoryForm: React.FC<EditCategoryFormProps> = ({
   isOpenForm,
   setIsOpenForm,
   editHelper,
-  refetchCategoryList,
+  refetchCategoryList, 
+  messageApi,
 }) => {
     const [form] = Form.useForm()
     const handleCancel = () => {
@@ -69,6 +81,7 @@ export const EditCategoryForm: React.FC<EditCategoryFormProps> = ({
                               name,
                           },
                           refetchCategoryList,
+                          messageApi,
                       )
                   }}
                   initialValues={initialValues}

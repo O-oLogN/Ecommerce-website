@@ -12,6 +12,7 @@ interface CreateItemFormProps {
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     createHelper: ReturnType<typeof useCreateItem>
     refetchItemList: () => void
+    messageApi: typeof message
 }
 
 const handleSubmitForm = async (
@@ -19,24 +20,35 @@ const handleSubmitForm = async (
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     createRequest: ICreateItemRequest,
     refetchItemList: () => void,
+    messageApi: typeof message,
 ) => {
-    const createResponse = await createHelper.mutateAsync(createRequest)
-    if (!createResponse) {
-        console.log('createResponse is undefined')
-    }
-    else if (!createResponse.data) {
-        console.log('createResponse.data is undefined')
-    }
-    else {
-        if (createResponse.data.status === HttpStatusCode.Ok) {
-            console.log('FORM - Item created successfully!')
+    try {
+        const createResponse = await createHelper.mutateAsync(createRequest)
+        if (!createResponse) {
+            console.log('createResponse is undefined')
+        } else if (!createResponse.data) {
+            console.log('createResponse.data is undefined')
+        } else {
+            if (createResponse.data.status === HttpStatusCode.Ok) {
+                console.log('FORM - Item created successfully!')
+            } 
+            // else {
+            //     console.log('FORM - Item created failed!')
+            // }
         }
-        else {
-            console.log('FORM - Item created failed!')
-        }
     }
-    setIsOpenForm(false)
-    refetchItemList()
+    catch (error) {
+        console.log('ERROR - item created failed!')
+        const errObj = error as any
+        messageApi.error(errObj.status + '::'
+            + errObj.code + '::'
+            + errObj.response.data.error + '-'
+            + errObj.response.data.message)
+    }
+    finally {
+        setIsOpenForm(false)
+        refetchItemList()
+    }
 }
 
 export const CreateItemForm: React.FC<CreateItemFormProps> = ({
@@ -44,6 +56,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                                                               setIsOpenForm,
                                                               createHelper,
                                                               refetchItemList,
+                                                              messageApi,
                                                           }) => {
     const [form] = Form.useForm()
     const handleCancel = () => {
@@ -105,6 +118,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                               quantity
                           },
                           refetchItemList,
+                          messageApi,
                       )
                   }}
             >

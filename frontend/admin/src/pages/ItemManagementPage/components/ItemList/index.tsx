@@ -1,6 +1,7 @@
 import { Table, Space, Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useItemManagementContext } from '../../hooks/ItemManagementContext.tsx'
+import { useMessageContext } from '../../../../components'
 import React, { useState, useEffect } from 'react'
 import { SearchBar } from '../SearchBar'
 import { EditItemForm } from '../modal/EditItemForm.tsx'
@@ -53,8 +54,8 @@ export const ItemList = () => {
         searchCategoryHelper,
         refetchItemList,
     } = useItemManagementContext()
-
-    const columnNames = ['Item name', 'Category code', 'Category name', 'Item price', 'Image', 'Quantity', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
+    const {messageApi} = useMessageContext()
+    const columnNames = ['Item name', 'Category code', 'Category name', 'Item price ($)', 'Image', 'Quantity', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
     const columnDataIndexes = ['name', 'categoryCode', 'categoryName', 'price', 'imageUrl', 'quantity', 'createUser', 'createDatetime', 'modifyUser', 'modifyDatetime']
 
     const onClickSearchBtn = () => {
@@ -258,11 +259,13 @@ export const ItemList = () => {
                           editHelper={editHelper}
                           refetchItemList={refetchItemList}
                           categories={categories}
+                          messageApi={messageApi}
             />
             <CreateItemForm isOpenForm={isOpenCreateForm}
                           setIsOpenForm={setIsOpenCreateForm}
                           createHelper={createHelper}
                           refetchItemList={refetchItemList}
+                          messageApi={messageApi}
             />
         </>
     )

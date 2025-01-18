@@ -4,6 +4,7 @@ import {UserInfo} from 'src/types'
 import {useEditUser} from '../../../../services'
 import {HttpStatusCode} from 'axios'
 import {IEditUserRequest} from 'src/services/types'
+import {message} from 'antd'
 
 interface EditUserFormProps {
     initialValues: UserInfo | undefined
@@ -12,6 +13,7 @@ interface EditUserFormProps {
     editHelper: ReturnType<typeof useEditUser>
     userList?: UserInfo[] | undefined
     refetchUserList: () => void
+    messageApi: typeof message
 }
 
 const handleSubmitForm = async (
@@ -19,24 +21,37 @@ const handleSubmitForm = async (
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     editRequest: IEditUserRequest,
     refetchUserList: () => void,
+    messageApi: typeof message
 ) => {
-    const editResponse = await editHelper.mutateAsync(editRequest)
-    if (!editResponse) {
-        console.log('editResponse is undefined')
-    }
-    else if (!editResponse.data) {
-        console.log('editResponse.data is undefined')
-    }
-    else {
-        if (editResponse.data.status === HttpStatusCode.Ok) {
-            console.log('FORM - user edited successfully!')
+    try {
+        const editResponse = await editHelper.mutateAsync(editRequest)
+        if (!editResponse) {
+            console.log('editResponse is undefined')
+        } else if (!editResponse.data) {
+            console.log('editResponse.data is undefined')
+        } else {
+            if (editResponse.data.status === HttpStatusCode.Ok) {
+                console.log('FORM - user updated successfully!')
+                messageApi.success('User updated successfully!')
+            }
+            // else {
+            //     console.log('FORM - user updated failed!')
+            //     messageApi.error('User updated failed!')
+            // }
         }
-        else {
-            console.log('FORM - user edited failed!')
-        }
     }
-    setIsOpenForm(false)
-    refetchUserList()
+    catch (error) {
+        console.log('ERROR - user updated failed!')
+        const errObj = error as any
+        messageApi.error(errObj.status + '::'
+            + errObj.code + '::'
+            + errObj.response.data.error + '-'
+            + errObj.response.data.message)
+    }
+    finally {
+        setIsOpenForm(false)
+        refetchUserList()
+    }
 }
 
 export const EditUserForm: React.FC<EditUserFormProps> = ({
@@ -45,6 +60,7 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
   setIsOpenForm,
   editHelper,
   refetchUserList,
+  messageApi,
 }) => {
     const [form] = Form.useForm()
     const handleCancel = () => {
@@ -69,6 +85,7 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
                               email
                           },
                           refetchUserList,
+                          messageApi,
                       )
                   }}
                   initialValues={initialValues}

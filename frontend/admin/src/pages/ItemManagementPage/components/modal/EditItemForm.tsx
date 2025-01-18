@@ -15,6 +15,7 @@ interface EditItemFormProps {
     editHelper: ReturnType<typeof useEditItem>
     refetchItemList: () => void
     categories: CategoryInfo[]
+    messageApi: typeof message
 }
 
 const handleSubmitForm = async (
@@ -22,24 +23,35 @@ const handleSubmitForm = async (
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     editRequest: IEditItemRequest,
     refetchItemList: () => void,
+    messageApi: typeof message,
 ) => {
-    const editResponse = await editHelper.mutateAsync(editRequest)
-    if (!editResponse) {
-        console.log('editResponse is undefined')
-    }
-    else if (!editResponse.data) {
-        console.log('editResponse.data is undefined')
-    }
-    else {
-        if (editResponse.data.status === HttpStatusCode.Ok) {
-            console.log('FORM - Item edited successfully!')
+    try {
+        const editResponse = await editHelper.mutateAsync(editRequest)
+        if (!editResponse) {
+            console.log('editResponse is undefined')
+        } else if (!editResponse.data) {
+            console.log('editResponse.data is undefined')
+        } else {
+            if (editResponse.data.status === HttpStatusCode.Ok) {
+                console.log('FORM - Item updated successfully!')
+            } 
+            // else {
+            //     console.log('FORM - Item updated failed!')
+            // }
         }
-        else {
-            console.log('FORM - Item edited failed!')
-        }
     }
-    setIsOpenForm(false)
-    refetchItemList()
+    catch (error) {
+        console.log('ERROR - item updated failed!')
+        const errObj = error as any
+        messageApi.error(errObj.status + '::'
+            + errObj.code + '::'
+            + errObj.response.data.error + '-'
+            + errObj.response.data.message)
+    }
+    finally {
+        setIsOpenForm(false)
+        refetchItemList()
+    }
 }
 
 export const EditItemForm: React.FC<EditItemFormProps> = ({
@@ -48,7 +60,8 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
   setIsOpenForm,
   editHelper,
   refetchItemList,
-  categories,
+  categories, 
+  messageApi,
 }) => {
     const [form] = Form.useForm()
     const [imagesUploaded, setImagesUploaded] = useState<File[] | undefined>()
@@ -94,6 +107,7 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                               quantity
                           },
                           refetchItemList,
+                          messageApi,
                       )
                   }}
             >

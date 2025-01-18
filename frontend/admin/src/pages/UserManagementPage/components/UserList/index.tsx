@@ -2,12 +2,12 @@ import { Table, Space, Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { UserInfo } from 'src/types'
 import { useUserManagementContext } from '../../hooks/UserManagementContext.tsx'
+import { useMessageContext } from '../../../../components'
 import React, { useState, useEffect } from 'react'
 import { SearchBar } from '../SearchBar'
 import { EditUserForm } from '../modal/EditUserForm.tsx'
 import { CreateUserForm } from '../modal/CreateUserForm.tsx'
 import { HttpStatusCode } from 'axios'
-
 
 interface TableData extends UserInfo {
     key: string
@@ -45,6 +45,7 @@ export const UserList = () => {
         createHelper,
         refetchUserList,
     } = useUserManagementContext()
+    const {messageApi} = useMessageContext()
     const columnNames = ['Username', 'Email', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
     const [pageNumber, setPageNumber] = useState<number>(0)
     const [pageSize, setPageSize] = useState<number>(10)
@@ -205,11 +206,13 @@ export const UserList = () => {
                           setIsOpenForm={setIsOpenEditForm}
                           editHelper={editHelper}
                           refetchUserList={refetchUserList}
+                          messageApi={messageApi}
             />
             <CreateUserForm isOpenForm={isOpenCreateForm}
                             setIsOpenForm={setIsOpenCreateForm}
                             createHelper={createHelper}
                             refetchUserList={refetchUserList}
+                            messageApi={messageApi}
             />
         </>
     )

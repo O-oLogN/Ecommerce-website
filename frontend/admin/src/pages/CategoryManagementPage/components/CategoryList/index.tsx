@@ -2,6 +2,7 @@ import { Table, Space, Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { CategoryInfo } from 'src/types'
 import { useCategoryManagementContext } from '../../hooks/CategoryManagementContext.tsx'
+import { useMessageContext } from '../../../../components'
 import React, { useState, useEffect } from 'react'
 import { SearchBar } from '../SearchBar'
 import { EditCategoryForm } from '../modal/EditCategoryForm.tsx'
@@ -47,6 +48,7 @@ export const CategoryList = () => {
         createHelper,
         refetchCategoryList,
     } = useCategoryManagementContext()
+    const {messageApi} = useMessageContext()
     const columnNames = ['Category code', 'Category name', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
     
     const onClickSearchBtn = () => {
@@ -203,6 +205,7 @@ export const CategoryList = () => {
                           setIsOpenForm={setIsOpenEditForm}
                           editHelper={editHelper}
                           refetchCategoryList={refetchCategoryList}
+                          
             />
             <CreateCategoryForm isOpenForm={isOpenCreateForm}
                               setIsOpenForm={setIsOpenCreateForm}
