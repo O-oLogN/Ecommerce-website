@@ -2,7 +2,7 @@ import {Modal, Form, Input, Upload, Select, message} from 'antd'
 import {UploadOutlined} from '@ant-design/icons'
 import React, {useState} from 'react'
 import {ItemInfo, CategoryInfo} from 'src/types'
-import {useEditItem} from 'src/services'
+import {useEditItem, useSearchCategory} from '../../../../services'
 import {HttpStatusCode} from 'axios'
 import {IEditItemRequest} from 'src/services/types'
 import {TableData} from '../types'
@@ -14,7 +14,6 @@ interface EditItemFormProps {
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     editHelper: ReturnType<typeof useEditItem>
     refetchItemList: () => void
-    categories: CategoryInfo[]
     messageApi: typeof message
 }
 
@@ -61,26 +60,48 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
   setIsOpenForm,
   editHelper,
   refetchItemList,
-  categories, 
   messageApi,
 }) => {
     const [form] = Form.useForm()
     const [imagesUploaded, setImagesUploaded] = useState<File[] | undefined>()
     const [categorySelected, setCategorySelected] = useState<CategoryInfo | undefined>(undefined)
+    const [categories, setCategories] = useState<CategoryInfo[] | undefined>([])
+
     const handleCancel = () => {
         form.resetFields()
         setIsOpenForm(false)
     }
+    const searchCategoryResponse = useSearchCategory({
+        sample: {
+            categoryName: '',
+        },
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 100,
+        },
+        ordersBy: {
+
+        }
+    })
+    React.useEffect(() => {
+        if (!searchCategoryResponse.data) {
+            console.log('searchCategoryResponse.data is undefined')
+        }
+        else if (searchCategoryResponse.data!.status === HttpStatusCode.Ok) {
+            setCategories(searchCategoryResponse.data!.data.content)
+            setCategorySelected(searchCategoryResponse.data!.data.content![0])
+        }
+    }, [searchCategoryResponse.data, searchCategoryResponse.isSuccess])
 
     React.useEffect(() => {
-        setCategorySelected(categories[0])
+        setCategorySelected(categories && categories.length > 0 ? categories[0] : undefined)
     }, [categories])
 
     React.useEffect(() => {
         if (initialValue) {
             form.setFieldsValue(initialValue)
         }
-    }, [initialValue, form])
+    }, [initialValue, form, categories])
 
     React.useEffect(() => {
         if (categorySelected) {

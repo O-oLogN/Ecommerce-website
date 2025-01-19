@@ -73,7 +73,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
         },
         pageInfo: {
             pageNumber: 0,
-            pageSize: 10,
+            pageSize: 100,
         },
         ordersBy: {
 
