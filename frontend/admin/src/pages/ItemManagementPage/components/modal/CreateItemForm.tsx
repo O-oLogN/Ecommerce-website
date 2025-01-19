@@ -29,8 +29,9 @@ const handleSubmitForm = async (
         } else if (!createResponse.data) {
             console.log('createResponse.data is undefined')
         } else {
-            if (createResponse.data.status === HttpStatusCode.Ok) {
+            if (createResponse.data.status === HttpStatusCode.Ok || createResponse.data.status === HttpStatusCode.Created) {
                 console.log('FORM - Item created successfully!')
+                messageApi.success('Item created successfully!')
             } 
             // else {
             //     console.log('FORM - Item created failed!')
@@ -165,15 +166,30 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                 <Form.Item
                     name="name"
                     label="Item name"
-                    rules={[{required: true, message: 'Item name is required'}]}
+                    rules={[
+                        {required: true, message: 'Item name is required'},
+                    ]}
                 >
                     <Input/>
                 </Form.Item>
                 <Form.Item
                     name="price"
                     label="Item price"
+                    rules={[
+                        {
+                            validator: (_, value) => {
+                                console.log(value)
+                                if (value < 0) {
+                                    return Promise.reject(new Error('Price cannot be less than 0'));
+                                }
+                                return Promise.resolve();
+                            },
+                        },
+                    ]}
                 >
-                    <Input type="number"/>
+                    <Input
+                        type="number"
+                    />
                 </Form.Item>
                 <Form.Item
                     name="image"
@@ -200,7 +216,18 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                 <Form.Item
                     name="quantity"
                     label="Quantity"
-                    rules={[{required: true, message: 'Quantity is required'}]}
+                    rules={[
+                        {required: true, message: 'Quantity is required'},
+                        {
+                            validator: (_, value) => {
+                                console.log(value)
+                                if (value < 0) {
+                                    return Promise.reject(new Error('Quantity cannot be less than 0'));
+                                }
+                                return Promise.resolve();
+                            },
+                        },
+                    ]}
                 >
                     <Input type="number"/>
                 </Form.Item>

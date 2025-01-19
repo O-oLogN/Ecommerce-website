@@ -34,6 +34,7 @@ const handleSubmitForm = async (
         } else {
             if (editResponse.data.status === HttpStatusCode.Ok) {
                 console.log('FORM - Item updated successfully!')
+                messageApi.success('Item updated successfully!')
             } 
             // else {
             //     console.log('FORM - Item updated failed!')
@@ -74,6 +75,12 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
     React.useEffect(() => {
         setCategorySelected(categories[0])
     }, [categories])
+
+    React.useEffect(() => {
+        if (initialValue) {
+            form.setFieldsValue(initialValue)
+        }
+    }, [initialValue, form])
 
     React.useEffect(() => {
         if (categorySelected) {
@@ -159,6 +166,17 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                     name="price"
                     label="Item price"
                     initialValue={initialValue ? initialValue.price : ''}
+                    rules={[
+                        {
+                            validator: (_, value) => {
+                                console.log(value)
+                                if (value < 0) {
+                                    return Promise.reject(new Error('Price cannot be less than 0'));
+                                }
+                                return Promise.resolve();
+                            },
+                        },
+                    ]}
                 >
                     <Input type="number"/>
                 </Form.Item>
@@ -188,7 +206,18 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                     name="quantity"
                     label="Quantity"
                     initialValue={initialValue ? initialValue.quantity : ''}
-                    rules={[{required: true, message: 'Quantity is required'}]}
+                    rules={[
+                        {required: true, message: 'Quantity is required'},
+                        {
+                            validator: (_, value) => {
+                                console.log(value)
+                                if (value < 0) {
+                                    return Promise.reject(new Error('Quantity cannot be less than 0'));
+                                }
+                                return Promise.resolve();
+                            },
+                        },
+                    ]}
                 >
                     <Input type="number"/>
                 </Form.Item>

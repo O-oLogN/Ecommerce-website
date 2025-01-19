@@ -29,8 +29,9 @@ const handleSubmitForm = async (
         } else if (!createResponse.data) {
             console.log('createResponse.data is undefined')
         } else {
-            if (createResponse.data.status === HttpStatusCode.Ok) {
+            if (createResponse.data.status === HttpStatusCode.Ok || createResponse.data.status === HttpStatusCode.Created) {
                 console.log('FORM - user created successfully!')
+                messageApi.success('User created successfully!')
             }
             // else {
             //     console.log('FORM - user created failed!')

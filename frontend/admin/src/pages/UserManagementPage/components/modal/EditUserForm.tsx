@@ -67,6 +67,13 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
         form.resetFields()
         setIsOpenForm(false)
     }
+
+    React.useEffect(() => {
+        if (initialValues) {
+            form.setFieldsValue(initialValues)
+        }
+    }, [initialValues, form])
+
     return (
         <Modal title="Update user form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
             <Form form={form}

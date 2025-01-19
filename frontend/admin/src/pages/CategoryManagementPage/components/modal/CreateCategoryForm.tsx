@@ -21,14 +21,16 @@ const handleSubmitForm = async (
     messageApi: typeof message,
 ) => {
     try {
-        const CreateResponse = await createHelper.mutateAsync(createRequest)
-        if (!CreateResponse) {
+        const createResponse = await createHelper.mutateAsync(createRequest)
+        if (!createResponse) {
             console.log('createResponse is undefined')
-        } else if (!CreateResponse.data) {
+        } else if (!createResponse.data) {
             console.log('createResponse.data is undefined')
         } else {
-            if (CreateResponse.data.status === HttpStatusCode.Ok) {
+            if (createResponse.data.status === HttpStatusCode.Ok || createResponse.data.status === HttpStatusCode.Created) {
                 console.log('FORM - category created successfully!')
+                messageApi.success('Item created successfully!')
+                
             }
             // else {
             //     console.log('FORM - category created failed!')

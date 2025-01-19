@@ -91,23 +91,34 @@ export const ItemList = () => {
         const deleteRequest = {
             itemId: row.itemId
         }
-        const deleteResponse = await deleteHelper.mutateAsync(deleteRequest)
-        if (!deleteResponse) {
-            console.log('deleteResponse is undefined')
-        }
-        else if (!deleteResponse.data) {
-            console.log('deleteResponse.data is undefined')
-        }
-        else {
-            if (deleteResponse.data.status === HttpStatusCode.Ok) {
-                console.log('INDEX - Item deleted successfully!')
+        try {
+            const deleteResponse = await deleteHelper.mutateAsync(deleteRequest)
+            if (!deleteResponse) {
+                console.log('deleteResponse is undefined')
+            } else if (!deleteResponse.data) {
+                console.log('deleteResponse.data is undefined')
             }
             else {
-                console.log('INDEX - Item deleted failed!')
+                if (deleteResponse.data.status === HttpStatusCode.Ok) {
+                    console.log('INDEX - Item deleted successfully!')
+                    messageApi.success('Item deleted successfully!')
+                }
+                // else {
+                //     console.log('INDEX - Item deleted failed!')
+                // }
             }
         }
-        
-        refetchItemList()
+        catch (error) {
+            console.log('ERROR - item deleted failed!')
+            const errObj = error as any
+            messageApi.error(errObj.status + '::'
+                + errObj.code + '::'
+                + errObj.response.data.error + '-'
+                + errObj.response.data.message)
+        }
+        finally {
+            refetchItemList()
+        }
     }
 
     const handleCreate = () => {

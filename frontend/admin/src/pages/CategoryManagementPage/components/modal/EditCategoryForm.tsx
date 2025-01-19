@@ -30,6 +30,7 @@ const handleSubmitForm = async (
         } else {
             if (editResponse.data.status === HttpStatusCode.Ok) {
                 console.log('FORM - category updated successfully!')
+                messageApi.success('Item updated successfully!')
             }
             // else {
             //     console.log('FORM - category updated failed!')
@@ -63,6 +64,12 @@ export const EditCategoryForm: React.FC<EditCategoryFormProps> = ({
         form.resetFields()
         setIsOpenForm(false)
     }
+
+    React.useEffect(() => {
+        if (initialValues) {
+            form.setFieldsValue(initialValues)
+        }
+    }, [initialValues, form])
     return (
         <Modal title="Update category form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
             <Form form={form}

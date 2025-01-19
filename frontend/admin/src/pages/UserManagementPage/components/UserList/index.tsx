@@ -32,6 +32,7 @@ export const UserList = () => {
     const [columns, setColumns] = useState<TableColumn[]>([])
     const [isOpenEditForm, setIsOpenEditForm] = useState<boolean>(false)
     const [isOpenCreateForm, setIsOpenCreateForm] = useState<boolean>(false)
+
     const [modalFormInitialValues, setModalFormInitialValues] = useState<UserInfo | undefined>()
     const [data, setData] = useState<TableData[]>([])
     const {
@@ -84,23 +85,33 @@ export const UserList = () => {
         const deleteRequest = {
             userId: row.userId
         }
-        const deleteResponse = await deleteHelper.mutateAsync(deleteRequest)
-        if (!deleteResponse) {
-            console.log('deleteResponse is undefined')
-        }
-        else if (!deleteResponse.data) {
-            console.log('deleteResponse.data is undefined')
-        }
-        else {
-            if (deleteResponse.data.status === HttpStatusCode.Ok) {
-                console.log('INDEX - user deleted successfully!')
+        try {
+            const deleteResponse = await deleteHelper.mutateAsync(deleteRequest)
+            if (!deleteResponse) {
+                console.log('deleteResponse is undefined')
+            } else if (!deleteResponse.data) {
+                console.log('deleteResponse.data is undefined')
+            } else {
+                if (deleteResponse.data.status === HttpStatusCode.Ok) {
+                    console.log('INDEX - user deleted successfully!')
+                    messageApi.success('User deleted successfully!')
+                }
+                // else {
+                //     console.log('INDEX - user deleted failed!')
+                // }
             }
-            else {
-                console.log('INDEX - user deleted failed!')
-            }
         }
-        
-        refetchUserList()
+        catch (error) {
+            console.log('ERROR - user deleted failed!')
+            const errObj = error as any
+            messageApi.error(errObj.status + '::'
+                + errObj.code + '::'
+                + errObj.response.data.error + '-'
+                + errObj.response.data.message)
+        }
+        finally {
+            refetchUserList()
+        }
     }
 
     const handleCreate = () => {
@@ -155,12 +166,17 @@ export const UserList = () => {
                 key: 'actions',
                 render: (record: TableData) => (
                     <Space>
-                        <Button type="link" onClick={() => handleOpenEditForm(record)}>
+                        <Button type="link" onClick={() => {
+                            handleOpenEditForm(record)
+                        }}>
                             <EditOutlined>
                                 Edit
                             </EditOutlined>
                         </Button>
-                        <Button type="link" danger onClick={() => handleDelete(record)}>
+                        <Button type="link" danger onClick={() =>
+                            handleDelete(record)
+                        }
+                        >
                             <DeleteOutlined>
                                 Delete
                             </DeleteOutlined>
@@ -200,14 +216,16 @@ export const UserList = () => {
                 }}
                 onChange={handleTableChange}
                 loading={searchResponse!.isLoading || searchResponse!.isRefetching}
-            />
+            >
+            </Table>
             <EditUserForm initialValues={modalFormInitialValues}
                           isOpenForm={isOpenEditForm}
                           setIsOpenForm={setIsOpenEditForm}
                           editHelper={editHelper}
                           refetchUserList={refetchUserList}
                           messageApi={messageApi}
-            />
+            >
+            </EditUserForm>
             <CreateUserForm isOpenForm={isOpenCreateForm}
                             setIsOpenForm={setIsOpenCreateForm}
                             createHelper={createHelper}
