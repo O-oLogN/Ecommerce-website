@@ -2,15 +2,17 @@ package com.admin.service.impl;
 
 import com.admin.constant.CoreConstants;
 import com.admin.dto.request.auth.SignInRequest;
+import com.admin.entities.Role;
 import com.admin.entities.Session;
 import com.admin.entities.User;
+import com.admin.entities.UserRole;
 import com.admin.exception.SessionNotFoundException;
 import com.admin.helper.MessageHelper;
 import com.admin.helper.ResponseHelper;
 import com.admin.repository.SessionRepository;
 import com.admin.repository.UserRepository;
 import com.admin.service.AuthService;
-import com.admin.utils.PasswordUtils;
+import com.admin.utils.JwtUtils;
 import com.admin.utils.ValidationUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -22,11 +24,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -38,6 +44,10 @@ public class AuthServiceImpl implements AuthService {
     private final SessionRepository sessionRepository;
 
     private final EntityManager entityManager;
+
+    private final JwtUtils jwtUtils;
+
+    private final AuthenticationManager authenticationManager;
 
     private final MessageHelper messageHelper;
 
@@ -53,15 +63,12 @@ public class AuthServiceImpl implements AuthService {
             );
         }
 
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                username,
+                rawPassword
+        ));
+
         User fetchedUser = userRepository.findUserByUsername(username);
-        if (fetchedUser == null) {
-            return ResponseHelper.unauthorized(null, messageHelper.getMessage("admin.authController.auth.error.unauthorized"));
-        }
-
-        if (!PasswordUtils.verifyPassword(rawPassword, fetchedUser.getPassword())) {
-            return ResponseHelper.unauthorized(null, messageHelper.getMessage("admin.authController.auth.error.unauthorized"));
-        }
-
         closeAllPriorSessions(fetchedUser.getUserId());
 
         Session newSession = Session
@@ -74,7 +81,11 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         sessionRepository.save(newSession);
-        return ResponseHelper.ok(newSession, HttpStatus.ACCEPTED, messageHelper.getMessage("admin.authController.auth.info.authorized"));
+        Set<UserRole> userRoles = fetchedUser.getUserRoles();
+        Set<Role> roles = new HashSet<>();
+        userRoles.forEach(userRole -> roles.add(userRole.getRole()));
+        return ResponseHelper.ok(jwtUtils.generateToken(username, roles),
+                HttpStatus.OK, messageHelper.getMessage("admin.authController.auth.info.authorized"));
     }
 
     @Override
@@ -85,7 +96,7 @@ public class AuthServiceImpl implements AuthService {
                 ));
         session.setToTime(LocalDateTime.now());
         sessionRepository.save(session);
-        return ResponseHelper.ok(session, HttpStatus.ACCEPTED, messageHelper.getMessage("admin.authController.auth.info.leave"));
+        return ResponseHelper.ok(session, HttpStatus.OK, messageHelper.getMessage("admin.authController.auth.info.leave"));
     }
 
     /* -------------------------------------------------- Private Methods ------------------------------------------------------- */

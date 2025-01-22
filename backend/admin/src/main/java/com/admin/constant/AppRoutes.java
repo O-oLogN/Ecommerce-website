@@ -3,6 +3,7 @@ package com.admin.constant;
 public final class AppRoutes {
     public static final class REQUEST_MAPPING {
         public static final String AUTH = "/admin/auth";
+        public static final String ROLE = "/admin/role";
         public static final String ITEM = "/admin/item";
         public static final String CATEGORY = "/admin/category";
         public static final String USER = "/admin/user";
@@ -12,6 +13,11 @@ public final class AppRoutes {
     public static final class REQUEST_PATH {
         public static final String SIGN_IN = "/sign_in";    // TESTED
         public static final String SIGN_OUT = "/sign_out";    // TESTED
+
+        public static final String SEARCH_ROLE = "/search";
+        public static final String CREATE_ROLE = "/create";
+        public static final String DELETE_ROLE = "/delete";
+        public static final String UPDATE_ROLE = "/update";
 
         public static final String UPDATE_ITEM = "/update";    // TESTED
         public static final String DELETE_ITEM = "/delete";    // TESTED

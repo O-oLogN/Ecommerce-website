@@ -4,21 +4,23 @@ import com.admin.constant.CoreConstants;
 import com.admin.dto.request.auth.CreateUserRequest;
 import com.admin.dto.request.user.SearchUserRequest;
 import com.admin.dto.request.user.UpdateUserRequest;
+import com.admin.entities.Role;
 import com.admin.entities.User;
+import com.admin.entities.UserRole;
 import com.admin.exception.UserNotFoundException;
 import com.admin.helper.MessageHelper;
 import com.admin.helper.ResponseHelper;
 import com.admin.model.PageInfo;
 import com.admin.model.PagingResponse;
 import com.admin.model.QueryRequest;
+import com.admin.repository.RoleRepository;
 import com.admin.repository.UserRepository;
+import com.admin.repository.UserRoleRepository;
 import com.admin.service.UserService;
 import com.admin.specification.UserSpecification;
 import com.admin.utils.PasswordUtils;
 import com.admin.utils.SortUtils;
 import com.admin.utils.ValidationUtils;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.*;
 import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -41,10 +42,10 @@ import java.util.UUID;
 @Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final UserRoleRepository userRoleRepository;
 
     private final UserSpecification userSpecification;
-
-    private final EntityManager entityManager;
 
     private final MessageHelper messageHelper;
 
@@ -53,6 +54,7 @@ public class UserServiceImpl implements UserService {
         String username = createUserRequest.getUsername();
         String rawPassword = createUserRequest.getPassword();
         String email = createUserRequest.getEmail();
+        String roleId = createUserRequest.getRoleId();
         String createUser = CoreConstants.ADMINISTRATOR.ADMIN;
         LocalDateTime createDatetime = LocalDateTime.now();
 
@@ -77,8 +79,19 @@ public class UserServiceImpl implements UserService {
                 .createDatetime(createDatetime)
                 .build();
 
+        UserRole newUserRole = UserRole
+                .builder()
+                .userRoleId(UUID.randomUUID().toString())
+                .user(newUser)
+                .role(roleRepository.findRoleByRoleId(roleId))
+                .createUser(createUser)
+                .createDatetime(createDatetime)
+                .build();
+
         userRepository.save(newUser);
-        return ResponseHelper.ok(newUser, HttpStatus.CREATED, messageHelper.getMessage("admin.userController.createUser.info.success"));
+        userRoleRepository.save(newUserRole);
+
+        return ResponseHelper.ok(newUser, HttpStatus.OK, messageHelper.getMessage("admin.userController.createUser.info.success"));
     }
 
     @Override
@@ -86,6 +99,7 @@ public class UserServiceImpl implements UserService {
         String userId = updateUserRequest.getUserId();
         String username = updateUserRequest.getUsername();
         String email = updateUserRequest.getEmail();
+        List<String> roleIds = updateUserRequest.getRoleIds();
 
         if (ValidationUtils.isNullOrEmpty(userId)) {
             throw new ValidationException(
@@ -98,13 +112,31 @@ public class UserServiceImpl implements UserService {
             );
         }
 
+        List<Role> roles = new ArrayList<>();
+        roleIds.forEach(roleId ->
+            roles.add(roleRepository.findRoleByRoleId(roleId))
+        );
         User user = userRepository.findUserByUserId(userId);
+
+        roles.forEach(role -> {
+             UserRole newUserRole = UserRole
+                     .builder()
+                     .userRoleId(UUID.randomUUID().toString())
+                     .user(user)
+                     .role(role)
+                     .createUser(CoreConstants.ADMINISTRATOR.ADMIN)
+                     .createDatetime(LocalDateTime.now())
+                     .build();
+             userRoleRepository.save(newUserRole);
+        });
+
         user.setUsername(username);
         user.setEmail(email);
         user.setModifyUser(CoreConstants.ADMINISTRATOR.ADMIN);
         user.setModifyDatetime(LocalDateTime.now());
 
         userRepository.save(user);
+
         return ResponseHelper.ok(user, HttpStatus.OK, messageHelper.getMessage("admin.userController.update.info.success"));
     }
 
@@ -114,7 +146,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException(
                     messageHelper.getMessage("admin.userController.delete.user.find.error.notFound")
                 ));
-        userRepository.delete(user);
+
+        List<UserRole> userRoles = userRoleRepository.findUserRolesByUser(user);
+
+        userRoleRepository.deleteAll(userRoles);        // First
+        userRepository.delete(user);                    // Then
+
         return ResponseHelper.ok(user, HttpStatus.OK, messageHelper.getMessage("admin.userController.delete.info.success"));
     }
 

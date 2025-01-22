@@ -28,7 +28,7 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.SIGN_IN)
-    public ResponseEntity<?> signinAuthentication(@Valid @RequestBody SignInRequest signInRequest) throws Exception {
+    public ResponseEntity<?> signIn(@Valid @RequestBody SignInRequest signInRequest) throws Exception {
         return authService.signIn(signInRequest);
     }
 

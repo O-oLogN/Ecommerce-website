@@ -2,6 +2,8 @@ package com.admin.entities;
 
 import com.admin.constant.CoreConstants;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,6 +11,9 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -56,4 +61,18 @@ public class User {
     @JsonFormat(pattern = CoreConstants.DateTimePattern.FORMAT_24H)
     private LocalDateTime modifyDatetime;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<UserRole> userRoles;
+
+    @Transient
+    @JsonProperty("roles")
+    public Set<String> getRoleNames() {
+        if (userRoles != null) {
+            return userRoles.stream()
+                    .map(userRole -> userRole.getRole().getName())
+                    .collect(Collectors.toSet());
+        }
+        return Collections.emptySet();
+    }
 }
