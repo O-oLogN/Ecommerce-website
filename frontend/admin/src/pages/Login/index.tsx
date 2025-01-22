@@ -7,7 +7,13 @@ import { useMessageContext } from '../../components'
 import { MessageContextProps } from '../../components/MessageContext/types'
 import React, { useState } from "react"
 
-const Login = () => {
+interface LoginPageProps {
+    setAppAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+interface LoginProps extends LoginPageProps {}
+
+const Login: React.FC<LoginProps> = (props: LoginProps) => {
     const [formInstance] = Form.useForm()
     const form: FormInstance<LoginForm> = formInstance
     const {
@@ -16,6 +22,10 @@ const Login = () => {
         setLoginRequest,
         setAuthenticated,
     } = useLoginContext() as LoginContextProps
+    
+    const {
+        setAppAuthenticated
+    } = props
 
     const { messageApi } = useMessageContext() as MessageContextProps
 
@@ -49,6 +59,7 @@ const Login = () => {
     React.useEffect(() => {
         if (authenticated) {
             messageApi.success('Login successfully!')
+            setAppAuthenticated(true)
         }
         else if (authenticated === false) {
             messageApi.error('Invalid username or password!')
@@ -90,10 +101,10 @@ const Login = () => {
     )
 }
 
-export const LoginPage = () => {
+export const LoginPage: React.FC<LoginPageProps> = (props: LoginPageProps) => {
     return (
         <LoginContextProvider>
-            <Login />
+            <Login setAppAuthenticated={props.setAppAuthenticated} />
         </LoginContextProvider>
     )
 }

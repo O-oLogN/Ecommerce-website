@@ -10,3 +10,8 @@ export interface IBaseData {
     modifyUser?: string | undefined
     modifyDatetime?: string | undefined
 }
+
+export interface AppContextProps {
+    authenticated: boolean
+    setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
+}

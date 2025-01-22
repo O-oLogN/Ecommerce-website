@@ -9,7 +9,6 @@ import { CreateItemForm } from '../modal/CreateItemForm.tsx'
 import { HttpStatusCode } from 'axios'
 import { imageToUrl } from '../../../../tools/ImageUtils.ts'
 import { TableData } from '../types'
-import { CategoryInfo } from 'src/types'
 import _ from 'lodash'
 
 interface TableColumn {
@@ -41,7 +40,6 @@ export const ItemList = () => {
     const [pageNumber, setPageNumber] = useState<number>(0)
     const [pageSize, setPageSize] = useState<number>(10)
     const [searchBarValue, setSearchBarValue] = useState<string>('')
-    const [categories, setCategories] = useState<CategoryInfo[]>([])
     const {
         searchResponse,
         itemList,
@@ -158,10 +156,7 @@ export const ItemList = () => {
                 return searchCategoryResponse.data
             })
             const resolvedCategories =  await Promise.all(categoryPromies)
-            const filteredCategories = _.uniqBy(resolvedCategories.filter(category => category), 'categoryId')
-
-            setCategories([...filteredCategories])
-
+            
             const updatedData = itemList!.map((item, index) => {
                 return {
                     key: index.toString(),
@@ -269,7 +264,6 @@ export const ItemList = () => {
                           setIsOpenForm={setIsOpenEditForm}
                           editHelper={editHelper}
                           refetchItemList={refetchItemList}
-                          categories={categories}
                           messageApi={messageApi}
             />
             <CreateItemForm isOpenForm={isOpenCreateForm}

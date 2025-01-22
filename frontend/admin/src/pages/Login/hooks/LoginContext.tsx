@@ -35,7 +35,7 @@ export const LoginContextProvider = ({children}: {children: ReactNode }) => {
             if (response.data.status === HttpStatusCode.Ok || response.data.status === HttpStatusCode.Accepted) {
                 console.log('CONTEXT - login successfully')
                 setAuthenticated(true)
-                localStorage.setItem(localStorageKeys.SESSION, JSON.stringify(response.data.data))
+                localStorage.setItem(localStorageKeys.JWT, btoa(response.data.data))
             }
             else {
                 setAuthenticated(false)

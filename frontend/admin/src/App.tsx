@@ -1,0 +1,47 @@
+import {message} from 'antd'
+import {LoginPage} from "./pages/Login"
+import {QueryClient, QueryClientProvider} from "react-query"
+import {useAppContext} from './hooks/AppContext.tsx'
+import {AppContextProps} from './types'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {
+    UserManagementPage, 
+    CategoryManagementPage,
+    ItemManagementPage,
+} from './pages'
+import Layout from './layout'
+
+export const App = () => {
+    const queryClient = new QueryClient()
+    message.config({
+        maxCount: 1,
+    })
+    const {
+        authenticated,
+        setAuthenticated: setAppAuthenticated,
+    } = useAppContext() as AppContextProps
+    return (
+        <QueryClientProvider client={ queryClient }>
+            <Router>
+                <Routes>
+                    <Route path="/login" element={<LoginPage
+                        setAppAuthenticated={setAppAuthenticated}
+                    />}
+                    />
+                    { !authenticated && <Route path="/" element={<LoginPage
+                        setAppAuthenticated={setAppAuthenticated}
+                    />}
+                    />
+                    }
+                    { authenticated &&
+                        <Route path="/" element={<Layout />}>
+                            <Route path="user-management" element={<UserManagementPage />} />
+                            <Route path="category-management" element={<CategoryManagementPage />} />
+                            <Route path="item-management" element={<ItemManagementPage />} />
+                        </Route>
+                    }
+                </Routes>
+            </Router>
+        </QueryClientProvider>
+    )
+}

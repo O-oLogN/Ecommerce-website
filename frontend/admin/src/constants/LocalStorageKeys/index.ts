@@ -1,3 +1,3 @@
 export const localStorageKeys = {
-    SESSION: 'session',
+    JWT: 'jwt',
 }

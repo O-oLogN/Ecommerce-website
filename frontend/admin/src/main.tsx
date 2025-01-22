@@ -1,36 +1,15 @@
+import {AppContextProvider} from './hooks/AppContext.tsx'
+import {App} from './App.tsx'
 import {createRoot} from 'react-dom/client'
-import {message} from 'antd'
-import {LoginPage} from "./pages/Login"
-import {QueryClient, QueryClientProvider} from "react-query"
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
-import {
-    UserManagementPage, 
-    CategoryManagementPage,
-    ItemManagementPage,
-} from './pages'
-import Layout from './layout'
 
-const App = () => {
-    const queryClient = new QueryClient()
-    message.config({
-        maxCount: 1,
-    })
+const AppWrapper = () => {
     return (
-        <QueryClientProvider client={ queryClient }>
-            <Router>
-                <Routes>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/" element={<Layout />}>
-                        <Route path="user-management" element={<UserManagementPage />} />
-                        <Route path="category-management" element={<CategoryManagementPage />} />
-                        <Route path="item-management" element={<ItemManagementPage />} />
-                    </Route>
-                </Routes>
-            </Router>
-        </QueryClientProvider>
+        <AppContextProvider>
+            <App />
+        </AppContextProvider>
     )
 }
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
-root.render(<App />);
+root.render(<AppWrapper />);

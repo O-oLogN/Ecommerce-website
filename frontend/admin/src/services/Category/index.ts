@@ -23,7 +23,7 @@ export const useSearchCategory=
         async () => {
             const response = await axiosInstance.post<IBaseResponse<IPagingResponse<ISearchCategoryResponse>>>(
                 REQUEST_MAPPING.CATEGORY + REQUEST_PATH.SEARCH_CATEGORY_BY_NAME,
-                params
+                params,
             )
             return response.data
         },
