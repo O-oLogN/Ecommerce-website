@@ -8,6 +8,7 @@ export interface IEditUserRequest {
     userId: string
     username: string
     email: string | null
+    roleIds: string[] | null
 }
 
 export interface IDeleteUserRequest {
@@ -18,6 +19,7 @@ export interface ICreateUserRequest {
     username: string
     password: string
     email: string | null
+    roleIds: string[] | null
 }
 
                                     /* RESPONSES */                          

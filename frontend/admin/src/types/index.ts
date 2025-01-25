@@ -1,8 +1,11 @@
+import React from "react";
+
 export * from './QueryRequest'
 export * from './PagingResponse'
 export * from './UserInfo'
 export * from './CategoryInfo'
 export * from './ItemInfo'
+export * from './RoleInfo'
 
 export interface IBaseData {
     createUser: string | undefined

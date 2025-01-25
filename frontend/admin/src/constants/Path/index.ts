@@ -3,7 +3,8 @@ export const REQUEST_MAPPING = {
     ITEM: "/admin/item",
     CATEGORY: "/admin/category",
     USER: "/admin/user",
-    ORDER: "/admin/order"
+    ORDER: "/admin/order",
+    ROLE: "/admin/role",
 }
 
 export const REQUEST_PATH = {
@@ -25,6 +26,11 @@ export const REQUEST_PATH = {
     DELETE_USER: "/delete",
     CREATE_USER: "/create",
     SEARCH_USER: "/search",
+
+    UPDATE_ROLE: "/update",
+    DELETE_ROLE: "/delete",
+    CREATE_ROLE: "/create",
+    SEARCH_ROLE: "/search",
 
     DELETE_CHILD_ORDER: "/delete-child-order",
     DELETE_TOTAL_ORDER: "/delete-total-order",

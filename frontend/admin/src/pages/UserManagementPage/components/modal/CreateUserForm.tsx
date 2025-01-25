@@ -1,11 +1,9 @@
-import {Modal, Form, Input} from 'antd'
-import React, {useState} from 'react'
+import {Modal, Form, Input, Checkbox, message} from 'antd'
+import React, {useEffect, useState} from 'react'
 import {UserInfo} from 'src/types'
-import {EyeOutlined, EyeInvisibleOutlined} from '@ant-design/icons'
-import {useCreateUser} from '../../../../services'
+import {useCreateUser, useSearchRole} from '../../../../services'
 import {HttpStatusCode} from 'axios'
 import {ICreateUserRequest} from 'src/services/types'
-import {message} from 'antd'
 
 interface CreateUserFormProps {
     isOpenForm: boolean
@@ -13,6 +11,11 @@ interface CreateUserFormProps {
     createHelper: ReturnType<typeof useCreateUser>
     refetchUserList: () => void
     messageApi: typeof message
+}
+
+type Option = {
+    label: string
+    value: string
 }
 
 const handleSubmitForm = async (
@@ -41,9 +44,9 @@ const handleSubmitForm = async (
     catch (error) {
         console.log('ERROR - user created failed!')
         const errObj = error as any
-        messageApi.error(errObj.status + '::'
-            + errObj.code + '::'
-            + errObj.response.data.error + '-'
+        messageApi.error(errObj.status + ' - '
+            + errObj.code + ' - '
+            + errObj.response.data.error + ' - '
             + errObj.response.data.message)
     }
     finally {
@@ -60,14 +63,49 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
                                                               messageApi,
                                                           }) => {
     const [form] = Form.useForm()
-    const [visiblePassword, setVisiblePassword] = useState<boolean>(false)
-    const onClickVisiblePassword = (visiblePassword: boolean) => {
-        setVisiblePassword(!visiblePassword)
-    }
+    const [checkedRoles, setCheckedRoles] = useState<string[]>([])
+    const [roleOptions, setRoleOptions] = useState<Option[]>([])
+
     const handleCancel = () => {
         form.resetFields()
         setIsOpenForm(false)
     }
+
+    const onCheckboxGroupChange = (checkedValues: string[]) => {
+        console.log(checkedValues)
+        setCheckedRoles(checkedValues)
+    }
+
+
+    const searchRoleResponse = useSearchRole({
+        sample: {
+            roleName: ''
+        },
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 100,
+        },
+        ordersBy: {
+
+        }
+    })
+
+    useEffect(() => {
+        if (!searchRoleResponse.data) {
+            console.log('searchRoleResponse.data is undefined')
+        }
+        else {
+            console.log('searchRoleResponse', searchRoleResponse.data.data.content)
+            const rolesFound =  searchRoleResponse.data.data.content
+            const newRoleOptions = rolesFound!.map(role => ({
+                label: role.name,
+                value: role.roleId
+            }) as Option)
+
+            setRoleOptions(newRoleOptions)
+        }
+    }, [searchRoleResponse.data]);
+
     return (
         <Modal title="Create user form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
             <Form form={form}
@@ -76,14 +114,16 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
                       const username= formVal.username
                       const password = formVal.password
                       const email = formVal.email || null
+                      const roleIds = checkedRoles
 
-                      handleSubmitForm(
+                      await handleSubmitForm(
                           createHelper,
                           setIsOpenForm,
                           {
                               username,
                               password,
-                              email
+                              email,
+                              roleIds,
                           },
                           refetchUserList,
                           messageApi,
@@ -102,18 +142,40 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
                     label="Password"
                     rules={[{required: true, message: 'Password is required'}]}
                 >
-                    <Input.Password
-                        suffix={visiblePassword
-                            ? <EyeOutlined onClick={() => onClickVisiblePassword(visiblePassword)} />
-                            : <EyeInvisibleOutlined onClick={() => onClickVisiblePassword(visiblePassword)}/>}
-
-                    />
+                    <Input.Password />
+                </Form.Item>
+                <Form.Item
+                    name="retypePassword"
+                    label="Retype password"
+                    dependencies={['password']}
+                    rules={[
+                        {required: true, message: 'Retype your password!'},
+                        ({ getFieldValue }) => ({
+                            validator(_, value) {
+                                if (!value || getFieldValue('password') === value) {
+                                    return Promise.resolve();
+                                }
+                                return Promise.reject(new Error('Passwords do not match!'));
+                            },
+                        }),
+                    ]}
+                >
+                    <Input.Password />
                 </Form.Item>
                 <Form.Item
                     name="email"
                     label="Email"
                 >
                     <Input type="email" />
+                </Form.Item>
+                <Form.Item
+                    name="roles"
+                    label="Roles"
+                >
+                    <Checkbox.Group
+                        options={roleOptions}
+                        onChange={onCheckboxGroupChange}
+                    />
                 </Form.Item>
             </Form>
         </Modal>

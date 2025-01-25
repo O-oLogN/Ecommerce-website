@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios"
 
 export const axiosInstance = axios.create({
     baseURL: 'http://localhost:8081',
@@ -11,3 +11,4 @@ export * from './User'
 export * from './Auth'
 export * from './Category'
 export * from './Item'
+export * from './Role'

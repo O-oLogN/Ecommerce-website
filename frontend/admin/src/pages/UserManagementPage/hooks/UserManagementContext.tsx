@@ -20,7 +20,7 @@ const UserManagementContext = React.createContext<UserManagementContextProps>({
         },
         pageInfo: {
             pageNumber: 0,
-            pageSize: 10
+            pageSize: 100
         },
         ordersBy: {
 
@@ -88,7 +88,7 @@ export const UserManagementContextProvider = ({children}: {children: React.React
         },
         pageInfo: {
             pageNumber: 0,
-            pageSize: 10
+            pageSize: 100
         },
         ordersBy: {
 

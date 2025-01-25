@@ -1,4 +1,4 @@
-import {IPagingResponse, IQueryRequest} from "src/types"
+import {IPagingResponse, IQueryRequest} from "../../types"
 import {useQuery, useMutation} from "react-query"
 import {axiosInstance} from "../index.ts";
 import {REQUEST_MAPPING, REQUEST_PATH} from "../../constants"
@@ -52,10 +52,9 @@ export const useDeleteUser= () => {
         (params: IDeleteUserRequest) => {
             const queryParams = new URLSearchParams({
                 userId: params.userId,
-            }).toString();
+            }).toString()
             return axiosInstance.post<IBaseResponse<IDeleteUserResponse>>(
-                REQUEST_MAPPING.USER + REQUEST_PATH.DELETE_USER,
-                queryParams
+                `${REQUEST_MAPPING.USER}${REQUEST_PATH.DELETE_USER}?${queryParams}`
             )
         },
     )

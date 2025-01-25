@@ -6,6 +6,7 @@
   ],
   "compilerOptions": {
     "strict": true,
+    "jsx": "react-jsx",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,

@@ -7,8 +7,7 @@ const AppContext = React.createContext<AppContextProps>({
 })
 
 export const AppContextProvider = ({ children } : { children: React.ReactNode }) => {
-    const [authenticated, setAuthenticated] = React.useState<boolean>(false)
-    console.log(authenticated)
+    const [authenticated, setAuthenticated] = React.useState<boolean>(true)
     const value = {
         authenticated,
         setAuthenticated,

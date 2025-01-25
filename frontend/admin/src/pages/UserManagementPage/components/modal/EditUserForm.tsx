@@ -1,9 +1,9 @@
-import {Modal, Form, Input} from 'antd'
-import React from 'react'
+import {Modal, Form, Input, Checkbox} from 'antd'
+import React, {useState, useEffect} from 'react'
 import {UserInfo} from 'src/types'
-import {useEditUser} from '../../../../services'
+import {useEditUser, useSearchRole} from '../../../../services'
 import {HttpStatusCode} from 'axios'
-import {IEditUserRequest} from 'src/services/types'
+import {IEditUserRequest} from '../../../../services/types'
 import {message} from 'antd'
 
 interface EditUserFormProps {
@@ -14,6 +14,11 @@ interface EditUserFormProps {
     userList?: UserInfo[] | undefined
     refetchUserList: () => void
     messageApi: typeof message
+}
+
+type Option = {
+    label: string
+    value: string
 }
 
 const handleSubmitForm = async (
@@ -43,9 +48,9 @@ const handleSubmitForm = async (
     catch (error) {
         console.log('ERROR - user updated failed!')
         const errObj = error as any
-        messageApi.error(errObj.status + '::'
-            + errObj.code + '::'
-            + errObj.response.data.error + '-'
+        messageApi.error(errObj.status + ' - '
+            + errObj.code + ' - '
+            + errObj.response.data.error + ' - '
             + errObj.response.data.message)
     }
     finally {
@@ -63,12 +68,61 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
   messageApi,
 }) => {
     const [form] = Form.useForm()
+    const [checkedRoleIds, setCheckedRoleIds] = useState<string[]>([])
+    const [roleOptions, setRoleOptions] = useState<Option[]>([])
+
     const handleCancel = () => {
         form.resetFields()
         setIsOpenForm(false)
     }
 
-    React.useEffect(() => {
+    const onCheckboxGroupChange = (checkedValues: string[]) => {
+        console.log('checkedValues', checkedValues)
+        setCheckedRoleIds(checkedValues)
+    }
+
+    const searchRoleResponse = useSearchRole({
+        sample: {
+            roleName: ''
+        },
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 100,
+        },
+        ordersBy: {
+
+        }
+    })
+
+    useEffect(() => {
+        if (!searchRoleResponse.data) {
+            console.log('searchRoleResponse.data is undefined')
+        }
+        else {
+            console.log('searchRoleResponse', searchRoleResponse.data.data.content)
+            const rolesFound = searchRoleResponse.data.data.content
+            const newRoleOptions = rolesFound!.map(role => ({
+                label: role.name,
+                value: role.roleId
+            }) as Option)
+
+            const rolesArr = initialValues && initialValues.roles ? (initialValues.roles as unknown as string).split(', ') : []
+            const newDefaultRoleOptions: string[] = []
+            if (rolesArr.length) {
+                rolesArr.forEach(roleName => {
+                    newDefaultRoleOptions.push(rolesFound!.find(role =>
+                        role.name === roleName
+                    )!.roleId)
+                })
+            }
+
+            setRoleOptions(newRoleOptions)
+            setCheckedRoleIds(newDefaultRoleOptions)
+        }
+    }, [searchRoleResponse.data, initialValues])
+
+
+    useEffect(() => {
         if (initialValues) {
             form.setFieldsValue(initialValues)
         }
@@ -82,20 +136,21 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
                       const userId = initialValues!.userId
                       const username= formVal.username
                       const email = formVal.email || null
+                      const roleIds = checkedRoleIds
                       
-                      handleSubmitForm(
+                      await handleSubmitForm(
                           editHelper,
                           setIsOpenForm,
                           {
                               userId,
                               username,
-                              email
+                              email,
+                              roleIds,
                           },
                           refetchUserList,
                           messageApi,
                       )
                   }}
-                  initialValues={initialValues}
             >
                 <Form.Item
                     name="username"
@@ -133,6 +188,15 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
                     label="Modify date time"
                 >
                     <Input disabled />
+                </Form.Item>
+                <Form.Item
+                    label="Roles"
+                >
+                    <Checkbox.Group
+                        options={roleOptions}
+                        value={checkedRoleIds}
+                        onChange={onCheckboxGroupChange}
+                    />
                 </Form.Item>
             </Form>
         </Modal>

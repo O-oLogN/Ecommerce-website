@@ -47,7 +47,7 @@ export const UserList = () => {
         refetchUserList,
     } = useUserManagementContext()
     const {messageApi} = useMessageContext()
-    const columnNames = ['Username', 'Email', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
+    const columnNames = ['Username', 'Email', 'Create user', 'Create date time', 'Modify user', 'Modify date time', 'Roles']
     const [pageNumber, setPageNumber] = useState<number>(0)
     const [pageSize, setPageSize] = useState<number>(10)
     const [searchBarValue, setSearchBarValue] = useState<string>('')
@@ -104,9 +104,9 @@ export const UserList = () => {
         catch (error) {
             console.log('ERROR - user deleted failed!')
             const errObj = error as any
-            messageApi.error(errObj.status + '::'
-                + errObj.code + '::'
-                + errObj.response.data.error + '-'
+            messageApi.error(errObj.status + ' - '
+                + errObj.code + ' - '
+                + errObj.response.data.error + ' - '
                 + errObj.response.data.message)
         }
         finally {
@@ -143,10 +143,18 @@ export const UserList = () => {
     }
 
     useEffect(() => {
+        const convertRolesArrToStr = (roles: string[]) => {
+            let rolesStr = ''
+            roles.map((role, index) => rolesStr += (!index ? '' : ', ') + `${role}`)
+            return rolesStr
+        }
         setData(
-            (userList || []).map((user, index) => ({
+            (userList || []).map((user, index) => Object.assign({
                 key: index.toString(),
                 ...user,
+            },
+            {
+                roles: convertRolesArrToStr(user.roles ?? []),
             }))
         )
 
