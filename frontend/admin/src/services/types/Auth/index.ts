@@ -1,7 +1,4 @@
-import {LoginForm} from 'src/pages/Login/types'
+import {LoginForm} from 'pages/Login/types'
 
-export interface IAuthResponse {
-    data?: string
-}
 
 export interface ILoginRequest extends LoginForm {}

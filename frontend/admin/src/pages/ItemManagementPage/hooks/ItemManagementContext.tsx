@@ -4,11 +4,11 @@ import {
     IEditItemRequest,
     IDeleteItemRequest,
     ICreateItemRequest,
-} from '../../../services/types'
+} from 'services/types'
 import React, {useContext, useState} from 'react'
-import {useSearchItem, useEditItem, useDeleteItem, useCreateItem, useSearchCategoryById} from '../../../services'
+import {useSearchItem, useEditItem, useDeleteItem, useCreateItem, useSearchCategoryById} from 'services'
 import {HttpStatusCode} from 'axios'
-import {ItemInfo, IQueryRequest} from 'src/types'
+import {ItemInfo, IQueryRequest} from 'types'
 
 const ItemManagementContext = React.createContext<ItemManagementContextProps>({
     searchResponse: undefined,
@@ -69,7 +69,7 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
         isLoading: false,
         isSuccess: false,
     } as unknown as ReturnType<typeof useSearchCategoryById>,
-    refetchItemList: () => {},
+    reFetchItemList: () => {},
 })
 
 export const ItemManagementContextProvider = ({children}: {children: React.ReactNode}) => {
@@ -111,7 +111,7 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
     })
                                     /* Search */
     const searchResponse = useSearchItem(searchRequest)
-    const refetchItemList = searchResponse.refetch
+    const reFetchItemList = searchResponse.refetch
 
     console.log('searchResponse', searchResponse)
 
@@ -159,7 +159,7 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         deleteHelper,
         createHelper,
         searchCategoryHelper,
-        refetchItemList,
+        reFetchItemList,
     }
     
     return (

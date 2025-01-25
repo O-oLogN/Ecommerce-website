@@ -1,4 +1,4 @@
-import {IBaseData} from '../index.ts'
+import {IBaseData} from 'types'
 
 export interface CategoryInfo extends IBaseData {
     categoryId: string

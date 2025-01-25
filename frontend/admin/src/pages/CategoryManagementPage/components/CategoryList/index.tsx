@@ -1,8 +1,8 @@
 import { Table, Space, Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import { CategoryInfo } from 'src/types'
+import { CategoryInfo } from 'types'
 import { useCategoryManagementContext } from '../../hooks/CategoryManagementContext.tsx'
-import { useMessageContext } from '../../../../components'
+import { useMessageContext } from 'components'
 import React, { useState, useEffect } from 'react'
 import { SearchBar } from '../SearchBar'
 import { EditCategoryForm } from '../modal/EditCategoryForm.tsx'
@@ -46,7 +46,7 @@ export const CategoryList = () => {
         editHelper,
         deleteHelper,
         createHelper,
-        refetchCategoryList,
+        reFetchCategoryList,
     } = useCategoryManagementContext()
     const {messageApi} = useMessageContext()
     const columnNames = ['Category code', 'Category name', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
@@ -103,13 +103,13 @@ export const CategoryList = () => {
         catch (error) {
             console.log('ERROR - category deleted failed!')
             const errObj = error as any
-            messageApi.error(errObj.status + '::'
-                + errObj.code + '::'
-                + errObj.response.data.error + '-'
+            messageApi.error(errObj.status + ' - '
+                + errObj.code + ' - '
+                + errObj.response.data.error + ' - '
                 + errObj.response.data.message)
         }
         finally {
-            refetchCategoryList()
+            reFetchCategoryList()
         }
     }
 
@@ -214,14 +214,14 @@ export const CategoryList = () => {
                           isOpenForm={isOpenEditForm}
                           setIsOpenForm={setIsOpenEditForm}
                           editHelper={editHelper}
-                          refetchCategoryList={refetchCategoryList}
+                          reFetchCategoryList={reFetchCategoryList}
                           messageApi={messageApi}    
                           
             />
             <CreateCategoryForm isOpenForm={isOpenCreateForm}
                               setIsOpenForm={setIsOpenCreateForm}
                               createHelper={createHelper}
-                              refetchCategoryList={refetchCategoryList} 
+                              reFetchCategoryList={reFetchCategoryList} 
                               messageApi={messageApi}
             />
         </>

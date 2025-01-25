@@ -4,11 +4,11 @@ import {
     IEditCategoryRequest,
     IDeleteCategoryRequest,
     ICreateCategoryRequest,
-} from '../../../services/types'
+} from 'services/types'
 import React, {useContext, useState} from 'react'
-import {useSearchCategory, useEditCategory, useDeleteCategory, useCreateCategory} from '../../../services/Category'
+import {useSearchCategory, useEditCategory, useDeleteCategory, useCreateCategory} from 'services'
 import {HttpStatusCode} from 'axios'
-import {CategoryInfo, IQueryRequest} from 'src/types'
+import {CategoryInfo, IQueryRequest} from 'types'
 
 const CategoryManagementContext = React.createContext<CategoryManagementContextProps>({
     categoryList: [],
@@ -58,7 +58,7 @@ const CategoryManagementContext = React.createContext<CategoryManagementContextP
         isLoading: false,
         isSuccess: false,
     } as unknown as ReturnType<typeof useCreateCategory>,
-    refetchCategoryList: () => {},
+    reFetchCategoryList: () => {},
 })
 
 export const CategoryManagementContextProvider = ({children}: {children: React.ReactNode}) => {
@@ -95,7 +95,7 @@ export const CategoryManagementContextProvider = ({children}: {children: React.R
 
                                     /* Search */
     const searchResponse = useSearchCategory(searchRequest)
-    const refetchCategoryList = searchResponse.refetch
+    const reFetchCategoryList = searchResponse.refetch
     console.log('searchResponse', searchResponse)
     React.useEffect(() => {
         if (!searchResponse) {
@@ -138,7 +138,7 @@ export const CategoryManagementContextProvider = ({children}: {children: React.R
         editHelper,
         deleteHelper,
         createHelper,
-        refetchCategoryList,
+        reFetchCategoryList,
     }
     
     return (

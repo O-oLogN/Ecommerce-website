@@ -1,7 +1,7 @@
 import {useQuery} from "react-query"
-import {axiosInstance} from "../index.ts";
-import {REQUEST_MAPPING, REQUEST_PATH} from "../../constants"
-import {ILoginRequest, IBaseResponse} from "src/services/types";
+import {axiosInstance} from "../index.ts"
+import {REQUEST_MAPPING, REQUEST_PATH} from "constants/Path"
+import {ILoginRequest, IBaseResponse} from "services/types"
 
 export const useLogin=
     (params: ILoginRequest) => {

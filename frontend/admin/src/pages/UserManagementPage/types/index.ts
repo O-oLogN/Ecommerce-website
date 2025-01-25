@@ -1,11 +1,12 @@
-import {UserInfo, IQueryRequest} from 'src/types'
+import {UserInfo, IQueryRequest} from 'types'
 import {
     ISearchUserRequest, 
     IEditUserRequest, 
     IDeleteUserRequest,
     ICreateUserRequest,
-} from 'src/services/types'
-import {useSearchUser, useEditUser, useDeleteUser, useCreateUser} from 'src/services'
+} from 'services/types'
+import {useSearchUser, useEditUser, useDeleteUser, useCreateUser} from 'services'
+import React from "react";
 
 export interface UserManagementContextProps {
     searchResponse: ReturnType<typeof useSearchUser> | undefined
@@ -23,5 +24,5 @@ export interface UserManagementContextProps {
     editHelper: ReturnType<typeof useEditUser>
     deleteHelper: ReturnType<typeof useDeleteUser>
     createHelper: ReturnType<typeof useCreateUser>
-    refetchUserList: () => void
+    reFetchUserList: () => void
 }

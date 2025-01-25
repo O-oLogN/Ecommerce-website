@@ -1,10 +1,10 @@
 import {Modal, Form, Input, Upload, Select, message} from 'antd'
 import {UploadOutlined} from '@ant-design/icons'
 import React, {useState} from 'react'
-import {ItemInfo, CategoryInfo} from 'src/types'
-import {useEditItem, useSearchCategory} from '../../../../services'
+import {ItemInfo, CategoryInfo} from 'types'
+import {useEditItem, useSearchCategory} from 'services'
 import {HttpStatusCode} from 'axios'
-import {IEditItemRequest} from 'src/services/types'
+import {IEditItemRequest} from 'services/types'
 import {TableData} from '../types'
 const {Dragger} = Upload
 
@@ -13,7 +13,7 @@ interface EditItemFormProps {
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     editHelper: ReturnType<typeof useEditItem>
-    refetchItemList: () => void
+    reFetchItemList: () => void
     messageApi: typeof message
 }
 
@@ -21,7 +21,7 @@ const handleSubmitForm = async (
     editHelper: ReturnType<typeof useEditItem>,
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     editRequest: IEditItemRequest,
-    refetchItemList: () => void,
+    reFetchItemList: () => void,
     messageApi: typeof message,
 ) => {
     try {
@@ -43,14 +43,14 @@ const handleSubmitForm = async (
     catch (error) {
         console.log('ERROR - item updated failed!')
         const errObj = error as any
-        messageApi.error(errObj.status + '::'
-            + errObj.code + '::'
-            + errObj.response.data.error + '-'
+        messageApi.error(errObj.status + ' - '
+            + errObj.code + ' - '
+            + errObj.response.data.error + ' - '
             + errObj.response.data.message)
     }
     finally {
         setIsOpenForm(false)
-        refetchItemList()
+        reFetchItemList()
     }
 }
 
@@ -59,7 +59,7 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
   isOpenForm,
   setIsOpenForm,
   editHelper,
-  refetchItemList,
+  reFetchItemList,
   messageApi,
 }) => {
     const [form] = Form.useForm()
@@ -134,7 +134,7 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                               image,
                               quantity
                           },
-                          refetchItemList,
+                          reFetchItemList,
                           messageApi,
                       )
                   }}

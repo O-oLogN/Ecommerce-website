@@ -1,15 +1,14 @@
 import { Table, Space, Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useItemManagementContext } from '../../hooks/ItemManagementContext.tsx'
-import { useMessageContext } from '../../../../components'
+import { useMessageContext } from 'components'
 import React, { useState, useEffect } from 'react'
 import { SearchBar } from '../SearchBar'
 import { EditItemForm } from '../modal/EditItemForm.tsx'
 import { CreateItemForm } from '../modal/CreateItemForm.tsx'
 import { HttpStatusCode } from 'axios'
-import { imageToUrl } from '../../../../tools/ImageUtils.ts'
+import { imageToUrl } from 'tools/ImageUtils.ts'
 import { TableData } from '../types'
-import _ from 'lodash'
 
 interface TableColumn {
     title: string
@@ -50,7 +49,7 @@ export const ItemList = () => {
         deleteHelper,
         createHelper,
         searchCategoryHelper,
-        refetchItemList,
+        reFetchItemList,
     } = useItemManagementContext()
     const {messageApi} = useMessageContext()
     const columnNames = ['Item name', 'Category code', 'Category name', 'Item price ($)', 'Image', 'Quantity', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
@@ -109,13 +108,13 @@ export const ItemList = () => {
         catch (error) {
             console.log('ERROR - item deleted failed!')
             const errObj = error as any
-            messageApi.error(errObj.status + '::'
-                + errObj.code + '::'
-                + errObj.response.data.error + '-'
+            messageApi.error(errObj.status + ' - '
+                + errObj.code + ' - '
+                + errObj.response.data.error + ' - '
                 + errObj.response.data.message)
         }
         finally {
-            refetchItemList()
+            reFetchItemList()
         }
     }
 
@@ -149,13 +148,13 @@ export const ItemList = () => {
 
     useEffect(() => {
         const setUpData = async() => {
-            const categoryPromies = itemList!.map(async (item) => {
+            const categoryPromises = itemList!.map(async (item) => {
                 const searchCategoryResponse = await searchCategoryHelper.mutateAsync({
                     categoryId: item.categoryId
                 })
                 return searchCategoryResponse.data
             })
-            const resolvedCategories =  await Promise.all(categoryPromies)
+            const resolvedCategories =  await Promise.all(categoryPromises)
             
             const updatedData = itemList!.map((item, index) => {
                 return {
@@ -201,7 +200,7 @@ export const ItemList = () => {
                     key: tableColumns.findIndex(col => col.dataIndex === 'image').toString(),
                     render: (record: TableData) => {
                         if (record.imageUrl)
-                            return <img src={record.imageUrl} style={{width: '100px', height: 'auto'}}/>
+                            return <img src={record.imageUrl} style={{width: '100px', height: 'auto'}} alt={''}/>
                         return <></>
                     }
                 }
@@ -229,8 +228,9 @@ export const ItemList = () => {
                 setColumns(tableColumns);
             }
         }
-        setUpData()
-    }, [itemList]);
+        setUpData().then(() => {})
+    }, [itemList])
+    
     return (
         <>
             <SearchBar onClick={onClickSearchBtn} onKeyDown={onKeyDown} />
@@ -263,13 +263,13 @@ export const ItemList = () => {
                           isOpenForm={isOpenEditForm}
                           setIsOpenForm={setIsOpenEditForm}
                           editHelper={editHelper}
-                          refetchItemList={refetchItemList}
+                          reFetchItemList={reFetchItemList}
                           messageApi={messageApi}
             />
             <CreateItemForm isOpenForm={isOpenCreateForm}
                           setIsOpenForm={setIsOpenCreateForm}
                           createHelper={createHelper}
-                          refetchItemList={refetchItemList}
+                          reFetchItemList={reFetchItemList}
                           messageApi={messageApi}
             />
         </>

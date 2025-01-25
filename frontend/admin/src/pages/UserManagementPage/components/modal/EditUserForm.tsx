@@ -1,9 +1,9 @@
 import {Modal, Form, Input, Checkbox} from 'antd'
 import React, {useState, useEffect} from 'react'
-import {UserInfo} from 'src/types'
-import {useEditUser, useSearchRole} from '../../../../services'
+import {UserInfo} from 'types'
+import {useEditUser, useSearchRole} from 'services'
 import {HttpStatusCode} from 'axios'
-import {IEditUserRequest} from '../../../../services/types'
+import {IEditUserRequest, ISearchRoleResponse} from 'services/types'
 import {message} from 'antd'
 
 interface EditUserFormProps {
@@ -12,7 +12,7 @@ interface EditUserFormProps {
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     editHelper: ReturnType<typeof useEditUser>
     userList?: UserInfo[] | undefined
-    refetchUserList: () => void
+    reFetchUserList: () => void
     messageApi: typeof message
 }
 
@@ -25,7 +25,7 @@ const handleSubmitForm = async (
     editHelper: ReturnType<typeof useEditUser>,
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     editRequest: IEditUserRequest,
-    refetchUserList: () => void,
+    reFetchUserList: () => void,
     messageApi: typeof message
 ) => {
     try {
@@ -55,7 +55,7 @@ const handleSubmitForm = async (
     }
     finally {
         setIsOpenForm(false)
-        refetchUserList()
+        reFetchUserList()
     }
 }
 
@@ -64,7 +64,7 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
   isOpenForm,
   setIsOpenForm,
   editHelper,
-  refetchUserList,
+  reFetchUserList,
   messageApi,
 }) => {
     const [form] = Form.useForm()
@@ -100,7 +100,7 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
         }
         else {
             console.log('searchRoleResponse', searchRoleResponse.data.data.content)
-            const rolesFound = searchRoleResponse.data.data.content
+            const rolesFound = searchRoleResponse.data.data.content as ISearchRoleResponse[]
             const newRoleOptions = rolesFound!.map(role => ({
                 label: role.name,
                 value: role.roleId
@@ -147,7 +147,7 @@ export const EditUserForm: React.FC<EditUserFormProps> = ({
                               email,
                               roleIds,
                           },
-                          refetchUserList,
+                          reFetchUserList,
                           messageApi,
                       )
                   }}

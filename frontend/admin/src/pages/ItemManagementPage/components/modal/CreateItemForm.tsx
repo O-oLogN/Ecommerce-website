@@ -1,17 +1,17 @@
 import {Modal, Form, Input, Select, Upload, message} from 'antd'
 import {UploadOutlined} from '@ant-design/icons'
 import React, {useState} from 'react'
-import {ItemInfo, CategoryInfo} from 'src/types'
-import {useCreateItem, useSearchCategory} from '../../../../services'
+import {ItemInfo, CategoryInfo} from 'types'
+import {useCreateItem, useSearchCategory} from 'services'
 import {HttpStatusCode} from 'axios'
-import {ICreateItemRequest} from 'src/services/types'
+import {ICreateItemRequest} from 'services/types'
 const {Dragger} = Upload
 
 interface CreateItemFormProps {
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     createHelper: ReturnType<typeof useCreateItem>
-    refetchItemList: () => void
+    reFetchItemList: () => void
     messageApi: typeof message
 }
 
@@ -19,7 +19,7 @@ const handleSubmitForm = async (
     createHelper: ReturnType<typeof useCreateItem>,
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     createRequest: ICreateItemRequest,
-    refetchItemList: () => void,
+    reFetchItemList: () => void,
     messageApi: typeof message,
 ) => {
     try {
@@ -41,14 +41,14 @@ const handleSubmitForm = async (
     catch (error) {
         console.log('ERROR - item created failed!')
         const errObj = error as any
-        messageApi.error(errObj.status + '::'
-            + errObj.code + '::'
-            + errObj.response.data.error + '-'
+        messageApi.error(errObj.status + ' - '
+            + errObj.code + ' - '
+            + errObj.response.data.error + ' - '
             + errObj.response.data.message)
     }
     finally {
         setIsOpenForm(false)
-        refetchItemList()
+        reFetchItemList()
     }
 }
 
@@ -56,7 +56,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                                                               isOpenForm,
                                                               setIsOpenForm,
                                                               createHelper,
-                                                              refetchItemList,
+                                                              reFetchItemList,
                                                               messageApi,
                                                           }) => {
     const [form] = Form.useForm()
@@ -118,7 +118,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                               image,
                               quantity
                           },
-                          refetchItemList,
+                          reFetchItemList,
                           messageApi,
                       )
                   }}

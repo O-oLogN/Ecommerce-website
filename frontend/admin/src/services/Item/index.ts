@@ -1,7 +1,7 @@
-import {IPagingResponse, IQueryRequest} from "../../types"
+import {IPagingResponse, IQueryRequest} from "types"
 import {useQuery, useMutation} from "react-query"
-import {axiosInstance} from "../index.ts";
-import {REQUEST_MAPPING, REQUEST_PATH} from "../../constants"
+import {axiosInstance} from "../index.ts"
+import {REQUEST_MAPPING, REQUEST_PATH} from "constants/Path"
 import {
     ISearchItemRequest,
     ISearchItemResponse,
@@ -12,7 +12,7 @@ import {
     ICreateItemRequest,
     ICreateItemResponse,
     IBaseResponse,
-} from "src/services/types"
+} from 'services/types'
 
 export const useSearchItem=
     (params: IQueryRequest<ISearchItemRequest>) => {
@@ -23,7 +23,6 @@ export const useSearchItem=
                     REQUEST_MAPPING.ITEM + REQUEST_PATH.SEARCH_ITEM,
                     params
                 )
-                // console.log(response.data.data.content![3].image)
                 return response.data
             },
             {

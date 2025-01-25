@@ -1,15 +1,15 @@
 import {message} from 'antd'
-import {LoginPage} from "./pages/Login"
 import {QueryClient, QueryClientProvider} from "react-query"
 import {useAppContext} from './hooks/AppContext.tsx'
-import {AppContextProps} from './types'
+import {AppContextProps} from 'types'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {
+    LoginPage,
     UserManagementPage, 
     CategoryManagementPage,
     ItemManagementPage,
-} from './pages'
-import Layout from './layout'
+} from 'pages'
+import {Layout} from 'layout'
 
 export const App = () => {
     const queryClient = new QueryClient()
@@ -24,22 +24,12 @@ export const App = () => {
         <QueryClientProvider client={ queryClient }>
             <Router>
                 <Routes>
-                    <Route path="/login" element={<LoginPage
-                        setAppAuthenticated={setAppAuthenticated}
-                    />}
-                    />
-                    { !authenticated && <Route path="/" element={<LoginPage
-                        setAppAuthenticated={setAppAuthenticated}
-                    />}
-                    />
-                    }
-                    { authenticated &&
-                        <Route path="/" element={<Layout />}>
-                            <Route path="user-management" element={<UserManagementPage />} />
-                            <Route path="category-management" element={<CategoryManagementPage />} />
-                            <Route path="item-management" element={<ItemManagementPage />} />
+                        <Route path="/login" element={<LoginPage setAppAuthenticated={setAppAuthenticated} />} />
+                        <Route path="/" element={<Layout authenticated={authenticated}/>}>
+                            <Route path="user-management" element={<UserManagementPage/>}/>
+                            <Route path="category-management" element={<CategoryManagementPage/>}/>
+                            <Route path="item-management" element={<ItemManagementPage/>}/>
                         </Route>
-                    }
                 </Routes>
             </Router>
         </QueryClientProvider>

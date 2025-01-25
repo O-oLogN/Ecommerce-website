@@ -1,15 +1,15 @@
 import {Modal, Form, Input, message} from 'antd'
 import React from 'react'
-import {CategoryInfo} from 'src/types'
-import {useCreateCategory} from '../../../../services'
+import {CategoryInfo} from 'types'
+import {useCreateCategory} from 'services'
 import {HttpStatusCode} from 'axios'
-import {ICreateCategoryRequest} from 'src/services/types'
+import {ICreateCategoryRequest} from 'services/types'
 
 interface CreateCategoryFormProps {
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     createHelper: ReturnType<typeof useCreateCategory>
-    refetchCategoryList: () => void
+    reFetchCategoryList: () => void
     messageApi: typeof message
 }
 
@@ -17,7 +17,7 @@ const handleSubmitForm = async (
     createHelper: ReturnType<typeof useCreateCategory>,
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     createRequest: ICreateCategoryRequest,
-    refetchCategoryList: () => void,
+    reFetchCategoryList: () => void,
     messageApi: typeof message,
 ) => {
     try {
@@ -40,14 +40,14 @@ const handleSubmitForm = async (
     catch (error) {
         console.log('ERROR - category created failed!')
         const errObj = error as any
-        messageApi.error(errObj.status + '::'
-            + errObj.code + '::'
-            + errObj.response.data.error + '-'
+        messageApi.error(errObj.status + ' - '
+            + errObj.code + ' - '
+            + errObj.response.data.error + ' - '
             + errObj.response.data.message)
     }
     finally {
         setIsOpenForm(false)
-        refetchCategoryList()
+        reFetchCategoryList()
     }
 }
 
@@ -55,7 +55,7 @@ export const CreateCategoryForm: React.FC<CreateCategoryFormProps> = ({
                                                                       isOpenForm,
                                                                       setIsOpenForm,
                                                                       createHelper,
-                                                                      refetchCategoryList,
+                                                                      reFetchCategoryList,
                                                                       messageApi,
                                                                   }) => {
     const [form] = Form.useForm()
@@ -78,7 +78,7 @@ export const CreateCategoryForm: React.FC<CreateCategoryFormProps> = ({
                               code,
                               name,
                           },
-                          refetchCategoryList,
+                          reFetchCategoryList,
                           messageApi,
                       )
                   }}

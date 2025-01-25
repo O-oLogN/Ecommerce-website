@@ -1,4 +1,4 @@
-import {ItemInfo} from 'src/types'
+import {ItemInfo} from 'types'
                                     /* REQUESTS */
 export interface ISearchItemRequest {
     itemName: string | null

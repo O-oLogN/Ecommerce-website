@@ -1,11 +1,12 @@
-import {CategoryInfo, IQueryRequest} from 'src/types'
+import {CategoryInfo, IQueryRequest} from 'types'
 import {
     ISearchCategoryRequest, 
     IEditCategoryRequest, 
     IDeleteCategoryRequest,
     ICreateCategoryRequest,
-} from 'src/services/types'
-import {useSearchCategory, useEditCategory, useDeleteCategory, useCreateCategory} from 'src/services'
+} from 'services/types'
+import {useSearchCategory, useEditCategory, useDeleteCategory, useCreateCategory} from 'services'
+import React from "react";
 
 export interface CategoryManagementContextProps {
     categoryList: CategoryInfo[] | undefined
@@ -23,5 +24,5 @@ export interface CategoryManagementContextProps {
     editHelper: ReturnType<typeof useEditCategory>
     deleteHelper: ReturnType<typeof useDeleteCategory>
     createHelper: ReturnType<typeof useCreateCategory>
-    refetchCategoryList: () => void
+    reFetchCategoryList: () => void
 }

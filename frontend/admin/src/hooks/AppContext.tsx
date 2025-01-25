@@ -1,4 +1,4 @@
-import {AppContextProps} from '../types/index.ts'
+import {AppContextProps} from 'types'
 import React from "react"
 
 const AppContext = React.createContext<AppContextProps>({

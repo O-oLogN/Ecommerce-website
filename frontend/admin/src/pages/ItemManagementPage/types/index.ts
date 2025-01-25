@@ -1,11 +1,11 @@
-import {ItemInfo, IQueryRequest} from 'src/types'
+import {ItemInfo, IQueryRequest} from 'types'
 import {
     ISearchItemRequest, 
     IEditItemRequest, 
     IDeleteItemRequest,
     ICreateItemRequest,
-} from 'src/services/types'
-import {useSearchItem, useEditItem, useDeleteItem, useCreateItem, useSearchCategoryById} from 'src/services'
+} from 'services/types'
+import {useSearchItem, useEditItem, useDeleteItem, useCreateItem, useSearchCategoryById} from 'services'
 
 export interface ItemManagementContextProps {
     searchResponse: ReturnType<typeof useSearchItem>  | undefined 
@@ -24,5 +24,5 @@ export interface ItemManagementContextProps {
     deleteHelper: ReturnType<typeof useDeleteItem>
     createHelper: ReturnType<typeof useCreateItem>
     searchCategoryHelper: ReturnType<typeof useSearchCategoryById>
-    refetchItemList: () => void
+    reFetchItemList: () => void
 }

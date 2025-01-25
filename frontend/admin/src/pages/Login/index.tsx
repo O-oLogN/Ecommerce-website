@@ -3,9 +3,10 @@ import { useLoginContext }  from './hooks/LoginContext.tsx'
 import { LoginContextProvider } from "./hooks/LoginContext.tsx"
 import { UserOutlined, LockOutlined, EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons'
 import { LoginContextProps, LoginForm} from "./types"
-import { useMessageContext } from '../../components'
-import { MessageContextProps } from '../../components/MessageContext/types'
-import React, { useState } from "react"
+import { useMessageContext } from 'components'
+import { MessageContextProps } from 'components/MessageContext/types'
+import React, {useEffect, useState} from "react"
+import {useNavigate} from "react-router-dom"
 
 interface LoginPageProps {
     setAppAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
@@ -28,7 +29,7 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
     } = props
 
     const { messageApi } = useMessageContext() as MessageContextProps
-
+    const navigate = useNavigate()
     const [prevUsername, setPrevUsername] = useState<string>('')
     const [prevPassword, setPrevPassword] = useState<string>('')
     const [visiblePassword, setVisiblePassword] = useState<boolean>(false)
@@ -56,13 +57,19 @@ const Login: React.FC<LoginProps> = (props: LoginProps) => {
         }
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (authenticated) {
-            messageApi.success('Login successfully!')
+            messageApi.success('Login successfully!').then(_ => {})
             setAppAuthenticated(true)
         }
         else if (authenticated === false) {
-            messageApi.error('Invalid username or password!')
+            messageApi.error('Invalid username or password!').then(_ => {})
+        }
+    }, [authenticated])
+
+    useEffect(() => {
+        if (authenticated) {
+            navigate('/')
         }
     }, [authenticated])
 

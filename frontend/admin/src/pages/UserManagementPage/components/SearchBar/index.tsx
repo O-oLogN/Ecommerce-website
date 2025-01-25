@@ -1,5 +1,6 @@
 import {Input, Button} from 'antd'
 import {UserOutlined} from '@ant-design/icons'
+import React from 'react'
 
 interface SearchBarProps {
     onClick: () => void

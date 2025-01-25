@@ -1,4 +1,4 @@
-import {UserInfo} from 'src/types'
+import {UserInfo} from 'types'
                                     /* REQUESTS */
 export interface ISearchUserRequest {
     username: string | null

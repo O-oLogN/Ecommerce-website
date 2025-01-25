@@ -1,16 +1,16 @@
 import {Modal, Form, Input, message} from 'antd'
 import React from 'react'
-import {CategoryInfo} from 'src/types'
-import {useEditCategory} from '../../../../services'
+import {CategoryInfo} from 'types'
+import {useEditCategory} from 'services'
 import {HttpStatusCode} from 'axios'
-import {IEditCategoryRequest} from 'src/services/types'
+import {IEditCategoryRequest} from 'services/types'
 
 interface EditCategoryFormProps {
     initialValues: CategoryInfo | undefined
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     editHelper: ReturnType<typeof useEditCategory>
-    refetchCategoryList: () => void
+    reFetchCategoryList: () => void
     messageApi: typeof message
 }
 
@@ -18,7 +18,7 @@ const handleSubmitForm = async (
     editHelper: ReturnType<typeof useEditCategory>,
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     editRequest: IEditCategoryRequest,
-    refetchCategoryList: () => void,
+    reFetchCategoryList: () => void,
     messageApi: typeof message,
 ) => {
     try {
@@ -40,14 +40,14 @@ const handleSubmitForm = async (
     catch (error) {
         console.log('ERROR - category updated failed!')
         const errObj = error as any
-        messageApi.error(errObj.status + '::'
-            + errObj.code + '::'
-            + errObj.response.data.error + '-'
+        messageApi.error(errObj.status + ' - '
+            + errObj.code + ' - '
+            + errObj.response.data.error + ' - '
             + errObj.response.data.message)
     }
     finally {
         setIsOpenForm(false)
-        refetchCategoryList()
+        reFetchCategoryList()
     }
 }
 
@@ -56,7 +56,7 @@ export const EditCategoryForm: React.FC<EditCategoryFormProps> = ({
   isOpenForm,
   setIsOpenForm,
   editHelper,
-  refetchCategoryList, 
+  reFetchCategoryList, 
   messageApi,
 }) => {
     const [form] = Form.useForm()
@@ -87,7 +87,7 @@ export const EditCategoryForm: React.FC<EditCategoryFormProps> = ({
                               code,
                               name,
                           },
-                          refetchCategoryList,
+                          reFetchCategoryList,
                           messageApi,
                       )
                   }}

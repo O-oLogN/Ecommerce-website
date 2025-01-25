@@ -1,15 +1,15 @@
 import {Modal, Form, Input, Checkbox, message} from 'antd'
 import React, {useEffect, useState} from 'react'
-import {UserInfo} from 'src/types'
-import {useCreateUser, useSearchRole} from '../../../../services'
+import {UserInfo} from 'types'
+import {useCreateUser, useSearchRole} from 'services'
 import {HttpStatusCode} from 'axios'
-import {ICreateUserRequest} from 'src/services/types'
+import {ICreateUserRequest, ISearchRoleResponse} from 'services/types'
 
 interface CreateUserFormProps {
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
     createHelper: ReturnType<typeof useCreateUser>
-    refetchUserList: () => void
+    reFetchUserList: () => void
     messageApi: typeof message
 }
 
@@ -22,7 +22,7 @@ const handleSubmitForm = async (
     createHelper: ReturnType<typeof useCreateUser>,
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
     createRequest: ICreateUserRequest,
-    refetchUserList: () => void,
+    reFetchUserList: () => void,
     messageApi: typeof message,
 ) => {
     try {
@@ -51,7 +51,7 @@ const handleSubmitForm = async (
     }
     finally {
         setIsOpenForm(false)
-        refetchUserList()
+        reFetchUserList()
     }
 }
 
@@ -59,7 +59,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
                                                               isOpenForm,
                                                               setIsOpenForm,
                                                               createHelper,
-                                                              refetchUserList,
+                                                              reFetchUserList,
                                                               messageApi,
                                                           }) => {
     const [form] = Form.useForm()
@@ -96,7 +96,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
         }
         else {
             console.log('searchRoleResponse', searchRoleResponse.data.data.content)
-            const rolesFound =  searchRoleResponse.data.data.content
+            const rolesFound =  searchRoleResponse.data.data.content as ISearchRoleResponse[]
             const newRoleOptions = rolesFound!.map(role => ({
                 label: role.name,
                 value: role.roleId
@@ -125,7 +125,7 @@ export const CreateUserForm: React.FC<CreateUserFormProps> = ({
                               email,
                               roleIds,
                           },
-                          refetchUserList,
+                          reFetchUserList,
                           messageApi,
                       )
                   }}

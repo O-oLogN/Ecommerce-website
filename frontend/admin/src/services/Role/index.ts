@@ -1,4 +1,4 @@
-import {IPagingResponse, IQueryRequest} from "src/types"
+import {IPagingResponse, IQueryRequest} from "types"
 import {
     IBaseResponse,
     ICreateRoleRequest,
@@ -9,10 +9,10 @@ import {
     IEditRoleResponse,
     ISearchRoleRequest,
     ISearchRoleResponse
-} from "src/services/types"
+} from "services/types"
 import {useMutation, useQuery} from "react-query"
-import {axiosInstance} from "../../services"
-import {REQUEST_MAPPING, REQUEST_PATH} from "../../constants"
+import {axiosInstance} from "services"
+import {REQUEST_MAPPING, REQUEST_PATH} from "constants/Path"
 
 export const useSearchRole=
     (params: IQueryRequest<ISearchRoleRequest>) => {

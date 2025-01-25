@@ -1,4 +1,4 @@
-import { IBaseData } from 'src/types'
+import { IBaseData } from 'types'
 
 export interface TableData extends IBaseData {
     key: string

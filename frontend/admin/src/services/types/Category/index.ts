@@ -1,4 +1,4 @@
-import {CategoryInfo} from 'src/types'
+import {CategoryInfo} from 'types'
                                     /* REQUESTS */
 export interface ISearchCategoryRequest {
     categoryName: string | null

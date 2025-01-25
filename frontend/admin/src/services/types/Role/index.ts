@@ -1,4 +1,4 @@
-import {RoleInfo} from 'src/types'
+import {RoleInfo} from 'types'
                                         /* REQUESTS */
 export interface ISearchRoleRequest {
     roleName: string | null

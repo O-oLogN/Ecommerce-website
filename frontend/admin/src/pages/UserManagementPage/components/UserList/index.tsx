@@ -1,8 +1,8 @@
 import { Table, Space, Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import { UserInfo } from 'src/types'
+import { UserInfo } from 'types'
 import { useUserManagementContext } from '../../hooks/UserManagementContext.tsx'
-import { useMessageContext } from '../../../../components'
+import { useMessageContext } from 'components'
 import React, { useState, useEffect } from 'react'
 import { SearchBar } from '../SearchBar'
 import { EditUserForm } from '../modal/EditUserForm.tsx'
@@ -44,7 +44,7 @@ export const UserList = () => {
         editHelper,
         deleteHelper,
         createHelper,
-        refetchUserList,
+        reFetchUserList,
     } = useUserManagementContext()
     const {messageApi} = useMessageContext()
     const columnNames = ['Username', 'Email', 'Create user', 'Create date time', 'Modify user', 'Modify date time', 'Roles']
@@ -110,7 +110,7 @@ export const UserList = () => {
                 + errObj.response.data.message)
         }
         finally {
-            refetchUserList()
+            reFetchUserList()
         }
     }
 
@@ -230,14 +230,14 @@ export const UserList = () => {
                           isOpenForm={isOpenEditForm}
                           setIsOpenForm={setIsOpenEditForm}
                           editHelper={editHelper}
-                          refetchUserList={refetchUserList}
+                          reFetchUserList={reFetchUserList}
                           messageApi={messageApi}
             >
             </EditUserForm>
             <CreateUserForm isOpenForm={isOpenCreateForm}
                             setIsOpenForm={setIsOpenCreateForm}
                             createHelper={createHelper}
-                            refetchUserList={refetchUserList}
+                            reFetchUserList={reFetchUserList}
                             messageApi={messageApi}
             />
         </>

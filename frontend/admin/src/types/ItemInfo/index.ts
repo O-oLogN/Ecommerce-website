@@ -1,4 +1,4 @@
-import {IBaseData} from '../index.ts'
+import {IBaseData} from 'types'
 
 export interface ItemInfo extends IBaseData {
     itemId: string

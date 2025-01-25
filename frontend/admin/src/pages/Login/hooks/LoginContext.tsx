@@ -1,8 +1,8 @@
 import React, {ReactNode, useContext, useState} from "react"
 import {LoginContextProps} from "../types"
-import {ILoginRequest} from "src/services/types"
-import {useLogin} from "../../../services"
-import {localStorageKeys} from "../../../constants"
+import {ILoginRequest} from "services/types"
+import {useLogin} from "services"
+import {localStorageKeys} from "constants/LocalStorageKeys"
 import {HttpStatusCode} from "axios"
 
 const LoginContext = React.createContext<LoginContextProps>({

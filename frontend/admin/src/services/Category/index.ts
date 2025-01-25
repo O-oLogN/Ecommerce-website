@@ -1,7 +1,7 @@
-import {IPagingResponse, IQueryRequest} from "src/types"
+import {IPagingResponse, IQueryRequest} from "types"
 import {useQuery, useMutation} from "react-query"
-import {axiosInstance} from "../index.ts";
-import {REQUEST_MAPPING, REQUEST_PATH} from "../../constants"
+import {axiosInstance} from "../index.ts"
+import {REQUEST_MAPPING, REQUEST_PATH} from "constants/Path"
 import {
     ISearchCategoryRequest,
     ISearchCategoryResponse,
@@ -14,7 +14,7 @@ import {
     ISearchCategoryByIdRequest,
     ISearchCategoryByIdResponse,
     IBaseResponse,
-} from "src/services/types"
+} from "services/types"
 
 export const useSearchCategory=
     (params: IQueryRequest<ISearchCategoryRequest>) => {
@@ -29,7 +29,7 @@ export const useSearchCategory=
         },
         {
             enabled: !!params,
-            // refetchInterval: 1000,
+            // reFetchInterval: 1000,
             refetchOnWindowFocus: false,
             refetchOnReconnect: false,
         }
