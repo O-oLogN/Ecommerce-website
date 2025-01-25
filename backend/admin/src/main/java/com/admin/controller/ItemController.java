@@ -75,7 +75,7 @@ public class ItemController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.DELETE_ITEM)
-    public ResponseEntity<?> deleteItem(@Valid @RequestParam String itemId) throws Exception {
+    public ResponseEntity<?> deleteItem(@Valid @RequestParam("itemId") String itemId) throws Exception {
         return itemService.deleteItem(itemId);
     }
 

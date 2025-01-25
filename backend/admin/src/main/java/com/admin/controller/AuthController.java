@@ -38,7 +38,7 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.SIGN_OUT)
-    public ResponseEntity<?> signOut(@Valid @RequestParam String sessionId) throws Exception {
+    public ResponseEntity<?> signOut(@Valid @RequestParam("sessionId") String sessionId) throws Exception {
         return authService.signOut(sessionId);
     }
 }

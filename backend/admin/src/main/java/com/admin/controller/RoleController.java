@@ -39,7 +39,7 @@ public class RoleController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.CREATE_ROLE)
-    public ResponseEntity<?> createRole(@Valid @RequestParam String roleName) throws Exception {
+    public ResponseEntity<?> createRole(@Valid @RequestParam("roleName") String roleName) throws Exception {
         return roleService.createRole(roleName);
     }
 
@@ -59,7 +59,7 @@ public class RoleController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.DELETE_ROLE)
-    public ResponseEntity<?> deleteRole(@Valid @RequestParam String roleId) throws Exception {
+    public ResponseEntity<?> deleteRole(@Valid @RequestParam("roleId") String roleId) throws Exception {
         return roleService.deleteRole(roleId);
     }
 }

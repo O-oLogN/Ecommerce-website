@@ -2,6 +2,8 @@ package com.admin.dto.request.auth;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -11,5 +13,5 @@ public class CreateUserRequest {
     private String username;
     private String password;
     private String email;
-    private String roleId;
+    private List<String> roleIds;
 }

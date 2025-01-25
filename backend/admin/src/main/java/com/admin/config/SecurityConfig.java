@@ -54,6 +54,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint((_, response, _) ->
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED)
                         )
+
                 );
 
         return http.build();

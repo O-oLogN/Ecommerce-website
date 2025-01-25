@@ -60,7 +60,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @GetMapping(AppRoutes.REQUEST_PATH.SEARCH_CATEGORY_BY_ID)
-    public ResponseEntity<?> searchCategoryById(@Valid @RequestParam String categoryId) throws Exception {
+    public ResponseEntity<?> searchCategoryById(@Valid @RequestParam("categoryId") String categoryId) throws Exception {
         return categoryService.searchCategoryById(categoryId);
     }
 

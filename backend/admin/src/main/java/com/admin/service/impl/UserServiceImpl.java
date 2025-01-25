@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
         String username = createUserRequest.getUsername();
         String rawPassword = createUserRequest.getPassword();
         String email = createUserRequest.getEmail();
-        String roleId = createUserRequest.getRoleId();
+        List<String> roleIds = createUserRequest.getRoleIds();
         String createUser = CoreConstants.ADMINISTRATOR.ADMIN;
         LocalDateTime createDatetime = LocalDateTime.now();
 
@@ -79,7 +79,11 @@ public class UserServiceImpl implements UserService {
                 .createDatetime(createDatetime)
                 .build();
 
-        UserRole newUserRole = UserRole
+        userRepository.save(newUser);       // Must to do first
+
+        Set<UserRole> newUserRoles = new HashSet<>();
+        roleIds.forEach(roleId -> {
+            UserRole newUserRole = UserRole
                 .builder()
                 .userRoleId(UUID.randomUUID().toString())
                 .user(newUser)
@@ -88,9 +92,11 @@ public class UserServiceImpl implements UserService {
                 .createDatetime(createDatetime)
                 .build();
 
-        userRepository.save(newUser);
-        userRoleRepository.save(newUserRole);
+            userRoleRepository.save(newUserRole);       // Then do this
+            newUserRoles.add(newUserRole);
+        });
 
+        newUser.setUserRoles(newUserRoles);         // Update roles in response
         return ResponseHelper.ok(newUser, HttpStatus.OK, messageHelper.getMessage("admin.userController.createUser.info.success"));
     }
 
@@ -117,7 +123,10 @@ public class UserServiceImpl implements UserService {
             roles.add(roleRepository.findRoleByRoleId(roleId))
         );
         User user = userRepository.findUserByUserId(userId);
-
+                            // Remove old UserRole records
+        List<UserRole> oldUserRoles = userRoleRepository.findUserRolesByUser(user);
+        userRoleRepository.deleteAll(oldUserRoles);
+                            //  Add new UserRole records
         roles.forEach(role -> {
              UserRole newUserRole = UserRole
                      .builder()

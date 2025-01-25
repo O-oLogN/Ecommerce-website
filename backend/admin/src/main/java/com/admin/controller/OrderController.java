@@ -39,7 +39,7 @@ public class OrderController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.DELETE_CHILD_ORDER)
-    public ResponseEntity<?> deleteChildOrder(@Valid @RequestParam String orderId) throws Exception {
+    public ResponseEntity<?> deleteChildOrder(@Valid @RequestParam("orderId") String orderId) throws Exception {
         return orderService.deleteChildOrder(orderId);
     }
 

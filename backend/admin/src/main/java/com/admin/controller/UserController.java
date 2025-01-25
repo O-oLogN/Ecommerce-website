@@ -50,7 +50,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.DELETE_USER)
-    public ResponseEntity<?> deleteUser(@Valid @RequestParam String userId) throws Exception {
+    public ResponseEntity<?> deleteUser(@Valid @RequestParam("userId") String userId) throws Exception {
         return userService.deleteUser(userId);
     }
 

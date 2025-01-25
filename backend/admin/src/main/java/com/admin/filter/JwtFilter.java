@@ -46,7 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication header is missing or Invalid JWT");
             return;
         }
         String jwt = authHeader.substring(7);
