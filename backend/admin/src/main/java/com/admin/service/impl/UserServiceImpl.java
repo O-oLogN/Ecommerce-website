@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
                 .createDatetime(createDatetime)
                 .build();
 
-        userRepository.save(newUser);       // Must to do first
+        userRepository.save(newUser);       // Must to doing first
 
         Set<UserRole> newUserRoles = new HashSet<>();
         roleIds.forEach(roleId -> {

@@ -1,6 +1,7 @@
 package com.admin.config;
 
 import com.admin.constant.CoreConstants;
+import com.admin.filter.ExceptionHandlerFilter;
 import com.admin.filter.JwtFilter;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,6 +30,8 @@ import java.util.List;
 @AllArgsConstructor
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         String permittedPathValue = Dotenv.load().get("PERMITTED_PATHS");
@@ -49,6 +53,7 @@ public class SecurityConfig {
                         }
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandlerFilter, CorsFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((_, response, _) ->
