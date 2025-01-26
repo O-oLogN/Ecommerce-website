@@ -1,4 +1,10 @@
-import { UserOutlined, FilterOutlined, ProductOutlined, FileTextOutlined } from '@ant-design/icons'
+import {
+    UserOutlined,
+    FilterOutlined,
+    ProductOutlined,
+    FileTextOutlined,
+    SafetyOutlined,
+} from '@ant-design/icons'
 import { Menu, MenuProps } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
@@ -65,6 +71,15 @@ export const SideMenu = () => {
         },
         {
             type: 'divider',
+        },
+        {
+            key: 'role-management',
+            icon: <SafetyOutlined />,
+            label: 'Role management',
+            onClick: () => {
+                setSelectedKeys(['role-management'])
+                return navigate('/role-management')
+            },
         },
     ]
 

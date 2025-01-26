@@ -6,7 +6,7 @@ import {
     ICreateCategoryRequest,
 } from 'services/types'
 import {useSearchCategory, useEditCategory, useDeleteCategory, useCreateCategory} from 'services'
-import React from "react";
+import React from "react"
 
 export interface CategoryManagementContextProps {
     categoryList: CategoryInfo[] | undefined

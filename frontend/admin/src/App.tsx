@@ -10,6 +10,7 @@ import {
     ItemManagementPage,
 } from 'pages'
 import {Layout} from 'layout'
+import {RoleManagementPage} from "pages/RoleManagementPage";
 
 export const App = () => {
     const queryClient = new QueryClient()
@@ -29,6 +30,7 @@ export const App = () => {
                             <Route path="user-management" element={<UserManagementPage/>}/>
                             <Route path="category-management" element={<CategoryManagementPage/>}/>
                             <Route path="item-management" element={<ItemManagementPage/>}/>
+                            <Route path="role-management" element={<RoleManagementPage/>}/>
                         </Route>
                 </Routes>
             </Router>
