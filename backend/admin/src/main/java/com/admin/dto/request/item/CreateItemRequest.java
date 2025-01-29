@@ -13,6 +13,6 @@ public class CreateItemRequest {
     private String categoryId;
     private String name;
     private Float price;
-    private MultipartFile image;
+    MultipartFile image;
     private Integer quantity;
 }

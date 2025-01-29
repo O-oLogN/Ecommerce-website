@@ -37,7 +37,10 @@ public class ItemController {
                                         @RequestParam("name") String name,
                                         @RequestParam(value = "price", required = false) Float price,
                                         @RequestParam("quantity") Integer quantity,
-                                        @RequestParam(value = "image", required = false) MultipartFile image) throws Exception {
+                                        @RequestParam(value = "image", required = false) MultipartFile image,
+                                        @RequestParam(value = "imageMinioGetUrl", required = false) String imageMinioGetUrl,
+                                        @RequestParam(value = "imageMinioPutUrl", required = false) String imageMinioPutUrl
+        ) throws Exception {
         return itemService.updateItem(UpdateItemRequest.builder()
                                                         .itemId(itemId)
                                                         .categoryId(categoryId)
@@ -45,6 +48,8 @@ public class ItemController {
                                                         .price(price)
                                                         .quantity(quantity)
                                                         .image(image)
+                                                        .imageMinioGetUrl(imageMinioGetUrl)
+                                                        .imageMinioPutUrl(imageMinioPutUrl)
                                                         .build());
     }
 

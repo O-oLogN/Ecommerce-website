@@ -4,6 +4,8 @@ import com.admin.constant.CoreConstants;
 import com.admin.dto.request.item.CreateItemRequest;
 import com.admin.dto.request.item.SearchItemRequest;
 import com.admin.dto.request.item.UpdateItemRequest;
+import com.admin.dto.response.minio.EditFileResponse;
+import com.admin.dto.response.minio.UploadFileResponse;
 import com.admin.entities.Item;
 import com.admin.exception.ItemNotFoundException;
 import com.admin.helper.MessageHelper;
@@ -14,9 +16,11 @@ import com.admin.model.PagingResponse;
 import com.admin.model.QueryRequest;
 import com.admin.repository.ItemRepository;
 import com.admin.service.ItemService;
+import com.admin.service.MinioService;
 import com.admin.specification.ItemSpecification;
 import com.admin.utils.SortUtils;
 import com.admin.utils.ValidationUtils;
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.xml.bind.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,11 +41,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class ItemServiceImpl implements ItemService {
+    private final MinioService minioService;
+
     private final ItemRepository itemRepository;
 
     private final ItemSpecification itemSpecification;
 
     private final MessageHelper messageHelper;
+
+    private final Dotenv dotenv = Dotenv.load();
 
     @Override
     public ResponseEntity<?> searchItem(QueryRequest<SearchItemRequest> searchItemRequest) {
@@ -76,10 +84,7 @@ public class ItemServiceImpl implements ItemService {
         String categoryId = createItemRequest.getCategoryId();
         String name = createItemRequest.getName();
         Float price = createItemRequest.getPrice();
-        MultipartFile image = null;
-        if (!ValidationUtils.isNullOrEmpty(createItemRequest.getImage())) {
-            image = createItemRequest.getImage();
-        }
+        MultipartFile image = createItemRequest.getImage();
         Integer quantity = createItemRequest.getQuantity();
         String createUser = CoreConstants.ADMINISTRATOR.ADMIN;
         LocalDateTime createDatetime = LocalDateTime.now();
@@ -100,13 +105,19 @@ public class ItemServiceImpl implements ItemService {
             );
         }
 
+        UploadFileResponse uploadFileResponse = null;
+        if (!ValidationUtils.isNullOrEmpty(image)) {
+            uploadFileResponse = minioService.uploadFile(image, dotenv.get("MINIO_IMAGE_UPLOAD_DIR"));
+        }
+
         Item newItem = Item
                 .builder()
                 .itemId(UUID.randomUUID().toString())
                 .categoryId(categoryId)
                 .name(name)
                 .price(price)
-                .image(!ValidationUtils.isNullOrEmpty(image) ? image.getBytes() : null)
+                .imageMinioGetUrl(ValidationUtils.isNullOrEmpty(uploadFileResponse) ? "" : uploadFileResponse.getPresignedGetUrl())
+                .imageMinioPutUrl(ValidationUtils.isNullOrEmpty(uploadFileResponse) ? "" : uploadFileResponse.getPresignedPutUrl())
                 .quantity(quantity)
                 .createUser(createUser)
                 .createDatetime(createDatetime)
@@ -123,11 +134,9 @@ public class ItemServiceImpl implements ItemService {
         String categoryId = updateItemRequest.getCategoryId();
         Float price = updateItemRequest.getPrice();
         String name = updateItemRequest.getName();
-        MultipartFile image = null;
-        if (!ValidationUtils.isNullOrEmpty(updateItemRequest.getImage())) {
-            image = updateItemRequest.getImage();
-        }
         Integer quantity = updateItemRequest.getQuantity();
+        MultipartFile image = updateItemRequest.getImage();
+        String oldImageMinioPutUrl = updateItemRequest.getImageMinioPutUrl();
         String modifyUser = CoreConstants.ADMINISTRATOR.ADMIN;
         LocalDateTime modifyDatetime = LocalDateTime.now();
 
@@ -152,16 +161,35 @@ public class ItemServiceImpl implements ItemService {
             );
         }
 
+        UploadFileResponse uploadFileResponse = null;
+        EditFileResponse editFileResponse = null;
+        if (!ValidationUtils.isNullOrEmpty(image)) {
+            if (ValidationUtils.isNullOrEmpty(oldImageMinioPutUrl)) {
+                uploadFileResponse = minioService.uploadFile(image, dotenv.get("MINIO_IMAGE_UPLOAD_DIR"));
+            }
+            else {
+                editFileResponse = minioService.editFile(image, dotenv.get("MINIO_IMAGE_UPLOAD_DIR"), oldImageMinioPutUrl);
+            }
+        }
+
+        String newImageMinioGetUrl = !ValidationUtils.isNullOrEmpty(uploadFileResponse)
+                        ? uploadFileResponse.getPresignedGetUrl()
+                        : (!ValidationUtils.isNullOrEmpty(editFileResponse)
+                            ? editFileResponse.getPresignedGetUrl() : "");
+        String newImageMinioPutUrl = !ValidationUtils.isNullOrEmpty(uploadFileResponse)
+                ? uploadFileResponse.getPresignedPutUrl()
+                : (!ValidationUtils.isNullOrEmpty(editFileResponse)
+                ? editFileResponse.getPresignedPutUrl() : "");
+
         Item updatedItem = Item
                 .builder()
                 .itemId(itemId)
                 .categoryId(categoryId)
                 .name(name)
                 .price(price)
-                .image(!ValidationUtils.isNullOrEmpty(image) ? image.getBytes() : null)
                 .quantity(quantity)
-                .createUser(itemRepository.findItemByItemId(itemId).getCreateUser())
-                .createDatetime(itemRepository.findItemByItemId(itemId).getCreateDatetime())
+                .imageMinioGetUrl(newImageMinioGetUrl)
+                .imageMinioPutUrl(newImageMinioPutUrl)
                 .modifyUser(modifyUser)
                 .modifyDatetime(modifyDatetime)
                 .build();
@@ -176,7 +204,17 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new ItemNotFoundException(
                     messageHelper.getMessage("admin.itemController.delete.item.find.error.notFound")
                 ));
+
+        String imageMinioPutUrl = item.getImageMinioPutUrl();
+        if (!ValidationUtils.isNullOrEmpty(imageMinioPutUrl)) {
+            minioService.deleteFile(imageMinioPutUrl);          // Delete image in Min.io
+        }
+
         itemRepository.deleteById(itemId);
+
         return ResponseHelper.ok(item, HttpStatus.OK, messageHelper.getMessage("admin.itemController.delete.info.success"));
     }
 }
+
+
+

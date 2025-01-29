@@ -13,6 +13,8 @@ public class UpdateItemRequest {
     private String categoryId;
     private String name;
     private Float price;
-    private MultipartFile image;
     private Integer quantity;
+    private MultipartFile image;
+    private String imageMinioGetUrl;
+    private String imageMinioPutUrl;
 }

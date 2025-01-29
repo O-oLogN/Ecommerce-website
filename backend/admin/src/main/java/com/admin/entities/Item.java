@@ -35,9 +35,11 @@ public class Item {
     @Column(name = "price")
     private Float price;
 
-    @Lob
-    @Column(name = "image")
-    private byte[] image;
+    @Column(name = "imageMinioGetUrl")
+    private String imageMinioGetUrl;
+
+    @Column(name = "imageMinioPutUrl")
+    private String imageMinioPutUrl;
 
     @NotNull
     @Column(name = "quantity", nullable = false)
