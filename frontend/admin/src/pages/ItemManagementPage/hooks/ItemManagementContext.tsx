@@ -32,6 +32,8 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
         name: '',
         price: 0,
         image: null,
+        imageMinioGetUrl: '',
+        imageMinioPutUrl: '',
         quantity: 0,
     },
     deleteRequest: {
@@ -82,6 +84,8 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         name: '',
         price: 0,
         image: null,
+        imageMinioGetUrl: '',
+        imageMinioPutUrl: '',
         quantity: 0,
     })
     const [deleteRequest, setDeleteRequest] = useState<IDeleteItemRequest>

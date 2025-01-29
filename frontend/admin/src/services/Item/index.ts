@@ -45,8 +45,10 @@ export const useEditItem = () => {
             formData.append('price', params.price!.toString())
             formData.append('quantity', params.quantity.toString())
             if (params.image) {
-                formData.append('image', params.image);
+                formData.append('image', params.image)
             }
+            formData.append('imageMinioGetUrl', params.imageMinioGetUrl ?? '')
+            formData.append('imageMinioPutUrl', params.imageMinioPutUrl ?? '')
             return axiosInstance.post<IBaseResponse<IEditItemResponse>>(
                 REQUEST_MAPPING.ITEM + REQUEST_PATH.UPDATE_ITEM,
                 params,

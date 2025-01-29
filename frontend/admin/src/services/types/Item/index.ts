@@ -10,6 +10,8 @@ export interface IEditItemRequest {
     name: string
     price: number | null
     image: File | null
+    imageMinioGetUrl: string | null
+    imageMinioPutUrl: string | null
     quantity: number
 }
 

@@ -132,6 +132,8 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                               name,
                               price,
                               image,
+                              imageMinioGetUrl: initialValue!.imageMinioGetUrl,
+                              imageMinioPutUrl: initialValue!.imageMinioPutUrl,
                               quantity
                           },
                           reFetchItemList,
