@@ -32,7 +32,7 @@ const handleSubmitForm = async (
             if (createResponse.data.status === HttpStatusCode.Ok || createResponse.data.status === HttpStatusCode.Created) {
                 console.log('FORM - Item created successfully!')
                 messageApi.success('Item created successfully!')
-            } 
+            }
             // else {
             //     console.log('FORM - Item created failed!')
             // }
@@ -53,12 +53,12 @@ const handleSubmitForm = async (
 }
 
 export const CreateItemForm: React.FC<CreateItemFormProps> = ({
-                                                              isOpenForm,
-                                                              setIsOpenForm,
-                                                              createHelper,
-                                                              reFetchItemList,
-                                                              messageApi,
-                                                          }) => {
+                                                                  isOpenForm,
+                                                                  setIsOpenForm,
+                                                                  createHelper,
+                                                                  reFetchItemList,
+                                                                  messageApi,
+                                                              }) => {
     const [form] = Form.useForm()
     const handleCancel = () => {
         form.resetFields()
@@ -108,7 +108,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                       const image = imagesUploaded && imagesUploaded.length > 0 ? imagesUploaded![0] : null
                       const quantity = formVal.quantity
 
-                      handleSubmitForm(
+                      await handleSubmitForm(
                           createHelper,
                           setIsOpenForm,
                           {
@@ -132,7 +132,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                     }}
                 >
                     {categories && categories.length > 0
-                    ? <Select
+                        ? <Select
                             style={{
                                 width: 120,
                             }}
@@ -144,7 +144,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                                 label: category.name,
                             }))}
                         />
-                    : <Select
+                        : <Select
                             labelInValue
                             defaultValue={{
                                 value: '',
@@ -161,7 +161,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                     label="Category code"
                     initialValue={categorySelected ? categorySelected.code : ''}
                 >
-                    <Input disabled />  
+                    <Input disabled />
                 </Form.Item>
                 <Form.Item
                     name="name"
@@ -202,7 +202,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                         onChange={(info: any) => {
                             const {status} = info.file
                             if (status === 'error') {
-                                message.error(`${info.file.name} file upload failed.`)
+                                message.error(`${info.file.name} file upload failed.`).then(() => {})
                                 return
                             }
                             setImagesUploaded([info.file])

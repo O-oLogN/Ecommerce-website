@@ -7,7 +7,6 @@ import { SearchBar } from '../SearchBar'
 import { EditItemForm } from '../modal/EditItemForm.tsx'
 import { CreateItemForm } from '../modal/CreateItemForm.tsx'
 import { HttpStatusCode } from 'axios'
-import { imageToUrl } from 'tools/ImageUtils.ts'
 import { TableData } from '../types'
 
 interface TableColumn {
@@ -21,7 +20,7 @@ interface TableColumn {
 
 const sortFunctions: Function[] = [
     (a: string | null, b: string | null) => {
-       return a && b ? a.localeCompare(b)
+        return a && b ? a.localeCompare(b)
             : (a && !b ? 1 : (!a && b ? -1 : 0))
     },
 
@@ -61,7 +60,7 @@ export const ItemList = () => {
         setSearchRequest({
             ...prevSearchRequest,
             sample: {
-                 itemName: searchBar?.value || ''
+                itemName: searchBar?.value || ''
             },
             pageInfo: {
                 pageNumber: 0,
@@ -72,13 +71,13 @@ export const ItemList = () => {
             }
         })
     }
-    
+
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             onClickSearchBtn()
         }
     }
-    
+
     const handleOpenEditForm = (row: TableData) => {
         setModalFormInitialValues(row)
         setIsOpenEditForm(true)
@@ -155,7 +154,7 @@ export const ItemList = () => {
                 return searchCategoryResponse.data
             })
             const resolvedCategories =  await Promise.all(categoryPromises)
-            
+
             const updatedData = itemList!.map((item, index) => {
                 return {
                     key: index.toString(),
@@ -165,7 +164,8 @@ export const ItemList = () => {
                     categoryId: item.categoryId,
                     name: item.name,
                     price: item.price,
-                    imageUrl: imageToUrl(item.image!) || '',
+                    imageMinioGetUrl: item.imageMinioGetUrl,
+                    imageMinioPutUrl: item.imageMinioPutUrl,
                     quantity: item.quantity,
                     createUser: item.createUser,
                     createDatetime: item.createDatetime,
@@ -188,7 +188,7 @@ export const ItemList = () => {
                             const valueA = a[columnDataIndexes[index]]
                             const valueB = b[columnDataIndexes[index]]
                             return type === 'string' ? sortFunctions[0](valueA, valueB)
-                                                     : sortFunctions[1](valueA, valueB)
+                                : sortFunctions[1](valueA, valueB)
                         }
                     })))
                 ]
@@ -199,8 +199,8 @@ export const ItemList = () => {
                     dataIndex: '',
                     key: tableColumns.findIndex(col => col.dataIndex === 'image').toString(),
                     render: (record: TableData) => {
-                        if (record.imageUrl)
-                            return <img src={record.imageUrl} style={{width: '100px', height: 'auto'}} alt={''}/>
+                        if (record.imageMinioGetUrl)
+                            return <img src={record.imageMinioGetUrl} style={{width: '100px', height: 'auto'}} alt={''}/>
                         return <></>
                     }
                 }
@@ -225,12 +225,12 @@ export const ItemList = () => {
                 })
 
                 setData(updatedData)
-                setColumns(tableColumns);
+                setColumns(tableColumns)
             }
         }
         setUpData().then(() => {})
     }, [itemList])
-    
+
     return (
         <>
             <SearchBar onClick={onClickSearchBtn} onKeyDown={onKeyDown} />
@@ -267,10 +267,10 @@ export const ItemList = () => {
                           messageApi={messageApi}
             />
             <CreateItemForm isOpenForm={isOpenCreateForm}
-                          setIsOpenForm={setIsOpenCreateForm}
-                          createHelper={createHelper}
-                          reFetchItemList={reFetchItemList}
-                          messageApi={messageApi}
+                            setIsOpenForm={setIsOpenCreateForm}
+                            createHelper={createHelper}
+                            reFetchItemList={reFetchItemList}
+                            messageApi={messageApi}
             />
         </>
     )

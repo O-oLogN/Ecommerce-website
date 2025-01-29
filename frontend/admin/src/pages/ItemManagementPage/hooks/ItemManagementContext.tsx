@@ -1,6 +1,6 @@
 import {ItemManagementContextProps} from '../types'
 import {
-    ISearchItemRequest, 
+    ISearchItemRequest,
     IEditItemRequest,
     IDeleteItemRequest,
     ICreateItemRequest,
@@ -109,13 +109,13 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
 
         }
     })
-                                    /* Search */
+    /* Search */
     const searchResponse = useSearchItem(searchRequest)
     const reFetchItemList = searchResponse.refetch
 
     console.log('searchResponse', searchResponse)
 
-    React.useEffect(() => { 
+    React.useEffect(() => {
         if (!searchResponse) {
             console.log('searchResponse is undefined')
         } else if (!searchResponse.data) {
@@ -132,14 +132,14 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
             }
         }
     }, [searchResponse.isSuccess, searchResponse.data])
-    
+
     const searchCategoryHelper = useSearchCategoryById()
 
-                                        /* Edit - will be used in index.ts */
+    /* Edit - will be used in index.ts */
     const editHelper = useEditItem()
-                                        /* Delete - will be used in index.ts */
+    /* Delete - will be used in index.ts */
     const deleteHelper = useDeleteItem()
-                                        /* Create - will be used in index.ts */
+    /* Create - will be used in index.ts */
     const createHelper = useCreateItem()
 
     const value = {
@@ -161,7 +161,7 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         searchCategoryHelper,
         reFetchItemList,
     }
-    
+
     return (
         <ItemManagementContext.Provider value={value}>
             {children}

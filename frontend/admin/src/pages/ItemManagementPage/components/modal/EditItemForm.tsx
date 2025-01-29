@@ -34,7 +34,7 @@ const handleSubmitForm = async (
             if (editResponse.data.status === HttpStatusCode.Ok) {
                 console.log('FORM - Item updated successfully!')
                 messageApi.success('Item updated successfully!')
-            } 
+            }
             // else {
             //     console.log('FORM - Item updated failed!')
             // }
@@ -55,13 +55,13 @@ const handleSubmitForm = async (
 }
 
 export const EditItemForm: React.FC<EditItemFormProps> = ({
-  initialValue,
-  isOpenForm,
-  setIsOpenForm,
-  editHelper,
-  reFetchItemList,
-  messageApi,
-}) => {
+                                                              initialValue,
+                                                              isOpenForm,
+                                                              setIsOpenForm,
+                                                              editHelper,
+                                                              reFetchItemList,
+                                                              messageApi,
+                                                          }) => {
     const [form] = Form.useForm()
     const [imagesUploaded, setImagesUploaded] = useState<File[] | undefined>()
     const [categorySelected, setCategorySelected] = useState<CategoryInfo | undefined>(undefined)
@@ -122,8 +122,8 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                       const price = formVal.price || null
                       const image = imagesUploaded && imagesUploaded.length > 0 ? imagesUploaded![0] : null
                       const quantity = formVal.quantity
-                      
-                      handleSubmitForm(
+
+                      await handleSubmitForm(
                           editHelper,
                           setIsOpenForm,
                           {
@@ -156,7 +156,7 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                     }}
                 >
                     {categories && categories.length > 0
-                     ? <Select
+                        ? <Select
                             style={{
                                 width: 120,
                             }}
@@ -212,7 +212,7 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                         onChange={(info: any) => {
                             const {status} = info.file
                             if (status === 'error') {
-                                message.error(`${info.file.name} file upload failed.`)
+                                message.error(`${info.file.name} file upload failed!`).then(() => {})
                                 return
                             }
                             setImagesUploaded([info.file])

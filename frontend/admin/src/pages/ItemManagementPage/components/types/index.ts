@@ -8,6 +8,7 @@ export interface TableData extends IBaseData {
     categoryId: string
     name: string
     price: number | undefined
-    imageUrl: string   // Image URL not Image file
     quantity: number
+    imageMinioGetUrl: string | null
+    imageMinioPutUrl: string | null
 }
