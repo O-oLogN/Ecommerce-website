@@ -42,7 +42,7 @@ export const useEditItem = () => {
             formData.append('itemId', params.itemId)
             formData.append('categoryId', params.categoryId)
             formData.append('name', params.name)
-            formData.append('price', params.price!.toString())
+            formData.append('price', params.price ? params.price.toString() : "")
             formData.append('quantity', params.quantity.toString())
             if (params.image) {
                 formData.append('image', params.image)
@@ -68,10 +68,9 @@ export const useDeleteItem= () => {
         (params: IDeleteItemRequest) => {
             const queryParams = new URLSearchParams({
                 itemId: params.itemId,
-            }).toString();
+            }).toString()
             return axiosInstance.post<IBaseResponse<IDeleteItemResponse>>(
-                REQUEST_MAPPING.ITEM + REQUEST_PATH.DELETE_ITEM,
-                queryParams
+                `${REQUEST_MAPPING.ITEM}${REQUEST_PATH.DELETE_ITEM}?${queryParams}`
             )
         },
     )

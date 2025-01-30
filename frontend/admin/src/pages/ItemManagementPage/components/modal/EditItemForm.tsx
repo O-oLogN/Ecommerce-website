@@ -44,9 +44,7 @@ const handleSubmitForm = async (
         console.log('ERROR - item updated failed!')
         const errObj = error as any
         messageApi.error(errObj.status + ' - '
-            + errObj.code + ' - '
-            + errObj.response.data.error + ' - '
-            + errObj.response.data.message)
+            + errObj.code + ' - ')
     }
     finally {
         setIsOpenForm(false)
@@ -73,7 +71,7 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
     }
     const searchCategoryResponse = useSearchCategory({
         sample: {
-            categoryName: '',
+            categoryName: "",
         },
         pageInfo: {
             pageNumber: 0,
@@ -85,7 +83,7 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
     })
     React.useEffect(() => {
         if (!searchCategoryResponse.data) {
-            console.log('searchCategoryResponse.data is undefined')
+            console.log('searchCategoryResponse.data is undefined!')
         }
         else if (searchCategoryResponse.data!.status === HttpStatusCode.Ok) {
             setCategories(searchCategoryResponse.data!.data.content)
