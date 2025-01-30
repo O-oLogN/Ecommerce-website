@@ -1,4 +1,4 @@
-import {Modal, Form, Input, Upload, Select, message} from 'antd'
+import {Modal, Form, Input, Upload, Select, message, FormInstance} from 'antd'
 import {UploadOutlined} from '@ant-design/icons'
 import React, {useState} from 'react'
 import {ItemInfo, CategoryInfo} from 'types'
@@ -23,6 +23,8 @@ const handleSubmitForm = async (
     editRequest: IEditItemRequest,
     reFetchItemList: () => void,
     messageApi: typeof message,
+    form: FormInstance,
+    setImagesUploaded: React.Dispatch<React.SetStateAction<File[] | undefined>>,
 ) => {
     try {
         const editResponse = await editHelper.mutateAsync(editRequest)
@@ -41,12 +43,15 @@ const handleSubmitForm = async (
         }
     }
     catch (error) {
+        form.resetFields()
+        setImagesUploaded([])
         console.log('ERROR - item updated failed!')
         const errObj = error as any
         messageApi.error(errObj.status + ' - '
             + errObj.code + ' - ')
     }
     finally {
+        form.resetFields()
         setIsOpenForm(false)
         reFetchItemList()
     }
@@ -136,6 +141,8 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                           },
                           reFetchItemList,
                           messageApi,
+                          form,
+                          setImagesUploaded,
                       )
                   }}
             >
