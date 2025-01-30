@@ -4,49 +4,202 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c6665912-67e6-4b87-bf59-909be740e6dd" name="Changes" comment="" />
+    <list default="true" id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../client/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/ClientApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/config/AppConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/constant/AppRoutes.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/constant/CoreConstants.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/controller/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/controller/ItemController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/controller/OrderController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/controller/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/auth/SignInRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/auth/SignUpRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/item/SearchItemRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/order/CreateChildOrderRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/order/CreateTotalOrderRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/user/UpdateUserRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/response/auth/SigninResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/response/item/ItemResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/response/order/TotalOrderResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/Item.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/ItemCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/Order.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/Session.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/TotalOrder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/exception/ItemNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/exception/OrderNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/exception/SessionNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/exception/UserNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/helper/MessageHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/helper/ResponseHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/model/ApiDataResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/model/OrderBy.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/model/QueryRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/ItemCategoryRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/ItemRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/OrderRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/SessionRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/TotalOrderRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/AuthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/ItemService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/OrderService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/impl/AuthServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/impl/ItemServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/impl/OrderServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/impl/UserServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/utils/PasswordUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/utils/ValidationUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/main/resources/messages/messages.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../client/src/test/java/com/client/ClientApplicationTests.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ExternalProjectsData">
-    <projectState path="$PROJECT_DIR$/admin">
-      <ProjectState />
-    </projectState>
-    <projectState path="$PROJECT_DIR$/client">
+    <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
-  <component name="ProjectId" id="2r6jcLpwlqvKaKilZjim9rR1rW3" />
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="admin" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="admin" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="com.intellij.jpb.JpaEntity" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;O-oLogN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/O-oLogN/Ecommerce-website.git&quot;,
+    &quot;accountId&quot;: &quot;251a40a4-35e6-4ff9-9bfa-b8b08f4a1b2b&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MigrationScriptOptions">
+    <option name="ignoreImplicitObjects" value="true" />
+    <option name="ignoreSourceCode" value="false" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2qybGg36XsFYaBWxYSQpNRMiGpW" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Gradle.Build admin.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.Admin Service.executor": "Run",
+    "Spring Boot.AdminApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Code/Java/Projects/Final/medStores/Backend/client",
+    "last_opened_file_path": "D:/Code/Java/Projects/Final/Ecommerce-website/backend/client",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
+    "nodejs_interpreter_path": "D:/Program Files/NodeJS/node",
+    "nodejs_package_manager_path": "D:\\Program Files\\NodeJS\\npm.cmd",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Code\Java\Projects\Final\Ecommerce-website\backend\admin" />
+      <recent name="D:\Code\Java\Projects\Final\Ecommerce-website\backend\admin\src\main\java" />
+    </key>
+  </component>
   <component name="RunManager">
-    <configuration name="AdminApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <configuration name="Admin Service" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="admin.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.admin.AdminApplication" />
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -55,24 +208,87 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.153" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.153" />
       </set>
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c6665912-67e6-4b87-bf59-909be740e6dd" name="Changes" comment="" />
-      <created>1735886498312</created>
+      <changelist id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="" />
+      <created>1735637672935</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1735886498312</updated>
-      <workItem from="1735886504652" duration="378000" />
+      <updated>1735637672935</updated>
+      <workItem from="1735637677322" duration="60113000" />
+      <workItem from="1735811575130" duration="17908000" />
+      <workItem from="1735883353896" duration="69000" />
+      <workItem from="1735883988773" duration="616000" />
+      <workItem from="1735886908531" duration="211000" />
+      <workItem from="1735887204258" duration="2620000" />
+      <workItem from="1735892388007" duration="8302000" />
+      <workItem from="1735918410437" duration="1138000" />
+      <workItem from="1736134822205" duration="18449000" />
+      <workItem from="1736179371213" duration="2460000" />
+      <workItem from="1736214540335" duration="1194000" />
+      <workItem from="1736215853495" duration="264000" />
+      <workItem from="1736435232621" duration="17621000" />
+      <workItem from="1736690402088" duration="2776000" />
+      <workItem from="1736732756628" duration="4223000" />
+      <workItem from="1736739056245" duration="171000" />
+      <workItem from="1736904192889" duration="16861000" />
+      <workItem from="1737007694311" duration="2785000" />
+      <workItem from="1737011294506" duration="5568000" />
+      <workItem from="1737040466634" duration="3381000" />
+      <workItem from="1737126500167" duration="5646000" />
+      <workItem from="1737191998619" duration="11189000" />
+      <workItem from="1737257782249" duration="14292000" />
+      <workItem from="1737442499843" duration="8657000" />
+      <workItem from="1737459830823" duration="42968000" />
+      <workItem from="1737555489438" duration="207000" />
+      <workItem from="1737556587200" duration="334000" />
+      <workItem from="1737556963232" duration="17000" />
+      <workItem from="1737557097321" duration="514000" />
+      <workItem from="1737557640214" duration="173000" />
+      <workItem from="1737557960271" duration="219000" />
+      <workItem from="1737558196071" duration="384000" />
+      <workItem from="1737558611042" duration="107000" />
+      <workItem from="1737595608494" duration="788000" />
+      <workItem from="1737596470940" duration="206000" />
+      <workItem from="1737596943112" duration="13525000" />
+      <workItem from="1737729155650" duration="1307000" />
+      <workItem from="1737732450531" duration="28000" />
+      <workItem from="1737732615020" duration="17512000" />
+      <workItem from="1737919945212" duration="7032000" />
+      <workItem from="1738138586682" duration="16262000" />
+      <workItem from="1738200096497" duration="8638000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VueSettings">
+    <option name="innerServiceType" value="TS_SERVICE" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint type="java-exception">
+          <properties class="java.lang.Exception" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/admin/service/impl/CategoryServiceImpl.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
