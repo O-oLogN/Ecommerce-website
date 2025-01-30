@@ -35,10 +35,10 @@ public class Item {
     @Column(name = "price")
     private Float price;
 
-    @Column(name = "imageMinioGetUrl")
+    @Column(name = "image_minio_get_url")
     private String imageMinioGetUrl;
 
-    @Column(name = "imageMinioPutUrl")
+    @Column(name = "image_minio_put_url")
     private String imageMinioPutUrl;
 
     @NotNull

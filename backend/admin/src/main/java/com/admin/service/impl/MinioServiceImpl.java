@@ -5,7 +5,6 @@ import com.admin.dto.response.minio.UploadFileResponse;
 import com.admin.service.MinioService;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.minio.*;
-import io.minio.http.Method;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,14 +20,13 @@ public class MinioServiceImpl implements MinioService {
     private final Dotenv dotenv = Dotenv.load();
 
     public MinioServiceImpl() throws Exception {
-        Dotenv dotenv = Dotenv.load();
         minioClient = MinioClient.builder()
-                .endpoint("https://min.io")
+                .endpoint(Objects.requireNonNull(dotenv.get("MINIO_ENDPOINT")))
                 .credentials(Objects.requireNonNull(dotenv.get("MINIO_ACCESS_KEY")), Objects.requireNonNull(dotenv.get("MINIO_SECRET_KEY")))
                 .build();
 
         String bucketName = dotenv.get("MINIO_BUCKET_NAME");
-        if (minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
+        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
             minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
         }
     }
@@ -39,36 +37,21 @@ public class MinioServiceImpl implements MinioService {
         File tempFile = File.createTempFile("temp-", uniqueFileName);
         file.transferTo(tempFile);
 
+        String objectName = "upload/" + uploadDir + "/" + uniqueFileName;
         minioClient.uploadObject(
                 UploadObjectArgs.builder()
                         .bucket(dotenv.get("MINIO_BUCKET_NAME"))
-                        .object("upload/" + uploadDir + "/" + uniqueFileName)
+                        .object(objectName)
                         .filename(tempFile.getAbsolutePath())
                         .contentType(file.getContentType())
                         .build()
         );
 
-        String presignedGetUrl = minioClient.getPresignedObjectUrl(
-                GetPresignedObjectUrlArgs.builder()
-                        .method(Method.GET)
-                        .bucket(dotenv.get("MINIO_BUCKET_NAME"))
-                        .object("upload/" + uploadDir + "/" + uniqueFileName)
-                        .expiry(Integer.parseInt(Objects.requireNonNull(dotenv.get("MINIO_EXPIRY"))))
-                        .build()
-        );
-
-        String presignedPutUrl = minioClient.getPresignedObjectUrl(
-                GetPresignedObjectUrlArgs.builder()
-                        .method(Method.PUT)
-                        .bucket(dotenv.get("MINIO_BUCKET_NAME"))
-                        .object("upload/" + uploadDir + "/" + uniqueFileName)
-                        .expiry(Integer.parseInt(Objects.requireNonNull(dotenv.get("MINIO_EXPIRY"))))
-                        .build()
-        );
+        String publicGetAndPutUrl = getPublicUrl(objectName);
 
         return UploadFileResponse.builder()
-                .presignedGetUrl(presignedGetUrl)
-                .presignedPutUrl(presignedPutUrl)
+                .presignedGetUrl(publicGetAndPutUrl)
+                .presignedPutUrl(publicGetAndPutUrl)
                 .build();
     }
 
@@ -106,5 +89,8 @@ public class MinioServiceImpl implements MinioService {
                     .object(objectName)
                     .build()
         );
+    }
+    private String getPublicUrl(String objectName) {
+        return dotenv.get("MINIO_ENDPOINT") + "/" + dotenv.get("MINIO_BUCKET_NAME") + "/" + objectName;
     }
 }

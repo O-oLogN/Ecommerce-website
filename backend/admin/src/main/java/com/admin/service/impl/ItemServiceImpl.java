@@ -181,21 +181,19 @@ public class ItemServiceImpl implements ItemService {
                 : (!ValidationUtils.isNullOrEmpty(editFileResponse)
                 ? editFileResponse.getPresignedPutUrl() : "");
 
-        Item updatedItem = Item
-                .builder()
-                .itemId(itemId)
-                .categoryId(categoryId)
-                .name(name)
-                .price(price)
-                .quantity(quantity)
-                .imageMinioGetUrl(newImageMinioGetUrl)
-                .imageMinioPutUrl(newImageMinioPutUrl)
-                .modifyUser(modifyUser)
-                .modifyDatetime(modifyDatetime)
-                .build();
+        Item item = itemRepository.findItemByItemId(itemId);
 
-        itemRepository.save(updatedItem);
-        return ResponseHelper.ok(updatedItem, HttpStatus.OK, messageHelper.getMessage("admin.itemController.update.info.success"));
+        item.setCategoryId(categoryId);
+        item.setName(name);
+        item.setPrice(price);
+        item.setQuantity(quantity);
+        item.setImageMinioGetUrl(newImageMinioGetUrl);
+        item.setImageMinioPutUrl(newImageMinioPutUrl);
+        item.setModifyUser(modifyUser);
+        item.setModifyDatetime(modifyDatetime);
+
+        itemRepository.save(item);
+        return ResponseHelper.ok(item, HttpStatus.OK, messageHelper.getMessage("admin.itemController.update.info.success"));
     }
 
     @Override

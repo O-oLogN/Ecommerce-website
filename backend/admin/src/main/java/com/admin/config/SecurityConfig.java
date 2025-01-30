@@ -1,7 +1,7 @@
 package com.admin.config;
 
 import com.admin.constant.CoreConstants;
-import com.admin.filter.ExceptionHandlerFilter;
+//import com.admin.filter.ExceptionHandlerFilter;
 import com.admin.filter.JwtFilter;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,7 +30,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
-    private final ExceptionHandlerFilter exceptionHandlerFilter;
+//    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -48,12 +48,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                             permittedPaths.forEach(path -> auth.requestMatchers(path).permitAll());
-                            adminRolePaths.forEach(path -> auth.requestMatchers(path).hasRole(CoreConstants.ADMINISTRATOR.ADMIN));
-//                            auth.anyRequest().permitAll();
+//                            adminRolePaths.forEach(path -> auth.requestMatchers(path).hasRole(CoreConstants.ADMINISTRATOR.ADMIN));
+                            auth.anyRequest().permitAll();
                         }
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(exceptionHandlerFilter, CorsFilter.class)
+//                .addFilterBefore(exceptionHandlerFilter, CorsFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((_, response, _) ->
