@@ -5,65 +5,88 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../client/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/ClientApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/config/AppConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/constant/AppRoutes.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/constant/CoreConstants.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/controller/AuthController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/controller/ItemController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/controller/OrderController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/controller/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/auth/SignInRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/auth/SignUpRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/item/SearchItemRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/order/CreateChildOrderRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/order/CreateTotalOrderRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/request/user/UpdateUserRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/response/auth/SigninResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/response/item/ItemResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/dto/response/order/TotalOrderResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/Item.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/ItemCategory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/Order.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/Session.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/TotalOrder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/entities/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/exception/ItemNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/exception/OrderNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/exception/SessionNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/exception/UserNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/helper/MessageHelper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/helper/ResponseHelper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/model/ApiDataResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/model/OrderBy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/model/QueryRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/ItemCategoryRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/ItemRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/OrderRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/SessionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/TotalOrderRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/AuthService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/ItemService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/OrderService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/impl/AuthServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/impl/ItemServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/impl/OrderServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/service/impl/UserServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/utils/PasswordUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/java/com/client/utils/ValidationUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/main/resources/messages/messages.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../client/src/test/java/com/client/ClientApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/public/1678172504759.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/public/logo192.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/public/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/public/robots.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/App.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/App.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/animation/AnimatePage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/app/store.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/Account.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/Cart.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/Confirmation.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/Contact.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/Footer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/Header.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/HeaderTwo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/Home.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/Login.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/PageNotFound.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/ProductDetails.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/SideBar.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/WelcomePage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/css_files/Header.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/css_files/cartItem.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/css_files/showProduct.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/componets/css_files/test.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/feautres/cartSlice.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/feautres/userSlice.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/firebase/firebaseConfig.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/i18n.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/Ecommerce checkout laptop-rafiki.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/MHLL3.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/Plain credit card-pana.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/Resume+MOHAMMED+DAKIR.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/acc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/acc2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/acc3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/ae.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/card_pana.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/clothing.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/empty-cart.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/hm1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/hm2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/hm3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/ihpone.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/ike2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/laptop.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/laptop2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/laptop3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/logo2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/macBook.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/max.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/menu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/morocco.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/nikee.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/pro4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/proscond1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/seconde.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/shoes.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/shopping-bag.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/tshirt.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/tshirt2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/usa.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/wall.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/watch.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/images/watch2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/languages/ar.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/languages/en.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/productData.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/reportWebVitals.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/setupTests.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/tailwind.config.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +133,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -140,46 +163,46 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Gradle.Build admin.executor": "Run",
-    "Gradle.Download Sources.executor": "Run",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.Admin Service.executor": "Run",
-    "Spring Boot.AdminApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Code/Java/Projects/Final/Ecommerce-website/backend/client",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "D:/Program Files/NodeJS/node",
-    "nodejs_package_manager_path": "D:\\Program Files\\NodeJS\\npm.cmd",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Gradle.Build admin.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.Admin Service.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.AdminApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Code/Java/Projects/Final/Ecommerce-website/backend/client&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;D:/Program Files/NodeJS/node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;D:\\Program Files\\NodeJS\\npm.cmd&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Code\Java\Projects\Final\Ecommerce-website\backend\admin" />
@@ -187,7 +210,7 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="Admin Service" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <configuration name="Backend Service" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="admin.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.admin.AdminApplication" />
       <extension name="net.ashald.envfile">
@@ -263,6 +286,7 @@
       <workItem from="1737919945212" duration="7032000" />
       <workItem from="1738138586682" duration="16262000" />
       <workItem from="1738200096497" duration="8638000" />
+      <workItem from="1738250902489" duration="4757000" />
     </task>
     <servers />
   </component>

@@ -37,15 +37,15 @@ dependencies {
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
     // Spring Security dependencies
-    implementation("org.springframework.security:spring-security-core:6.1.0")
-    implementation("org.springframework.security:spring-security-config:6.1.0")
-    implementation("org.springframework.security:spring-security-web:6.1.0")
+    implementation("org.springframework.security:spring-security-config:6.4.2")
+    implementation("org.springframework.security:spring-security-core:6.4.2")
+    implementation("org.springframework.security:spring-security-web:6.4.2")
 
     // Swagger OpenAPI for API documentation
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
     // Database driver and JDBC
-    implementation 'mysql:mysql-connector-java:8.0.31'
+    implementation 'com.mysql:mysql-connector-j:8.2.0'
 
     // JWT for token management
     implementation("com.auth0:java-jwt:4.4.0")
