@@ -5,9 +5,11 @@ import EmailInput from 'components/EmailInput.tsx'
 import SuccessAlert from 'components/SuccessAlert.tsx'
 import ErrorAlert from 'components/ErrorAlert.tsx'
 import Title from 'components/Title.tsx'
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import {useSignUpContext} from "pages/SignUpPage/hooks"
-
+import {SignUpContextProvider} from "pages/SignUpPage/hooks"
+import {useNavigate} from "react-router-dom"
+import {REQUEST_MAPPING, REQUEST_PATH} from "routes"
 
 const SignUpPage = () => {
     const {
@@ -15,6 +17,7 @@ const SignUpPage = () => {
         handleSignUp,
         signUpErr,
     } = useSignUpContext()
+    const navigate = useNavigate()
     const [isUsernameError, setIsUsernameError] = useState({isError: false, alertMsg: ''})
     const [isPasswordError, setIsPasswordError] = useState({isError: false, alertMsg: ''})
     const [isRetypePasswordError, setIsRetypePasswordError] = useState({isError: false, alertMsg: ''})
@@ -83,6 +86,12 @@ const SignUpPage = () => {
         }).then(() => {})
     }
 
+    useEffect(() => {
+        if (signedUp) {
+            navigate(REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN)
+        }
+    }, [signedUp])
+
     return (
         <>
             { signedUp && <SuccessAlert
@@ -127,4 +136,11 @@ const SignUpPage = () => {
     )
 }
 
-export default SignUpPage
+const SignUpPageWrapper = () => {
+    return (
+        <SignUpContextProvider>
+            <SignUpPage />
+        </SignUpContextProvider>
+    )
+}
+export default SignUpPageWrapper

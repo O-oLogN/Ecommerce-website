@@ -8,6 +8,7 @@ import {useLoginContext} from "pages/LoginPage/hooks"
 import {LoginContextProps} from "pages/LoginPage/types"
 import SuccessAlert from "components/SuccessAlert.tsx"
 import ErrorAlert from "components/ErrorAlert.tsx"
+import {LoginContextProvider} from "pages/LoginPage/hooks"
 
 const LoginPage = () => {
     const [isUsernameError, setIsUsernameError] = useState({ isError: false, alertMsg: '' })
@@ -83,4 +84,11 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage
+const LoginPageWrapper = () => {
+    return (
+        <LoginContextProvider>
+            <LoginPage/>
+        </LoginContextProvider>
+    )
+}
+export default LoginPageWrapper
