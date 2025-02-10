@@ -156,10 +156,8 @@ public class UserServiceImpl implements UserService {
                     messageHelper.getMessage("admin.userController.delete.user.find.error.notFound")
                 ));
 
-        List<UserRole> userRoles = userRoleRepository.findUserRolesByUser(user);
 
-        userRoleRepository.deleteAll(userRoles);        // First
-        userRepository.delete(user);                    // Then
+        userRepository.delete(user);
 
         return ResponseHelper.ok(user, HttpStatus.OK, messageHelper.getMessage("admin.userController.delete.info.success"));
     }

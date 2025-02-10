@@ -1,7 +1,11 @@
 package com.ecom.dto.request.item;
 
 import lombok.*;
+
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
+
 
 @Getter
 @Setter
@@ -17,4 +21,8 @@ public class UpdateItemRequest {
     private MultipartFile image;
     private String imageMinioGetUrl;
     private String imageMinioPutUrl;
+    private List<String> highlightIds;
+    private List<String> badgeIds;
+    private Float rate;
+    private Integer numberOfReviews;
 }

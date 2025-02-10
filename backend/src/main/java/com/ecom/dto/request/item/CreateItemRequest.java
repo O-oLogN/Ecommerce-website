@@ -1,6 +1,9 @@
 package com.ecom.dto.request.item;
 
 import lombok.*;
+
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -10,9 +13,13 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateItemRequest {
-    private String categoryId;
     private String name;
+    private String categoryId;
     private Float price;
     MultipartFile image;
     private Integer quantity;
+    private Float rate;
+    private Integer numberOfReviews;
+    private List<String> highlightIds;
+    private List<String> badgeIds;
 }

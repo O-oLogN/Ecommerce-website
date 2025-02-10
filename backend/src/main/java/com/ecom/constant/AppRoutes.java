@@ -13,6 +13,8 @@ public final class AppRoutes {
         public static final String CATEGORY = "/category";
         public static final String USER = "/user";
         public static final String ORDER = "/order";
+        public static final String HIGHLIGHT = "/highlight";
+        public static final String BADGE = "/badge";
     }
 
     public static final class REQUEST_PATH {
@@ -44,6 +46,16 @@ public final class AppRoutes {
         public static final String DELETE_CHILD_ORDER = "/delete-child-order";     
         public static final String DELETE_TOTAL_ORDER = "/delete-total-order";     
         public static final String SEARCH_TOTAL_ORDER = "/search-total-order";     
-        public static final String UPDATE_PAYMENT_STATUS_TOTAL_ORDER = "/update-payment-status-total-order";     
+        public static final String UPDATE_PAYMENT_STATUS_TOTAL_ORDER = "/update-payment-status-total-order"; 
+
+        public static final String UPDATE_HIGHLIGHT = "/update";
+        public static final String DELETE_HIGHLIGHT = "/delete";
+        public static final String CREATE_HIGHLIGHT = "/create";
+        public static final String SEARCH_HIGHLIGHT = "/search";
+
+        public static final String UPDATE_BADGE = "/update";
+        public static final String DELETE_BADGE = "/delete";
+        public static final String CREATE_BADGE = "/create";
+        public static final String SEARCH_BADGE = "/search";    
     }
 }

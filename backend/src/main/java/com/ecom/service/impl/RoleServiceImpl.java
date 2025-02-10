@@ -4,7 +4,6 @@ import com.ecom.constant.CoreConstants;
 import com.ecom.dto.role.SearchRoleRequest;
 import com.ecom.dto.role.UpdateRoleRequest;
 import com.ecom.entities.Role;
-import com.ecom.entities.UserRole;
 import com.ecom.exception.RoleNotFoundException;
 import com.ecom.helper.MessageHelper;
 import com.ecom.helper.ResponseHelper;
@@ -12,7 +11,6 @@ import com.ecom.model.PageInfo;
 import com.ecom.model.PagingResponse;
 import com.ecom.model.QueryRequest;
 import com.ecom.repository.RoleRepository;
-import com.ecom.repository.UserRoleRepository;
 import com.ecom.service.RoleService;
 import com.ecom.specification.RoleSpecification;
 import com.ecom.utils.SortUtils;
@@ -39,7 +37,6 @@ import java.util.UUID;
 @Transactional
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
-    private final UserRoleRepository userRoleRepository;
 
     private final RoleSpecification roleSpecification;
 
@@ -129,8 +126,6 @@ public class RoleServiceImpl implements RoleService {
             );
         }
 
-        List<UserRole> userRoles = userRoleRepository.findUserRolesByRole(role);
-        userRoleRepository.deleteAll(userRoles);
         roleRepository.delete(role);
 
         return ResponseHelper.ok(role, HttpStatus.OK, messageHelper.getMessage("admin.roleController.delete.info.success"));

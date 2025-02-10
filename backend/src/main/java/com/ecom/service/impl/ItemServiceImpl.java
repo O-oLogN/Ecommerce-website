@@ -7,6 +7,8 @@ import com.ecom.dto.request.item.UpdateItemRequest;
 import com.ecom.dto.response.minio.EditFileResponse;
 import com.ecom.dto.response.minio.UploadFileResponse;
 import com.ecom.entities.Item;
+import com.ecom.entities.ItemBadge;
+import com.ecom.entities.ItemHighlight;
 import com.ecom.exception.ItemNotFoundException;
 import com.ecom.helper.MessageHelper;
 import com.ecom.helper.ResponseHelper;
@@ -34,7 +36,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -81,11 +85,16 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ResponseEntity<?> createItem(CreateItemRequest createItemRequest) throws Exception {
+        String itemId = UUID.randomUUID().toString();
         String categoryId = createItemRequest.getCategoryId();
         String name = createItemRequest.getName();
         Float price = createItemRequest.getPrice();
         MultipartFile image = createItemRequest.getImage();
         Integer quantity = createItemRequest.getQuantity();
+        List<String> badgeIds = createItemRequest.getBadgeIds();
+        List<String> highlightIds = createItemRequest.getHighlightIds();
+        Float rate = createItemRequest.getRate();
+        Integer numberOfReviews = createItemRequest.getNumberOfReviews();
         String createUser = CoreConstants.ROLE.ADMIN;
         LocalDateTime createDatetime = LocalDateTime.now();
 
@@ -112,13 +121,17 @@ public class ItemServiceImpl implements ItemService {
 
         Item newItem = Item
                 .builder()
-                .itemId(UUID.randomUUID().toString())
+                .itemId(itemId)
                 .categoryId(categoryId)
                 .name(name)
                 .price(price)
                 .imageMinioGetUrl(ValidationUtils.isNullOrEmpty(uploadFileResponse) ? "" : uploadFileResponse.getPresignedGetUrl())
                 .imageMinioPutUrl(ValidationUtils.isNullOrEmpty(uploadFileResponse) ? "" : uploadFileResponse.getPresignedPutUrl())
                 .quantity(quantity)
+                .itemBadges(convertBadgeIdsToSetItemBadge(itemId, badgeIds))
+                .itemHighlights(convertHighlightIdsToSetItemHighlight(itemId, highlightIds))
+                .rate(rate)
+                .numberOfReviews(numberOfReviews)
                 .createUser(createUser)
                 .createDatetime(createDatetime)
                 .build();
@@ -137,6 +150,10 @@ public class ItemServiceImpl implements ItemService {
         Integer quantity = updateItemRequest.getQuantity();
         MultipartFile image = updateItemRequest.getImage();
         String oldImageMinioPutUrl = updateItemRequest.getImageMinioPutUrl();
+        List<String> highlightIds = updateItemRequest.getHighlightIds();
+        List<String> badgeIds = updateItemRequest.getBadgeIds();
+        Float rate = updateItemRequest.getRate();
+        Integer numberOfReviews = updateItemRequest.getNumberOfReviews();
         String modifyUser = CoreConstants.ROLE.ADMIN;
         LocalDateTime modifyDatetime = LocalDateTime.now();
 
@@ -189,6 +206,10 @@ public class ItemServiceImpl implements ItemService {
         item.setQuantity(quantity);
         item.setImageMinioGetUrl(newImageMinioGetUrl);
         item.setImageMinioPutUrl(newImageMinioPutUrl);
+        item.setItemBadges(convertBadgeIdsToSetItemBadge(itemId, badgeIds));
+        item.setItemHighlights(convertHighlightIdsToSetItemHighlight(itemId, highlightIds));
+        item.setRate(rate);
+        item.setNumberOfReviews(numberOfReviews);
         item.setModifyUser(modifyUser);
         item.setModifyDatetime(modifyDatetime);
 
@@ -211,6 +232,33 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.deleteById(itemId);
 
         return ResponseHelper.ok(item, HttpStatus.OK, messageHelper.getMessage("admin.itemController.delete.info.success"));
+    }
+
+/*==============================================================================PRIVATE METHODS=========================================================================================================*/
+    private Set<ItemHighlight> convertHighlightIdsToSetItemHighlight(String itemId, List<String> highlightIds) {
+        return highlightIds.stream()
+                .map(highlightId -> ItemHighlight.builder()
+                        .itemHighlightId(UUID.randomUUID().toString())
+                        .itemId(itemId)
+                        .highlightId(highlightId)
+                        .createUser(CoreConstants.ROLE.ADMIN)
+                        .createDatetime(LocalDateTime.now())
+                        .build()
+                )
+                .collect(Collectors.toSet());
+    }
+
+    private Set<ItemBadge> convertBadgeIdsToSetItemBadge(String itemId, List<String> badgeIds) {
+        return badgeIds.stream()
+                .map(badgeId -> ItemBadge.builder()
+                        .itemBadgeId(UUID.randomUUID().toString())
+                        .itemId(itemId)
+                        .badgeId(badgeId)
+                        .createUser(CoreConstants.ROLE.ADMIN)
+                        .createDatetime(LocalDateTime.now())
+                        .build()
+                )
+                .collect(Collectors.toSet());
     }
 }
 

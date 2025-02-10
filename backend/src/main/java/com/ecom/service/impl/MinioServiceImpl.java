@@ -17,6 +17,7 @@ import java.util.UUID;
 @Service
 public class MinioServiceImpl implements MinioService {
     private final MinioClient minioClient;
+    
     private final Dotenv dotenv = Dotenv.load();
 
     public MinioServiceImpl() throws Exception {

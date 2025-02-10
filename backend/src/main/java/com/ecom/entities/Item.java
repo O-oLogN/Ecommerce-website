@@ -2,6 +2,9 @@ package com.ecom.entities;
 
 import com.ecom.constant.CoreConstants;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,6 +12,9 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -45,6 +51,13 @@ public class Item {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+    @Column(name = "rate")
+    private Float rate;
+
+    @NotNull
+    @Column(name = "number_of_reviews", nullable = false)
+    private Integer numberOfReviews;
+
     @Size(max = 100)
     @NotNull
     @Column(name = "create_user", nullable = false, length = 100)
@@ -64,4 +77,33 @@ public class Item {
     @JsonFormat(pattern = CoreConstants.DateTimePattern.FORMAT_24H)
     private LocalDateTime modifyDatetime;
 
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<ItemHighlight> itemHighlights;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<ItemBadge> itemBadges;
+    
+    @Transient
+    @JsonProperty("highlights")
+    public Set<Highlight> getItemHighlights() {
+        if (!itemHighlights.isEmpty()) {
+            return itemHighlights.stream()
+                .map(ItemHighlight::getHighlight)
+                .collect(Collectors.toSet());
+        }
+        return Collections.emptySet();
+    }
+
+    @Transient
+    @JsonProperty("badges")
+    public Set<Badge> getBadges() {
+        if (!itemBadges.isEmpty()) {
+            return itemBadges.stream()
+                    .map(ItemBadge::getBadge)
+                    .collect(Collectors.toSet());
+        }
+        return Collections.emptySet();
+    }
 }

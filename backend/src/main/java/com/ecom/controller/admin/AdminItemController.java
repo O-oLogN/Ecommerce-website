@@ -13,6 +13,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,11 +38,15 @@ public class AdminItemController {
                                         @RequestParam("itemId") String itemId,
                                         @RequestParam("categoryId") String categoryId,
                                         @RequestParam("name") String name,
-                                        @RequestParam(value = "price", required = false) Float price,
+                                        @RequestParam("price") Float price,
                                         @RequestParam("quantity") Integer quantity,
-                                        @RequestParam(value = "image", required = false) MultipartFile image,
-                                        @RequestParam(value = "imageMinioGetUrl", required = false) String imageMinioGetUrl,
-                                        @RequestParam(value = "imageMinioPutUrl", required = false) String imageMinioPutUrl
+                                        @RequestParam("image") MultipartFile image,
+                                        @RequestParam("imageMinioGetUrl") String imageMinioGetUrl,
+                                        @RequestParam("imageMinioPutUrl") String imageMinioPutUrl,
+                                        @RequestParam("highlightIds") List<String> hightlightIds,
+                                        @RequestParam("badgeIds") List<String> badgeIds,
+                                        @RequestParam("rate") Float rate,
+                                        @RequestParam("numberOfReviews") Integer numberOfReviews
         ) throws Exception {
         return itemService.updateItem(UpdateItemRequest.builder()
                                                         .itemId(itemId)
@@ -50,6 +57,10 @@ public class AdminItemController {
                                                         .image(image)
                                                         .imageMinioGetUrl(imageMinioGetUrl)
                                                         .imageMinioPutUrl(imageMinioPutUrl)
+                                                        .highlightIds(hightlightIds)
+                                                        .badgeIds(badgeIds)
+                                                        .rate(rate)
+                                                        .numberOfReviews(numberOfReviews)
                                                         .build());
     }
 
@@ -61,9 +72,13 @@ public class AdminItemController {
     @PostMapping(AppRoutes.REQUEST_PATH.CREATE_ITEM)
     public ResponseEntity<?> createItem(@RequestParam("categoryId") String categoryId,
                                         @RequestParam("name") String name,
-                                        @RequestParam(value = "price", required = false) Float price,
+                                        @RequestParam("price") Float price,
                                         @RequestParam("quantity") Integer quantity,
-                                        @RequestParam(value = "image", required = false) MultipartFile image
+                                        @RequestParam("image") MultipartFile image,
+                                        @RequestParam("highlightIds") List<String> hightlightIds,
+                                        @RequestParam("badgeIds") List<String> badgeIds,
+                                        @RequestParam("rate") Float rate,
+                                        @RequestParam("numberOfReivews") Integer numberOfReviews
     ) throws Exception {
         return itemService.createItem(CreateItemRequest.builder()
                                                         .categoryId(categoryId)
@@ -71,6 +86,10 @@ public class AdminItemController {
                                                         .price(price)
                                                         .quantity(quantity)
                                                         .image(image)
+                                                        .highlightIds(hightlightIds)
+                                                        .badgeIds(badgeIds)
+                                                        .rate(rate)
+                                                        .numberOfReviews(numberOfReviews)
                                                         .build());
     }
 
