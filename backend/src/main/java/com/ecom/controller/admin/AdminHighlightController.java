@@ -1,17 +1,12 @@
 package com.ecom.controller.admin;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ecom.constant.AppRoutes;
 import com.ecom.dto.request.highlight.UpdateHighlightRequest;
 import com.ecom.model.QueryRequest;
 import com.ecom.service.HighlightService;
-
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,6 +29,7 @@ public class AdminHighlightController {
     })
     @PostMapping(AppRoutes.REQUEST_PATH.UPDATE_HIGHLIGHT)
     public ResponseEntity<?> updateHighlight(@Valid @RequestBody UpdateHighlightRequest updateHighlightRequest) throws Exception {
+        log.error("REQUEST: {}", updateHighlightRequest.getContent());
         return highlightService.updateHighlight(updateHighlightRequest);
     }
 

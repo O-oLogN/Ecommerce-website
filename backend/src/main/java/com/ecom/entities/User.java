@@ -67,7 +67,7 @@ public class User {
 
     @Transient
     @JsonProperty("roles")
-    public Set<String> getRoleNames() {
+    public Set<String> getRoles() {
         if (userRoles != null) {
             return userRoles.stream()
                     .map(userRole -> userRole.getRole().getName())

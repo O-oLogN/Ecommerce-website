@@ -185,27 +185,22 @@ public class ItemServiceImpl implements ItemService {
             );
         }
 
-        UploadFileResponse uploadFileResponse = null;
-        EditFileResponse editFileResponse = null;
+        Item item = itemRepository.findItemByItemId(itemId);
+        String newImageMinioGetUrl = item.getImageMinioGetUrl();
+        String newImageMinioPutUrl = item.getImageMinioPutUrl();
+
         if (!ValidationUtils.isNullOrEmpty(image)) {
             if (ValidationUtils.isNullOrEmpty(oldImageMinioPutUrl)) {
-                uploadFileResponse = minioService.uploadFile(image, dotenv.get("MINIO_IMAGE_UPLOAD_DIR"));
+                UploadFileResponse uploadFileResponse = minioService.uploadFile(image, dotenv.get("MINIO_IMAGE_UPLOAD_DIR"));
+                newImageMinioPutUrl = uploadFileResponse.getPresignedPutUrl();
+                newImageMinioGetUrl = uploadFileResponse.getPresignedGetUrl();
             }
             else {
-                editFileResponse = minioService.editFile(image, dotenv.get("MINIO_IMAGE_UPLOAD_DIR"), oldImageMinioPutUrl);
+                EditFileResponse editFileResponse = minioService.editFile(image, dotenv.get("MINIO_IMAGE_UPLOAD_DIR"), oldImageMinioPutUrl);
+                newImageMinioPutUrl = editFileResponse.getPresignedPutUrl();
+                newImageMinioGetUrl = editFileResponse.getPresignedGetUrl();
             }
         }
-
-        String newImageMinioGetUrl = !ValidationUtils.isNullOrEmpty(uploadFileResponse)
-                        ? uploadFileResponse.getPresignedGetUrl()
-                        : (!ValidationUtils.isNullOrEmpty(editFileResponse)
-                            ? editFileResponse.getPresignedGetUrl() : "");
-        String newImageMinioPutUrl = !ValidationUtils.isNullOrEmpty(uploadFileResponse)
-                ? uploadFileResponse.getPresignedPutUrl()
-                : (!ValidationUtils.isNullOrEmpty(editFileResponse)
-                ? editFileResponse.getPresignedPutUrl() : "");
-
-        Item item = itemRepository.findItemByItemId(itemId);
 
         item.setCategoryId(categoryId);
         item.setName(name);
@@ -217,13 +212,10 @@ public class ItemServiceImpl implements ItemService {
         item.setNumberOfReviews(numberOfReviews);
         item.setModifyUser(modifyUser);
         item.setModifyDatetime(modifyDatetime);
-
+        item.getItemHighlights().addAll(convertHighlightIdsToSetItemHighlight(item, highlightIds));
+        item.getItemBadges().addAll(convertBadgeIdsToSetItemBadge(item, badgeIds));
         itemRepository.save(item);
 
-        item.setItemHighlights(convertHighlightIdsToSetItemHighlight(item, highlightIds));
-        item.setItemBadges(convertBadgeIdsToSetItemBadge(item, badgeIds));
-
-        itemRepository.save(item);
 
         return ResponseHelper.ok(item, HttpStatus.OK, messageHelper.getMessage("admin.itemController.update.info.success"));
     }

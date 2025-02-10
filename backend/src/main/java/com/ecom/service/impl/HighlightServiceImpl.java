@@ -43,7 +43,7 @@ public class HighlightServiceImpl implements HighlightService {
     private final MessageHelper messageHelper;
     
     @Override
-    public ResponseEntity<?> createHighlight(String content) throws Exception {
+    public ResponseEntity<?> createHighlight(String content) throws ValidationException {
         if (ValidationUtils.isNullOrEmpty(content)) {
             throw new ValidationException(
                 messageHelper.getMessage("admin.highlightController.create.error.validation.content")
@@ -111,7 +111,7 @@ public class HighlightServiceImpl implements HighlightService {
     }
 
     @Override
-    public ResponseEntity<?> updateHighlight(UpdateHighlightRequest updateHighlightRequest) throws Exception {
+    public ResponseEntity<?> updateHighlight(UpdateHighlightRequest updateHighlightRequest) throws ValidationException {
         String content = updateHighlightRequest.getContent();
 
         if (ValidationUtils.isNullOrEmpty(content)) {
@@ -123,6 +123,7 @@ public class HighlightServiceImpl implements HighlightService {
         Highlight highlight = highlightRepository.findById(updateHighlightRequest.getHighlightId())
                                              .orElse(null);
 
+        assert highlight != null;
         highlight.setContent(content);
         highlight.setModifyUser(CoreConstants.ROLE.ADMIN);
         highlight.setModifyDatetime(LocalDateTime.now());

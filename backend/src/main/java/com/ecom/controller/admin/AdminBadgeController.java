@@ -1,10 +1,7 @@
 package com.ecom.controller.admin;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ecom.constant.AppRoutes;
 import com.ecom.dto.request.badge.CreateBadgeRequest;
 import com.ecom.dto.request.badge.UpdateBadgeRequest;
@@ -12,13 +9,13 @@ import com.ecom.model.QueryRequest;
 import com.ecom.service.BadgeService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -34,7 +31,20 @@ public class AdminBadgeController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.UPDATE_BADGE)
-    public ResponseEntity<?> updatebadge(@Valid @RequestBody UpdateBadgeRequest updateBadgeRequest) throws Exception {
+    public ResponseEntity<?> updateBadge(@RequestParam("badgeId") String badgeId,
+                                         @RequestParam("icon") MultipartFile icon,
+                                         @RequestParam("iconMinioGetUrl") String iconMinioGetUrl,
+                                         @RequestParam("iconMinioPutUrl") String iconMinioPutUrl,
+                                         @RequestParam("description") String description
+
+     ) throws Exception {
+        UpdateBadgeRequest updateBadgeRequest = UpdateBadgeRequest.builder()
+                .badgeId(badgeId)
+                .icon(icon)
+                .iconMinioGetUrl(iconMinioGetUrl)
+                .iconMinioPutUrl(iconMinioPutUrl)
+                .description(description)
+                .build();
         return badgeService.updateBadge(updateBadgeRequest);
     }
     
@@ -44,7 +54,13 @@ public class AdminBadgeController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.CREATE_BADGE)
-    public ResponseEntity<?> createbadge(@Valid @RequestBody CreateBadgeRequest createBadgeRequest) throws Exception {
+    public ResponseEntity<?> createBadge(@RequestParam("icon")MultipartFile icon,
+                                        @RequestParam("description") String description
+    ) throws Exception {
+        CreateBadgeRequest createBadgeRequest = CreateBadgeRequest.builder()
+                                                                .icon(icon)
+                                                                .description(description)
+                                                                .build();
         return badgeService.createBadge(createBadgeRequest);
     }
 
@@ -54,7 +70,7 @@ public class AdminBadgeController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.SEARCH_BADGE)
-    public ResponseEntity<?> searchbadge(@Valid @RequestBody QueryRequest<String> searchBadgeRequest) {
+    public ResponseEntity<?> searchBadge(@Valid @RequestBody QueryRequest<String> searchBadgeRequest) {
         return badgeService.searchBadge(searchBadgeRequest);
     }
 
@@ -64,7 +80,7 @@ public class AdminBadgeController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.DELETE_BADGE)
-    public ResponseEntity<?> deletebadge(@Valid @RequestParam("badgeId") String badgeId) throws Exception {
+    public ResponseEntity<?> deleteBadge(@Valid @RequestParam("badgeId") String badgeId) throws Exception {
         return badgeService.deleteBadge(badgeId);
     }
 }

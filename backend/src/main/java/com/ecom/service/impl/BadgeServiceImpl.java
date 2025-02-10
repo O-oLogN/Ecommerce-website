@@ -111,6 +111,7 @@ public class BadgeServiceImpl implements BadgeService {
         }
 
         Badge badge = badgeRepository.findById(badgeId).orElse(null);
+        assert badge != null;
         badge.setIconMinioGetUrl(iconMinioGetUrl == null ? "" : iconMinioGetUrl);
         badge.setIconMinioPutUrl(iconMinioPutUrl == null? "" : iconMinioPutUrl);
         badge.setDescription(description);
@@ -155,7 +156,8 @@ public class BadgeServiceImpl implements BadgeService {
     @Override
     public ResponseEntity<?> deleteBadge(String badgeId) throws Exception {
         Badge badge = badgeRepository.findById(badgeId).orElse(null);
-        
+
+        assert badge != null;
         String iconMinioPutUrl = badge.getIconMinioPutUrl();
         if (!ValidationUtils.isNullOrEmpty(iconMinioPutUrl)) {
             minioService.deleteFile(iconMinioPutUrl);

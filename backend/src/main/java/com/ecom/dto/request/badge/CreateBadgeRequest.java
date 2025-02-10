@@ -16,5 +16,4 @@ import lombok.Setter;
 public class CreateBadgeRequest {
     private MultipartFile icon;
     private String description;
-    
 }

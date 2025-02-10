@@ -123,24 +123,20 @@ public class UserServiceImpl implements UserService {
             roles.add(roleRepository.findRoleByRoleId(roleId))
         );
         User user = userRepository.findUserByUserId(userId);
-                            // Remove old UserRole records
-        List<UserRole> oldUserRoles = userRoleRepository.findUserRolesByUser(user);
-        userRoleRepository.deleteAll(oldUserRoles);
-                            //  Add new UserRole records
-        roles.forEach(role -> {
-             UserRole newUserRole = UserRole
-                     .builder()
-                     .userRoleId(UUID.randomUUID().toString())
-                     .user(user)
-                     .role(role)
-                     .createUser(CoreConstants.ROLE.ADMIN)
-                     .createDatetime(LocalDateTime.now())
-                     .build();
-             userRoleRepository.save(newUserRole);
-        });
+        List<UserRole> newUserRoles = new ArrayList<>();
+        roles.forEach(role ->
+            newUserRoles.add(UserRole.builder()
+                    .userRoleId(UUID.randomUUID().toString())
+                    .user(user)
+                    .role(role)
+                    .createUser(CoreConstants.ROLE.ADMIN)
+                    .createDatetime(LocalDateTime.now())
+                    .build())
+        );
 
         user.setUsername(username);
         user.setEmail(email);
+        user.getUserRoles().addAll(newUserRoles);
         user.setModifyUser(CoreConstants.ROLE.ADMIN);
         user.setModifyDatetime(LocalDateTime.now());
 

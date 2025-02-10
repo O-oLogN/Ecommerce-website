@@ -87,7 +87,7 @@ public class Item {
     
     @Transient
     @JsonProperty("highlights")
-    public Set<Highlight> getItemHighlights() {
+    public Set<Highlight> getHighlights() {
         if (!itemHighlights.isEmpty()) {
             return itemHighlights.stream()
                 .map(ItemHighlight::getHighlight)

@@ -5,13 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/entities/ItemBadge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/entities/ItemBadge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/entities/ItemHighlight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/entities/ItemHighlight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/entities/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/entities/Role.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/repository/BadgeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/repository/BadgeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/repository/HighlightRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/repository/HighlightRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminBadgeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminBadgeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminHighlightController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminHighlightController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/dto/request/badge/CreateBadgeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/dto/request/badge/CreateBadgeRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/dto/request/highlight/UpdateHighlightRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/dto/request/highlight/UpdateHighlightRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/dto/request/item/CreateItemRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/dto/request/item/CreateItemRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/entities/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/entities/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/filter/JwtFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/filter/JwtFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/repository/UserRoleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/repository/UserRoleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/BadgeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/BadgeServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/HighlightServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/HighlightServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/ItemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/ItemServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/admin/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/admin/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/admin/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/main.tsx" afterDir="false" />
@@ -63,8 +74,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="com.intellij.jpb.JpaEntity" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -132,7 +143,8 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.build.tools.auto.reload": "SELECTIVE",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -143,15 +155,25 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Code\Java\Projects\Final\Ecommerce-website\backend\src\main\java\com\ecom\assets" />
       <recent name="D:\Code\Java\Projects\Final\Ecommerce-website\backend\admin" />
       <recent name="D:\Code\Java\Projects\Final\Ecommerce-website\backend\admin\src\main\java" />
     </key>
   </component>
   <component name="RunManager">
     <configuration name="AdminApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="admin.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.ecom.AdminApplication" />
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -218,7 +240,7 @@
       <workItem from="1738250902489" duration="4757000" />
       <workItem from="1738735498218" duration="2613000" />
       <workItem from="1738853107954" duration="734000" />
-      <workItem from="1739128768081" duration="7516000" />
+      <workItem from="1739128768081" duration="29792000" />
     </task>
     <servers />
   </component>
@@ -244,6 +266,11 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/admin/service/impl/CategoryServiceImpl.java</url>
           <line>72</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminItemController.java</url>
+          <line>179</line>
+          <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
