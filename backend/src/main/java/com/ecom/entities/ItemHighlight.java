@@ -23,14 +23,6 @@ public class ItemHighlight {
     @Column(name = "item_highlight_id", nullable = false, length = 50)
     private String itemHighlightId;
 
-    @NotNull
-    @Column(name = "item_id", nullable = false)
-    private String itemId;
-
-    @NotNull
-    @Column(name = "highlight_id", nullable = false)
-    private String highlightId;
-
     @Size(max = 100)
     @NotNull
     @Column(name = "create_user", nullable = false, length = 100)

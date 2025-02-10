@@ -23,14 +23,6 @@ public class ItemBadge {
     @Column(name = "item_badge_id", nullable = false, length = 50)
     private String itemBadgeId;
 
-    @NotNull
-    @Column(name = "item_id", nullable = false)
-    private String itemId;
-
-    @NotNull
-    @Column(name = "badge_id", nullable = false)
-    private String badgeId;
-
     @Size(max = 100)
     @NotNull
     @Column(name = "create_user", nullable = false, length = 100)

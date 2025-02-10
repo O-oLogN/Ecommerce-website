@@ -48,7 +48,7 @@ public class Role {
     @JsonFormat(pattern = CoreConstants.DateTimePattern.FORMAT_24H)
     private LocalDateTime modifyDatetime;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<UserRole> userRoles;
 

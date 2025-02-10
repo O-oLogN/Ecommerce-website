@@ -16,6 +16,8 @@ import com.ecom.model.OrderBy;
 import com.ecom.model.PageInfo;
 import com.ecom.model.PagingResponse;
 import com.ecom.model.QueryRequest;
+import com.ecom.repository.BadgeRepository;
+import com.ecom.repository.HighlightRepository;
 import com.ecom.repository.ItemRepository;
 import com.ecom.service.ItemService;
 import com.ecom.service.MinioService;
@@ -48,6 +50,8 @@ public class ItemServiceImpl implements ItemService {
     private final MinioService minioService;
 
     private final ItemRepository itemRepository;
+    private final HighlightRepository highlightRepository;
+    private final BadgeRepository badgeRepository;
 
     private final ItemSpecification itemSpecification;
 
@@ -128,13 +132,16 @@ public class ItemServiceImpl implements ItemService {
                 .imageMinioGetUrl(ValidationUtils.isNullOrEmpty(uploadFileResponse) ? "" : uploadFileResponse.getPresignedGetUrl())
                 .imageMinioPutUrl(ValidationUtils.isNullOrEmpty(uploadFileResponse) ? "" : uploadFileResponse.getPresignedPutUrl())
                 .quantity(quantity)
-                .itemBadges(convertBadgeIdsToSetItemBadge(itemId, badgeIds))
-                .itemHighlights(convertHighlightIdsToSetItemHighlight(itemId, highlightIds))
                 .rate(rate)
                 .numberOfReviews(numberOfReviews)
                 .createUser(createUser)
                 .createDatetime(createDatetime)
                 .build();
+
+        itemRepository.save(newItem);
+
+        newItem.setItemHighlights(convertHighlightIdsToSetItemHighlight(newItem, highlightIds));
+        newItem.setItemBadges(convertBadgeIdsToSetItemBadge(newItem, badgeIds));
 
         itemRepository.save(newItem);
 
@@ -206,14 +213,18 @@ public class ItemServiceImpl implements ItemService {
         item.setQuantity(quantity);
         item.setImageMinioGetUrl(newImageMinioGetUrl);
         item.setImageMinioPutUrl(newImageMinioPutUrl);
-        item.setItemBadges(convertBadgeIdsToSetItemBadge(itemId, badgeIds));
-        item.setItemHighlights(convertHighlightIdsToSetItemHighlight(itemId, highlightIds));
         item.setRate(rate);
         item.setNumberOfReviews(numberOfReviews);
         item.setModifyUser(modifyUser);
         item.setModifyDatetime(modifyDatetime);
 
         itemRepository.save(item);
+
+        item.setItemHighlights(convertHighlightIdsToSetItemHighlight(item, highlightIds));
+        item.setItemBadges(convertBadgeIdsToSetItemBadge(item, badgeIds));
+
+        itemRepository.save(item);
+
         return ResponseHelper.ok(item, HttpStatus.OK, messageHelper.getMessage("admin.itemController.update.info.success"));
     }
 
@@ -235,12 +246,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
 /*==============================================================================PRIVATE METHODS=========================================================================================================*/
-    private Set<ItemHighlight> convertHighlightIdsToSetItemHighlight(String itemId, List<String> highlightIds) {
+    private Set<ItemHighlight> convertHighlightIdsToSetItemHighlight(Item item, List<String> highlightIds) {
         return highlightIds.stream()
                 .map(highlightId -> ItemHighlight.builder()
                         .itemHighlightId(UUID.randomUUID().toString())
-                        .itemId(itemId)
-                        .highlightId(highlightId)
+                        .item(item)
+                        .highlight(highlightRepository.findHighlightByHighlightId(highlightId))
                         .createUser(CoreConstants.ROLE.ADMIN)
                         .createDatetime(LocalDateTime.now())
                         .build()
@@ -248,12 +259,12 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toSet());
     }
 
-    private Set<ItemBadge> convertBadgeIdsToSetItemBadge(String itemId, List<String> badgeIds) {
+    private Set<ItemBadge> convertBadgeIdsToSetItemBadge(Item item, List<String> badgeIds) {
         return badgeIds.stream()
                 .map(badgeId -> ItemBadge.builder()
                         .itemBadgeId(UUID.randomUUID().toString())
-                        .itemId(itemId)
-                        .badgeId(badgeId)
+                        .item(item)
+                        .badge(badgeRepository.findBadgeByBadgeId(badgeId))
                         .createUser(CoreConstants.ROLE.ADMIN)
                         .createDatetime(LocalDateTime.now())
                         .build()
