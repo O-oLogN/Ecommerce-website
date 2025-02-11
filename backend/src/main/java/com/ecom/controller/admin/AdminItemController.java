@@ -93,16 +93,6 @@ public class AdminItemController {
                                                         .build());
     }
 
-    @Operation(summary = "Update item")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Success"),
-            @ApiResponse(responseCode = "500", description = "Fail")
-    })
-    @PostMapping(AppRoutes.REQUEST_PATH.UPDATE_ITEM)
-    public ResponseEntity<?> updateItem(@RequestBody UpdateItemRequest updateItemRequest) throws Exception {
-        return itemService.updateItem(updateItemRequest);
-    }
-
     @Operation(summary = "Delete item")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success"),

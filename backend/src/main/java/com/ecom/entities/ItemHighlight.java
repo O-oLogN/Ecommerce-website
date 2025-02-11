@@ -42,11 +42,11 @@ public class ItemHighlight {
     @JsonFormat(pattern = CoreConstants.DateTimePattern.FORMAT_24H)
     private LocalDateTime modifyDatetime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "highlight_id", nullable = false)
     private Highlight highlight;
 }
