@@ -4,7 +4,7 @@ import com.ecom.constant.CoreConstants;
 import com.ecom.dto.request.category.CreateCategoryRequest;
 import com.ecom.dto.request.category.SearchCategoryRequestByName;
 import com.ecom.dto.request.category.UpdateCategoryRequest;
-import com.ecom.entities.ItemCategory;
+import com.ecom.entities.Category;
 import com.ecom.exception.CategoryNotFoundException;
 import com.ecom.exception.UserNotFoundException;
 import com.ecom.helper.MessageHelper;
@@ -13,7 +13,7 @@ import com.ecom.model.OrderBy;
 import com.ecom.model.PageInfo;
 import com.ecom.model.PagingResponse;
 import com.ecom.model.QueryRequest;
-import com.ecom.repository.ItemCategoryRepository;
+import com.ecom.repository.CategoryRepository;
 import com.ecom.service.CategoryService;
 import com.ecom.specification.CategorySpecification;
 import com.ecom.utils.SortUtils;
@@ -37,7 +37,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
-    private final ItemCategoryRepository itemCategoryRepository;
+    private final CategoryRepository categoryRepository;
 
     private final CategorySpecification categorySpecification;
 
@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
             );
         }
 
-         ItemCategory newCategory = ItemCategory
+         Category newCategory = Category
                  .builder()
                  .categoryId(categoryId)
                  .code(code)
@@ -66,7 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
                  .createDatetime(createDatetime)
                  .build();
 
-        itemCategoryRepository.save(newCategory);
+        categoryRepository.save(newCategory);
         return ResponseHelper.ok(newCategory, HttpStatus.OK, messageHelper.getMessage("admin.categoryController.create.info.success"));
     }
 
@@ -76,7 +76,7 @@ public class CategoryServiceImpl implements CategoryService {
         PageInfo pageInfo = searchCategoryRequest.getPageInfo();
         List<OrderBy> orders = searchCategoryRequest.getOrders();
 
-        Page<ItemCategory> page = itemCategoryRepository.findAll(
+        Page<Category> page = categoryRepository.findAll(
                 categorySpecification.specification(categoryName),
                 PageRequest.of(
                         pageInfo.getPageNumber(),
@@ -84,10 +84,10 @@ public class CategoryServiceImpl implements CategoryService {
                         SortUtils.buildSort(orders)
                 )
         );
-        List<ItemCategory> categories = page.getContent();
+        List<Category> categories = page.getContent();
 
         return ResponseHelper.ok(
-                PagingResponse.<ItemCategory>builder()
+                PagingResponse.<Category>builder()
                         .totalPages(page.getTotalPages())
                         .totalElements(page.getTotalElements())
                         .pageNumber(pageInfo.getPageNumber())
@@ -107,7 +107,7 @@ public class CategoryServiceImpl implements CategoryService {
             );
         }
         return ResponseHelper.ok(
-            itemCategoryRepository.findItemCategoryByCategoryId(categoryId),
+            categoryRepository.findItemCategoryByCategoryId(categoryId),
             HttpStatus.OK, ""
         );
     }
@@ -131,7 +131,7 @@ public class CategoryServiceImpl implements CategoryService {
             );
         }
 
-        ItemCategory category = itemCategoryRepository.findById(categoryId)
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new UserNotFoundException(
                     messageHelper.getMessage("admin.categoryController.update.category.find.error.notFound")
                 ));
@@ -141,17 +141,17 @@ public class CategoryServiceImpl implements CategoryService {
         category.setModifyUser(modifyUser);
         category.setModifyDatetime(modifyDatetime);
 
-        itemCategoryRepository.save(category);
+        categoryRepository.save(category);
         return ResponseHelper.ok(category, HttpStatus.OK, messageHelper.getMessage("admin.categoryController.update.info.success"));
     }
 
     @Override
     public ResponseEntity<?> deleteCategory(String categoryId) throws Exception {
-        ItemCategory category = itemCategoryRepository.findById(categoryId)
+        Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException(
                     messageHelper.getMessage("admin.categoryController.update.category.find.error.notFound")
                 ));
-        itemCategoryRepository.delete(category);
+        categoryRepository.delete(category);
         return ResponseHelper.ok(category, HttpStatus.OK, messageHelper.getMessage("admin.categoryController.delete.info.success"));
     }
 }

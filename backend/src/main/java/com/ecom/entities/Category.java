@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "item_category")
-public class ItemCategory {
+@Table(name = "category")
+public class Category {
     @Id
     @Size(max = 50)
     @Column(name = "category_id", nullable = false, length = 50)

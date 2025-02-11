@@ -1,6 +1,6 @@
 package com.ecom.specification;
 
-import com.ecom.entities.ItemCategory;
+import com.ecom.entities.Category;
 import com.ecom.utils.ValidationUtils;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CategorySpecification {
-    public Specification<ItemCategory> specification(String categoryName) {
+    public Specification<Category> specification(String categoryName) {
         return (root, _, cb) ->
                 cb.createTupleQuery()
                         .where(getWhereCondition(cb, root, categoryName))
                         .getRestriction();
     }
 
-    private Predicate getWhereCondition(CriteriaBuilder cb, Root<ItemCategory> itemRoot, String categoryName) {
+    private Predicate getWhereCondition(CriteriaBuilder cb, Root<Category> itemRoot, String categoryName) {
         Predicate predicate = cb.conjunction();
 
         predicate = cb.and(predicate, !ValidationUtils.isNullOrEmpty(categoryName)
