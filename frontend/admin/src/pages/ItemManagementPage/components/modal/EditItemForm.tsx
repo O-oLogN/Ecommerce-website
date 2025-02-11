@@ -69,7 +69,7 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
     const [imagesUploaded, setImagesUploaded] = useState<File[] | undefined>()
     const [categorySelected, setCategorySelected] = useState<CategoryInfo | undefined>(undefined)
     const [categories, setCategories] = useState<CategoryInfo[] | undefined>([])
-
+    
     const handleCancel = () => {
         form.resetFields()
         setIsOpenForm(false)

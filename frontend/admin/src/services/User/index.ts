@@ -1,7 +1,7 @@
-import {IPagingResponse, IQueryRequest} from "../../types"
+import {IPagingResponse, IQueryRequest} from "types"
 import {useQuery, useMutation} from "react-query"
-import {axiosInstance} from "../index.ts";
-import {REQUEST_MAPPING, REQUEST_PATH} from "../../constants"
+import {axiosInstance} from "../index.ts"
+import {REQUEST_MAPPING, REQUEST_PATH} from "constants/index.ts"
 import {
     ISearchUserRequest,
     ISearchUserResponse,
@@ -12,7 +12,7 @@ import {
     ICreateUserRequest,
     ICreateUserResponse,
     IBaseResponse,
-} from "src/services/types";
+} from "services/types"
 
 export const useSearchUser=
     (params: IQueryRequest<ISearchUserRequest>) => {
