@@ -6,8 +6,8 @@ import SuccessAlert from 'components/SuccessAlert.tsx'
 import ErrorAlert from 'components/ErrorAlert.tsx'
 import Title from 'components/Title.tsx'
 import {useEffect, useState} from "react"
-import {useSignUpContext} from "pages/SignUpPage/hooks"
-import {SignUpContextProvider} from "pages/SignUpPage/hooks"
+import {useSignUpContext} from "pages/SignUpPage/hooks/SignUpContext.tsx"
+import {SignUpContextProvider} from "pages/SignUpPage/hooks/SignUpContext.tsx"
 import {useNavigate} from "react-router-dom"
 import {REQUEST_MAPPING, REQUEST_PATH} from "routes"
 

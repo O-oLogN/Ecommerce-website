@@ -5,8 +5,8 @@ import {createRoot} from "react-dom/client"
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {REQUEST_MAPPING, REQUEST_PATH} from "routes"
-import StickyNavbar from "layout/Navbar"
-import Footer from "layout/Footer"
+import StickyNavbar from "layout/Navbar/Navbar.tsx"
+import Footer from "layout/Footer/Footer.tsx"
 import {NavBarContextProvider} from 'layout/Navbar/hooks'
 import HomePage from 'pages/HomePage/HomePage.tsx'
 import {HomePageContextProvider} from "pages/HomePage/hooks/HomePageContext.tsx"

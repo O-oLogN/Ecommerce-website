@@ -4,11 +4,11 @@ import PasswordInput from "components/PasswordInput.tsx"
 import SubmitButton from "components/SubmitButton.tsx"
 import SignUpTitle from "pages/LoginPage/components/SignUpTitle.tsx"
 import {useState} from "react"
-import {useLoginContext} from "pages/LoginPage/hooks"
+import {useLoginContext} from "pages/LoginPage/hooks/LoginContext.tsx"
 import {LoginContextProps} from "pages/LoginPage/types"
 import SuccessAlert from "components/SuccessAlert.tsx"
 import ErrorAlert from "components/ErrorAlert.tsx"
-import {LoginContextProvider} from "pages/LoginPage/hooks"
+import {LoginContextProvider} from "pages/LoginPage/hooks/LoginContext.tsx"
 
 const LoginPage = () => {
     const [isUsernameError, setIsUsernameError] = useState({ isError: false, alertMsg: '' })
