@@ -3,6 +3,7 @@ export const REQUEST_MAPPING = {
     ITEM: '/user/item',
     CATEGORY: '/user/category',
     HOMEPAGE: '/user/homepage',
+    CART: '/user/cart',
 }
 
 export const REQUEST_PATH = {

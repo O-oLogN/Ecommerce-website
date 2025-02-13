@@ -26,3 +26,7 @@ export interface SelectableOptionProps {
 export interface RightPanelProps {
     product: ItemInfo | null
 }
+
+export interface DividerProps {
+    width?: number
+}

@@ -11,6 +11,8 @@ import {NavBarContextProvider} from 'layout/Navbar/hooks'
 import HomePage from 'pages/HomePage/HomePage.tsx'
 import {HomePageContextProvider} from "pages/HomePage/hooks/HomePageContext.tsx"
 import ProductDetailsPage from "pages/ProductDetailsPage/ProductDetailsPage.tsx"
+import CartPage from "pages/CartPage/CartPage.tsx"
+import { CartContextProvider } from 'pages/CartPage/hooks/CartContext'
 
 const queryClient = new QueryClient()
 
@@ -24,12 +26,17 @@ const App = () => {
                 </Routes>
                 <NavBarContextProvider>
                     <StickyNavbar />
-                    <HomePageContextProvider >
+                    <HomePageContextProvider>
                         <Routes>
                             <Route path={REQUEST_MAPPING.HOMEPAGE} element={<HomePage/>} />
                             <Route path={REQUEST_MAPPING.ITEM + REQUEST_PATH.ITEM_DETAILS} element={<ProductDetailsPage/>} />
                         </Routes>
                     </HomePageContextProvider>
+                    <CartContextProvider>
+                        <Routes>
+                            <Route path={REQUEST_MAPPING.CART} element={ <CartPage/> } />
+                        </Routes>
+                    </CartContextProvider>
                 </NavBarContextProvider>
                 <Footer />
             </Router>
