@@ -3,7 +3,9 @@ import React, {useEffect, useState} from "react"
 import bin from "assets/bin.png"
 
 const ProductsOfCart: React.FC<ProductsOfCartProps> = ({ products, setSubtotal }) => {
-    const [productQuantitiesArr, setProductQuantitiesArr] = useState<number[]>(Array(products.length).fill(0))
+    const [productQuantitiesArr, setProductQuantitiesArr] = useState<number[]>(() => {
+        return [...products.map(product => Math.min(1, product.quantity))]
+    })
     const calcSubtotal = () => {
         let subtotal = 0
         products.forEach((product, index) => subtotal += (product.price ?? 0) * productQuantitiesArr[index])

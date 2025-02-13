@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useNavbarContext } from "./hooks"
+import { useNavbarContext } from "./hooks/NavbarContext.tsx"
 import {useNavigate} from "react-router-dom"
 import {REQUEST_MAPPING} from "routes";
 

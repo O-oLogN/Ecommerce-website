@@ -7,7 +7,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import {REQUEST_MAPPING, REQUEST_PATH} from "routes"
 import StickyNavbar from "layout/Navbar/Navbar.tsx"
 import Footer from "layout/Footer/Footer.tsx"
-import {NavBarContextProvider} from 'layout/Navbar/hooks'
+import {NavbarContextProvider} from 'layout/Navbar/hooks/NavbarContext.tsx'
 import HomePage from 'pages/HomePage/HomePage.tsx'
 import {HomePageContextProvider} from "pages/HomePage/hooks/HomePageContext.tsx"
 import ProductDetailsPage from "pages/ProductDetailsPage/ProductDetailsPage.tsx"
@@ -24,7 +24,7 @@ const App = () => {
                     <Route path={REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN} element={<LoginPageWrapper/>}/>
                     <Route path={REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_UP} element={<SignUpPageWrapper/>}/>
                 </Routes>
-                <NavBarContextProvider>
+                <NavbarContextProvider>
                     <StickyNavbar />
                     <HomePageContextProvider>
                         <Routes>
@@ -37,7 +37,7 @@ const App = () => {
                             <Route path={REQUEST_MAPPING.CART} element={ <CartPage/> } />
                         </Routes>
                     </CartContextProvider>
-                </NavBarContextProvider>
+                </NavbarContextProvider>
                 <Footer />
             </Router>
         </>

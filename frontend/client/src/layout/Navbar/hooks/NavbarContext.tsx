@@ -8,7 +8,7 @@ const navbarContext = createContext<NavbarContextProps>({
 	setItemsInCart: () => {},
 })
 
-export const NavBarContextProvider = ({ children }: { children: any }) => {
+export const NavbarContextProvider = ({ children }: { children: any }) => {
 	const [itemsInCart, setItemsInCart] = useState<ItemInfo[]>([])
 
 	return (

@@ -23,21 +23,6 @@ const ProductList: React.FC<ProductListProps> = (props) => {
             ++productsArrIndex
         }
         setProductsMappedByCategories(tmpProductsMappedByCategories)
-
-
-
-
-
-
-
-
-        props.setItemsInCart(products)
-
-
-
-
-
-
     }, [products, categories])
 
     return (
@@ -60,6 +45,7 @@ const ProductList: React.FC<ProductListProps> = (props) => {
                                     quantity={product.quantity}
                                     rate={product.rate}
                                     numberOfReviews={product.numberOfReviews}
+                                    itemsInCart={props.itemsInCart}
                                     setItemsInCart={props.setItemsInCart}
                                     setSelectedProduct={props.setSelectedProduct}
                                     createUser={product.createUser}

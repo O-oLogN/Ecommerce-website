@@ -9,6 +9,7 @@ export interface NavbarContextProps {
 export interface ProductListProps {
     categories: CategoryInfo[]
     products: ItemInfo[]
+    itemsInCart: ItemInfo[]
     setItemsInCart: React.Dispatch<React.SetStateAction<ItemInfo[]>>
     setSelectedProduct: React.Dispatch<React.SetStateAction<ItemInfo | null>>
 }

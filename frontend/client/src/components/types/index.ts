@@ -58,6 +58,7 @@ export interface BadgeProps {
 }
 
 export interface ProductCardProps extends ItemInfo {
+    itemsInCart: ItemInfo[]
     setItemsInCart: React.Dispatch<React.SetStateAction<ItemInfo[]>>
     setSelectedProduct: React.Dispatch<React.SetStateAction<ItemInfo | null>>
 }

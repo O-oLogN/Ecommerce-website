@@ -3,7 +3,7 @@ import {CartPageProps} from "pages/CartPage/types"
 import React from "react"
 import Summary from "./components/Summary"
 import {useCartContext} from "pages/CartPage/hooks/CartContext.tsx";
-import {useNavbarContext} from "layout/Navbar/hooks";
+import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx";
 
 const CartPage: React.FC<CartPageProps> = () => {
     const {

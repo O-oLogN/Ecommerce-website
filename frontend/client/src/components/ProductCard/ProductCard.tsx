@@ -6,7 +6,8 @@ import {BadgeProps, ProductCardProps} from "components/types"
 import React, {useState} from "react"
 import {ItemInfo} from "types"
 import {REQUEST_MAPPING, REQUEST_PATH} from "routes"
-import {useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom"
+import details from "assets/details.png"
 
 const ProductCard: React.FC<ProductCardProps> = (props) => {
     const navigate = useNavigate()
@@ -31,17 +32,20 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
         setLove(!love)
     }
     const onAddToCartButtonClick = () => {
-        props.setItemsInCart(prevItemsInCart => [...prevItemsInCart, props as unknown as ItemInfo])
+        const thisItem = props as ItemInfo
+        const existedItem = props.itemsInCart.find(item => item.itemId === thisItem.itemId)
+        if (!existedItem) {
+            props.setItemsInCart(prevItemsInCart => [...prevItemsInCart, props as unknown as ItemInfo])
+            return
+        }
     }
-    const onProductClick = () => {
+    const onDetailsButtonClick = () => {
         props.setSelectedProduct(props as ItemInfo)
         navigate(REQUEST_MAPPING.ITEM + REQUEST_PATH.ITEM_DETAILS)
     }
 
     return (
-        <div className="p-6 h-[600px] bg-primary-50 w-[330px] mr-[20px] ml-[20px] mt-[20px] hover:bg-blue-200 hover:cursor-pointer hover:scale-[110%] transition-transform duration-300 ease-in-out"
-            onClick={ onProductClick }
-        >
+        <div className="p-6 h-[650px] bg-primary-50 w-[350px] mr-[20px] ml-[20px] mt-[20px] pb-[10px] hover:bg-blue-200 hover:cursor-pointer hover:scale-[110%] transition-transform duration-300 ease-in-out">
             <div className="mb-4 relative flex items-center justify-between gap-4">
                 <img src={ props.imageMinioGetUrl ?? '#' } alt='Product image' />
                 <div className="absolute top-2">
@@ -98,7 +102,7 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
                 </div>
             </div>
             <div>
-                <ProductName name={ props.name } href={REQUEST_MAPPING.ITEM + REQUEST_PATH.ITEM_DETAILS} />
+                <ProductName name={ props.name } href='#' />
                 { props.numberOfReviews !== 0 && <Rating rate={ props.rate! } numberOfReviews={ props.numberOfReviews }/> }
                 { props.numberOfReviews === 0 && <br /> }
             </div>
@@ -111,9 +115,16 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
                 <p className="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">
                     ${ props.price?.toFixed(1) }
                 </p>
+                <button type="button"
+                    className="bg-green-300 rounded-lg items-center inline-flex px-2.5 py-2.5 text-sm font-medium hover:bg-green-700"
+                    onClick={onDetailsButtonClick}
+                >
+                    <img src={details} alt="details-button" height={10} width={10}/>
+                    See details
+                </button>
                 <button
                     type="button"
-                    className="inline-flex items-center rounded-lg bg-primary-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                    className="inline-flex items-center rounded-lg bg-primary-500 px-2.5 py-2.5 text-sm font-medium text-white hover:bg-primary-500 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                     onClick={ onAddToCartButtonClick }
                 >
                     <svg
