@@ -16,6 +16,7 @@ export interface SummaryProps {
 
 export interface HintProps {
     content: string
+    clss: string
 }
 
 export interface CartPageContextProps {

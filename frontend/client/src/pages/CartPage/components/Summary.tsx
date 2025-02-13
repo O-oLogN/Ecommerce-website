@@ -1,10 +1,22 @@
 import {SummaryProps} from "pages/CartPage/types"
-import React from "react"
+import React, {useEffect} from "react"
 import Divider from "pages/ProductDetailsPage/components/LeftPanel/Divider.tsx"
 import info from "assets/info.png"
 import Hint from "pages/CartPage/components/Hint.tsx"
 
 const Summary: React.FC<SummaryProps> = ({ subtotal, shippingFee, taxes }) => {
+    useEffect(() => {
+        const subtotalHintIcon = document.querySelector('.subtotal-hint-icon')
+        const subtotalHintInfo = document.querySelector('.subtotal-hint-info')
+        subtotalHintIcon!.addEventListener('mouseenter', () => {
+            (subtotalHintInfo! as HTMLElement).style.display = 'block'
+        })
+
+        subtotalHintIcon!.addEventListener('mouseleave', () => {
+            (subtotalHintInfo! as HTMLElement).style.display = 'none'
+        })
+    }, [])
+
     return (
         <div className="text-left mt-[40px] ml-[70px] mr-[40px] w-[400px]">
             <p className="text-[2.5rem] font-semibold mb-[30px]">Summary</p>
@@ -14,8 +26,8 @@ const Summary: React.FC<SummaryProps> = ({ subtotal, shippingFee, taxes }) => {
                     <div className="flex">
                         <span>Subtotal</span>
                         <div className="relative">
-                            <img height={14} width={14} src={info} alt="hint" className="mt-[5px] ml-[3px]" />
-                            <Hint content="Cart total excluding shipping and taxes." />
+                            <img height={14} width={14} src={info} alt="hint" className="subtotal-hint-icon mt-[5px] ml-[3px]" />
+                            <Hint content="Cart total excluding shipping and taxes." clss="subtotal-hint-info" />
                         </div>
                     </div>
                     <p>${ subtotal.toFixed(1) }</p>
