@@ -6,15 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/components/types/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/components/types/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/routes/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/routes/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/services/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/services/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/services/types/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/services/types/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/tailwind.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/tsconfig.tsbuildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/tsconfig.tsbuildinfo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/CheckoutPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/components/LeftCheckoutPanel/LeftCheckoutPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/components/LeftCheckoutPanel/LeftCheckoutPanel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/types/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/types/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +102,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.Admin Service.executor": "Run",
-    "Spring Boot.AdminApplication.executor": "Debug",
+    "Spring Boot.AdminApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
@@ -222,7 +216,8 @@
       <workItem from="1738735498218" duration="2613000" />
       <workItem from="1738853107954" duration="734000" />
       <workItem from="1739128768081" duration="39602000" />
-      <workItem from="1739244532277" duration="3951000" />
+      <workItem from="1739244532277" duration="15174000" />
+      <workItem from="1739422444171" duration="4444000" />
     </task>
     <servers />
   </component>
