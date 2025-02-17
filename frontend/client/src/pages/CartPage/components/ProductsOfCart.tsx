@@ -1,31 +1,33 @@
-import {ProductsOfCartProps} from "pages/CartPage/types"
-import React, {useEffect, useState} from "react"
+import React, {useEffect} from "react"
 import bin from "assets/bin.png"
+import {ProductsOfCartProps} from "pages/CartPage/types"
 
-const ProductsOfCart: React.FC<ProductsOfCartProps> = ({ products, setSubtotal }) => {
-    const [productQuantitiesArr, setProductQuantitiesArr] = useState<number[]>(() => {
-        return [...products.map(product => Math.min(1, product.quantity))]
-    })
+const ProductsOfCart: React.FC<ProductsOfCartProps> = (
+    {
+        itemsInCart,
+        setSubtotal,
+        setItemsInCart,
+    }) => {
+
     const calcSubtotal = () => {
         let subtotal = 0
-        products.forEach((product, index) => subtotal += (product.price ?? 0) * productQuantitiesArr[index])
+        itemsInCart.forEach((product, index) => subtotal += (product.price ?? 0) * itemsInCart[index].purchaseQuantity)
         return subtotal
     }
     const onQuantityInputChange = (index: number, value: number) => {
-        const newProductQuantitiesArr = [...productQuantitiesArr]
-        newProductQuantitiesArr[index] = value
-        setProductQuantitiesArr(newProductQuantitiesArr)
+        const newItemsInCart = [...itemsInCart]
+        newItemsInCart.splice(index, 1, {...itemsInCart[index], purchaseQuantity: value})
+        setItemsInCart(newItemsInCart)
     }
     const onDeleteButtonClick = (index: number) => {
-        products.splice(index, 1)
-        const newProductQuantitiesArr = [...productQuantitiesArr]
-        newProductQuantitiesArr.splice(index, 1)
-        setProductQuantitiesArr(newProductQuantitiesArr)
+        const newItemsInCart = [...itemsInCart]
+        newItemsInCart.splice(index, 1)
+        setItemsInCart(newItemsInCart)
     }
 
     useEffect(() => {
         setSubtotal(calcSubtotal())
-    }, [productQuantitiesArr])
+    }, [itemsInCart])
 
     return (
         <div className="text-left mt-[40px] ml-[20px]">
@@ -42,7 +44,7 @@ const ProductsOfCart: React.FC<ProductsOfCartProps> = ({ products, setSubtotal }
                     </tr>
                 </thead>
                 <tbody>
-                    { products.map((product, index) =>
+                    { itemsInCart.map((product, index) =>
                         <tr className="border-b">
                             <td>
                                 <img className="bg-light-gray my-[5px]" height={110} width={110} src={ 'https://next.medusajs.com/_next/image?url=https%3A%2F%2Fmedusa-server-testing.s3.us-east-1.amazonaws.com%2Fheadphones-nobg-1700675136219.png&w=1080&q=50' } alt={ "Product " + index}/>
@@ -53,13 +55,13 @@ const ProductsOfCart: React.FC<ProductsOfCartProps> = ({ products, setSubtotal }
                                        className="text-center w-[50px] bg-transparent border rounded-[5px]"
                                        min={ Math.min(1, product.quantity) }
                                        max={ product.quantity }
-                                       value={ productQuantitiesArr[index] }
+                                       value={ product.purchaseQuantity }
                                        onChange={ (e) => onQuantityInputChange(index, Number(e.target.value)) }
                                 />
                             </td>
                             <td className="text-blue-700">${ product.price }</td>
                             <td className="text-blue-700">
-                                ${ ((product.price ?? 0) * productQuantitiesArr[index]).toFixed(1) }
+                                ${ ((product.price ?? 0) * product.purchaseQuantity).toFixed(1) }
                             </td>
                             <td>
                                 <button

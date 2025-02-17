@@ -4,6 +4,7 @@ export const REQUEST_MAPPING = {
     CATEGORY: '/user/category',
     HOMEPAGE: '/user/homepage',
     CART: '/user/cart',
+    CHECKOUT: '/user/checkout',
 }
 
 export const REQUEST_PATH = {

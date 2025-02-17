@@ -8,6 +8,7 @@ import {ItemInfo} from "types"
 import {REQUEST_MAPPING, REQUEST_PATH} from "routes"
 import {useNavigate} from "react-router-dom"
 import details from "assets/details.png"
+import { ItemInCart } from "types/ItemInCart"
 
 const ProductCard: React.FC<ProductCardProps> = (props) => {
     const navigate = useNavigate()
@@ -35,7 +36,7 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
         const thisItem = props as ItemInfo
         const existedItem = props.itemsInCart.find(item => item.itemId === thisItem.itemId)
         if (!existedItem) {
-            props.setItemsInCart(prevItemsInCart => [...prevItemsInCart, props as unknown as ItemInfo])
+            props.setItemsInCart(prevItemsInCart => [...prevItemsInCart, { purchaseQuantity: Math.min(props.quantity, 1), ...props } as ItemInCart])
             return
         }
     }

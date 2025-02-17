@@ -38,9 +38,9 @@ const Payment: React.FC<PaymentProps> = (
                     setSelectedPaymentMethod={ saveSelectedPaymentMethod }
                 />
             ) }
-            <button onClick={ onGoToReviewButtonClick } >
+            { !status[2] && <button onClick={onGoToReviewButtonClick} className="w-[250px] mt-[40px] ml-[240px] p-2 mb-[40px] bg-gray-800 border border-white">
                 Go to Review
-            </button>
+            </button> }
         </div>
     )
 }

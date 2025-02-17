@@ -1,17 +1,20 @@
-import { ItemInfo } from "types"
 import React from "react"
+import {ItemInCart} from "types/ItemInCart"
 
 export interface ProductsOfCartProps {
-    products: ItemInfo[]
+    itemsInCart: ItemInCart[]
     setSubtotal: React.Dispatch<React.SetStateAction<number>>
+    setItemsInCart: React.Dispatch<React.SetStateAction<ItemInCart[]>>
 }
 
 export interface CartPageProps {}
 
 export interface SummaryProps {
+    name: string
     subtotal: number
     shippingFee: number
     taxes: number
+    buttonName?: string
 }
 
 export interface HintProps {

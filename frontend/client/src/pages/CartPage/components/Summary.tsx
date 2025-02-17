@@ -3,8 +3,14 @@ import React, {useEffect} from "react"
 import Divider from "pages/ProductDetailsPage/components/LeftPanel/Divider.tsx"
 import info from "assets/info.png"
 import Hint from "pages/CartPage/components/Hint.tsx"
+import {useNavigate} from "react-router-dom"
+import {REQUEST_MAPPING} from "routes"
 
-const Summary: React.FC<SummaryProps> = ({ subtotal, shippingFee, taxes }) => {
+const Summary: React.FC<SummaryProps> = ({ name, subtotal, shippingFee, taxes, buttonName }) => {
+    const navigate = useNavigate()
+    const onClickGoToCheckoutButton = () => {
+        navigate(REQUEST_MAPPING.CHECKOUT)
+    }
     useEffect(() => {
         const subtotalHintIcon = document.querySelector('.subtotal-hint-icon')
         const subtotalHintInfo = document.querySelector('.subtotal-hint-info')
@@ -19,7 +25,7 @@ const Summary: React.FC<SummaryProps> = ({ subtotal, shippingFee, taxes }) => {
 
     return (
         <div className="text-left mt-[40px] ml-[70px] mr-[40px] w-[400px]">
-            <p className="text-[2.5rem] font-semibold mb-[30px]">Summary</p>
+            <p className="text-[2.5rem] font-semibold mb-[30px]">{ name }</p>
             <Divider />
             <div className="my-[20px]">
                 <div className="flex mb-[10px] justify-between">
@@ -47,9 +53,7 @@ const Summary: React.FC<SummaryProps> = ({ subtotal, shippingFee, taxes }) => {
                 <p className="text-[1.2rem] font-semibold">${ (subtotal + shippingFee + taxes).toFixed(1) }</p>
             </div>
             <Divider />
-            <button className="text-center w-[400px] mt-[30px] bg-gray-800 py-2 hover:bg-light-gray">
-                Go to checkout
-            </button>
+            { buttonName && buttonName !== '' ? <button onClick={ onClickGoToCheckoutButton } className="text-center w-[400px] mt-[30px] bg-gray-800 py-2 hover:bg-light-gray">{ buttonName }</button> : '' }
         </div>
     )
 }

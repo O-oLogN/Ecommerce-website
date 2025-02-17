@@ -3,7 +3,7 @@ import {CartPageContextProps} from "pages/CartPage/types"
 
 const CartContext = createContext<CartPageContextProps>({
     subtotal: 0,
-    setSubtotal: () => {}
+    setSubtotal: () => {},
 })
 
 export const CartContextProvider = ({ children }: { children: any }) => {

@@ -2,6 +2,7 @@ import React, {ReactElement} from "react"
 import {
     ItemInfo,
 } from "types"
+import {ItemInCart} from "types/ItemInCart"
 
 export interface AlertProps {
     message: string
@@ -58,8 +59,8 @@ export interface BadgeProps {
 }
 
 export interface ProductCardProps extends ItemInfo {
-    itemsInCart: ItemInfo[]
-    setItemsInCart: React.Dispatch<React.SetStateAction<ItemInfo[]>>
+    itemsInCart: ItemInCart[]
+    setItemsInCart: React.Dispatch<React.SetStateAction<ItemInCart[]>>
     setSelectedProduct: React.Dispatch<React.SetStateAction<ItemInfo | null>>
 }
 

@@ -1,7 +1,7 @@
 import {createContext} from "react"
 import {NavbarContextProps} from "../types"
-import {ItemInfo} from "types"
 import {useState, useContext} from "react"
+import {ItemInCart} from "types/ItemInCart"
 
 const navbarContext = createContext<NavbarContextProps>({
 	itemsInCart: [],
@@ -9,7 +9,7 @@ const navbarContext = createContext<NavbarContextProps>({
 })
 
 export const NavbarContextProvider = ({ children }: { children: any }) => {
-	const [itemsInCart, setItemsInCart] = useState<ItemInfo[]>([])
+	const [itemsInCart, setItemsInCart] = useState<ItemInCart[]>([])
 
 	return (
 		<navbarContext.Provider value={{ 

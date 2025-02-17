@@ -7,23 +7,28 @@ import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx";
 
 const CartPage: React.FC<CartPageProps> = () => {
     const {
-        itemsInCart: products,
+        itemsInCart,
+        setItemsInCart,
     } = useNavbarContext()
     const {
         subtotal,
         setSubtotal,
+
     } = useCartContext()
 
     return (
         <div className="flex">
             <ProductsOfCart
-                products={ products }
+                itemsInCart={ itemsInCart }
+                setItemsInCart={ setItemsInCart }
                 setSubtotal={ setSubtotal }
             />
             <Summary
+                name="Summary"
                 subtotal={ subtotal }
                 shippingFee={0}
                 taxes={0}
+                buttonName="Go to Checkout"
             />
         </div>
     )
