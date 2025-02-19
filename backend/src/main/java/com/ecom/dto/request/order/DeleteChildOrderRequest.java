@@ -7,6 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchTotalOrderRequest {
+public class DeleteChildOrderRequest {
     private String totalOrderId;
+    private String childOrderId;
 }

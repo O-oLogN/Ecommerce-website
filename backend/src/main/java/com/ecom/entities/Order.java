@@ -42,6 +42,10 @@ public class Order {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+    @NotNull
+    @Column(name = "order_number", nullable = false)
+    private Integer orderNumber;
+
     @Size(max = 100)
     @NotNull
     @Column(name = "create_user", nullable = false, length = 100)
@@ -60,5 +64,9 @@ public class Order {
     @Column(name = "modify_datetime")
     @JsonFormat(pattern = CoreConstants.DateTimePattern.FORMAT_24H)
     private LocalDateTime modifyDatetime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id", referencedColumnName = "total_order_id", insertable = false, updatable = false)
+    private TotalOrder totalOrder;
 
 }

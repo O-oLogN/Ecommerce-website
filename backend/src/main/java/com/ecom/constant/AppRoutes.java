@@ -45,7 +45,8 @@ public final class AppRoutes {
 
         public static final String DELETE_CHILD_ORDER = "/delete-child-order";     
         public static final String DELETE_TOTAL_ORDER = "/delete-total-order";     
-        public static final String SEARCH_TOTAL_ORDER = "/search-total-order";     
+        public static final String SEARCH_TOTAL_ORDER = "/search-total-order";
+        public static final String SEARCH_CHILD_ORDERS = "/search-child-orders";
         public static final String UPDATE_PAYMENT_STATUS_TOTAL_ORDER = "/update-payment-status-total-order"; 
 
         public static final String UPDATE_HIGHLIGHT = "/update";

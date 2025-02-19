@@ -1,7 +1,7 @@
 package com.ecom.controller.admin;
 
 import com.ecom.constant.AppRoutes;
-import com.ecom.dto.request.order.SearchTotalOrderRequest;
+import com.ecom.dto.request.order.DeleteChildOrderRequest;
 import com.ecom.dto.request.order.UpdateOrderPaymentStatusRequest;
 import com.ecom.model.QueryRequest;
 import com.ecom.service.OrderService;
@@ -29,8 +29,22 @@ public class AdminOrderController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.SEARCH_TOTAL_ORDER)
-    public ResponseEntity<?> searchTotalOrder(@Valid @RequestBody QueryRequest<SearchTotalOrderRequest> searchTotalOrderRequest)  {
+    public ResponseEntity<?> searchTotalOrder(@Valid @RequestBody QueryRequest<String> searchTotalOrderRequest)  {
         return orderService.searchTotalOrder(searchTotalOrderRequest);
+    }
+
+    @Operation(summary = "Search child orders")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Fail")
+    })
+    @PostMapping(AppRoutes.REQUEST_PATH.SEARCH_CHILD_ORDERS)
+    public ResponseEntity<?> searchChildOrders(@Valid @RequestParam String totalOrderId) {
+        try {
+            return orderService.searchChildOrders(totalOrderId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Operation(summary = "Delete child order")
@@ -39,8 +53,8 @@ public class AdminOrderController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.DELETE_CHILD_ORDER)
-    public ResponseEntity<?> deleteChildOrder(@Valid @RequestParam("orderId") String orderId) throws Exception {
-        return orderService.deleteChildOrder(orderId);
+    public ResponseEntity<?> deleteChildOrder(@Valid @RequestBody DeleteChildOrderRequest deleteChildOrderRequest) throws Exception {
+        return orderService.deleteChildOrder(deleteChildOrderRequest);
     }
 
     @Operation(summary = "Delete total order")
