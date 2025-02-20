@@ -47,7 +47,9 @@ public final class AppRoutes {
         public static final String DELETE_TOTAL_ORDER = "/delete-total-order";     
         public static final String SEARCH_TOTAL_ORDER = "/search-total-order";
         public static final String SEARCH_CHILD_ORDERS = "/search-child-orders";
-        public static final String UPDATE_PAYMENT_STATUS_TOTAL_ORDER = "/update-payment-status-total-order"; 
+        public static final String CREATE_TOTAL_ORDER = "/create-total-order";
+        public static final String UPDATE_PAYMENT_STATUS_TOTAL_ORDER = "/update-payment-status-total-order";
+        public static final String UPDATE_TOTAL_ORDER_STATUS = "/update-total-order-status";
 
         public static final String UPDATE_HIGHLIGHT = "/update";
         public static final String DELETE_HIGHLIGHT = "/delete";

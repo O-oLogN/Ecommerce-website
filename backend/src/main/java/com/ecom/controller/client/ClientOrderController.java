@@ -1,6 +1,11 @@
 package com.ecom.controller.client;
 
 import com.ecom.constant.AppRoutes;
+import com.ecom.constant.CoreConstants;
+import com.ecom.dto.request.order.CreateTotalOrderRequest;
+import com.ecom.dto.request.order.DeleteChildOrderRequest;
+import com.ecom.dto.request.order.UpdateTotalOrderPaymentStatusRequest;
+import com.ecom.dto.request.order.UpdateTotalOrderStatusRequest;
 import com.ecom.model.QueryRequest;
 import com.ecom.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,6 +45,61 @@ public class ClientOrderController {
     public ResponseEntity<?> searchChildOrders(@Valid @RequestParam String totalOrderId) {
         try {
             return orderService.searchChildOrders(totalOrderId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Operation(summary = "Create total order")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Fail")
+    })
+    @PostMapping(AppRoutes.REQUEST_PATH.CREATE_TOTAL_ORDER)
+    public ResponseEntity<?> createTotalOrder(@Valid @RequestBody CreateTotalOrderRequest createTotalOrderRequest) {
+        return orderService.createTotalOrder(createTotalOrderRequest, CoreConstants.ROLE.USER);
+    }
+
+    @Operation(summary = "Delete child order")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Fail")
+    })
+    @PostMapping(AppRoutes.REQUEST_PATH.DELETE_CHILD_ORDER)
+    public ResponseEntity<?> deleteChildOrder(@Valid @RequestBody DeleteChildOrderRequest deleteChildOrderRequest) throws Exception {
+        return orderService.deleteChildOrder(deleteChildOrderRequest, CoreConstants.ROLE.USER);
+    }
+
+    @Operation(summary = "Delete total order")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Fail")
+    })
+    @PostMapping(AppRoutes.REQUEST_PATH.DELETE_TOTAL_ORDER)
+    public ResponseEntity<?> deleteTotalOrder(@Valid @RequestParam String totalOrderId) throws Exception {
+        return orderService.deleteTotalOrder(totalOrderId);
+    }
+
+
+    @Operation(summary = "Update total order payment status")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Fail")
+    })
+    @PostMapping(AppRoutes.REQUEST_PATH.UPDATE_PAYMENT_STATUS_TOTAL_ORDER)
+    public ResponseEntity<?> updateTotalOrderPaymentStatus(@Valid @RequestBody UpdateTotalOrderPaymentStatusRequest updateTotalOrderPaymentStatusRequest) throws Exception {
+        return orderService.updateOrderPaymentStatus(updateTotalOrderPaymentStatusRequest, CoreConstants.ROLE.USER);
+    }
+
+    @Operation(summary = "Update total order status")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Fail")
+    })
+    @PostMapping(AppRoutes.REQUEST_PATH.UPDATE_TOTAL_ORDER_STATUS)
+    public ResponseEntity<?> updateTotalOrderStatus(@Valid @RequestBody UpdateTotalOrderStatusRequest updateTotalOrderStatusRequest) {
+        try {
+            return orderService.updateTotalOrderStatus(updateTotalOrderStatusRequest);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

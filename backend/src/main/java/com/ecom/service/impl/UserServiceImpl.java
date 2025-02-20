@@ -8,6 +8,7 @@ import com.ecom.entities.Role;
 import com.ecom.entities.User;
 import com.ecom.entities.UserRole;
 import com.ecom.exception.UserNotFoundException;
+import com.ecom.exception.UsernameAlreadyExistsException;
 import com.ecom.helper.MessageHelper;
 import com.ecom.helper.ResponseHelper;
 import com.ecom.model.PageInfo;
@@ -78,6 +79,13 @@ public class UserServiceImpl implements UserService {
                 .createUser(createUser)
                 .createDatetime(createDatetime)
                 .build();
+
+        User user = userRepository.findUserByUsername(username);
+        if (user != null) {
+            throw new UsernameAlreadyExistsException(
+                    messageHelper.getMessage("admin.userController.createUser.error.duplicated.username")
+            );
+        }
 
         userRepository.save(newUser);       // Must to doing first
 

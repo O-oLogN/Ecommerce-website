@@ -15,8 +15,13 @@ public final class CoreConstants {
         public static final String USER = "USER";
     }
 
-    public static final class PaymentStatus {
+    public static final class PAYMENT_STATUS {
         public static final Integer UNPAID = 0;
         public static final Integer PAID = 1;
+    }
+
+    public static final class TOTAL_ORDER_STATUS {
+        public static final Integer ACTIVE = 1;
+        public static final Integer INACTIVE = 0;
     }
 }

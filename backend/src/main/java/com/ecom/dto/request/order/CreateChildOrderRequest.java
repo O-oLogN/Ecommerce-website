@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateOrderPaymentStatusRequest {
-    private String totalOrderId;
-    private Integer paymentStatus;
+public class CreateChildOrderRequest {
+    private String itemId;
+    private Integer quantity;
 }

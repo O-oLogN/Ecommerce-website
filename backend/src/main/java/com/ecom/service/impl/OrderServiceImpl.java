@@ -1,11 +1,10 @@
 package com.ecom.service.impl;
 
 import com.ecom.constant.CoreConstants;
-import com.ecom.dto.request.order.DeleteChildOrderRequest;
-import com.ecom.dto.request.order.UpdateOrderPaymentStatusRequest;
+import com.ecom.dto.request.order.*;
+import com.ecom.dto.response.order.CreateTotalOrderResponse;
 import com.ecom.entities.Order;
 import com.ecom.entities.TotalOrder;
-import com.ecom.exception.OrderNotFoundException;
 import com.ecom.helper.MessageHelper;
 import com.ecom.helper.ResponseHelper;
 import com.ecom.model.OrderBy;
@@ -30,8 +29,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 @Service
@@ -45,6 +47,8 @@ public class OrderServiceImpl implements OrderService {
     private final MessageHelper messageHelper;
 
     private final TotalOrderSpecification totalOrderSpecification;
+
+    private static Integer orderNumber = 0;
 
     @Override
     public ResponseEntity<?> searchTotalOrder(QueryRequest<String> searchTotalOrderRequest) {
@@ -92,7 +96,53 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<?> deleteChildOrder(DeleteChildOrderRequest deleteChildOrderRequest) throws Exception {
+    public ResponseEntity<?> createTotalOrder(CreateTotalOrderRequest createTotalOrderRequest, String role) {
+        String userId = createTotalOrderRequest.getUserId();
+        List<CreateChildOrderRequest> createChildOrderRequests = createTotalOrderRequest.getCreateChildOrderRequests();
+
+        TotalOrder newTotalOrder = TotalOrder.builder()
+                .totalOrderId(UUID.randomUUID().toString())
+                .userId(userId)
+                .status(CoreConstants.TOTAL_ORDER_STATUS.ACTIVE)
+                .paymentStatus(CoreConstants.PAYMENT_STATUS.UNPAID)
+                .orderNumber(++orderNumber)
+                .createUser(role)
+                .createDatetime(LocalDateTime.now())
+                .build();
+
+        Set<Order> childOrders = new HashSet<>();
+        AtomicReference<Float> totalPrice = new AtomicReference<>(0f);
+        createChildOrderRequests.forEach(request -> {
+            Order order = Order.builder()
+                    .orderId(UUID.randomUUID().toString())
+                    .userId(userId)
+                    .itemId(request.getItemId())
+                    .parentId(newTotalOrder.getTotalOrderId())
+                    .quantity(request.getQuantity())
+                    .createUser(role)
+                    .createDatetime(LocalDateTime.now())
+                    .build();
+
+            childOrders.add(order);
+            totalPrice.updateAndGet(v -> v + itemRepository.findItemByItemId(order.getItemId()).getPrice() * request.getQuantity());
+        });
+
+        newTotalOrder.setOrders(childOrders);
+        newTotalOrder.setPrice(totalPrice.get());
+        totalOrderRepository.save(newTotalOrder);
+
+        return ResponseHelper.ok(
+            CreateTotalOrderResponse.builder()
+                    .totalOrder(newTotalOrder)
+                    .numberOfChildOrders(childOrders.size())
+                    .childOrders(childOrders)
+                    .build(),
+            HttpStatus.OK, messageHelper.getMessage("admin.orderController.create.totalOrder.info.success")
+        );
+    }
+
+    @Override
+    public ResponseEntity<?> deleteChildOrder(DeleteChildOrderRequest deleteChildOrderRequest, String role) throws Exception {
         String totalOrderId = deleteChildOrderRequest.getTotalOrderId();
         String childOrderId = deleteChildOrderRequest.getChildOrderId();
 
@@ -115,7 +165,7 @@ public class OrderServiceImpl implements OrderService {
         if (!childOrders.isEmpty()) {
             totalOrder.setOrders(childOrders);
             totalOrder.setPrice(totalOrder.getPrice() - itemRepository.findItemByItemId(childOrder.getItemId()).getPrice());
-            totalOrder.setModifyUser(CoreConstants.ROLE.ADMIN);
+            totalOrder.setModifyUser(role);
             totalOrder.setModifyDatetime(LocalDateTime.now());
             totalOrderRepository.save(totalOrder);
         }
@@ -141,9 +191,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<?> updateOrderPaymentStatus(UpdateOrderPaymentStatusRequest updateOrderPaymentStatusRequest) throws Exception {
-        String totalOrderId = updateOrderPaymentStatusRequest.getTotalOrderId();
-        Integer paymentStatus = updateOrderPaymentStatusRequest.getPaymentStatus();
+    public ResponseEntity<?> updateOrderPaymentStatus(UpdateTotalOrderPaymentStatusRequest updateTotalOrderPaymentStatusRequest, String role) throws Exception {
+        String totalOrderId = updateTotalOrderPaymentStatusRequest.getTotalOrderId();
+        Integer paymentStatus = updateTotalOrderPaymentStatusRequest.getPaymentStatus();
 
         if (ValidationUtils.isNullOrEmpty(totalOrderId)) {
             throw new ValidationException(
@@ -158,11 +208,39 @@ public class OrderServiceImpl implements OrderService {
 
         TotalOrder totalOrder = totalOrderRepository.findTotalOrderByTotalOrderId(totalOrderId);
 
-        totalOrder.setPaymentStatus(paymentStatus);
-        totalOrder.setModifyUser(CoreConstants.ROLE.ADMIN);
+        totalOrder.setPaymentStatus(paymentStatus == 1 ? CoreConstants.PAYMENT_STATUS.PAID : CoreConstants.PAYMENT_STATUS.UNPAID);
+        totalOrder.setModifyUser(role);
         totalOrder.setModifyDatetime(LocalDateTime.now());
 
         totalOrderRepository.save(totalOrder);
-        return ResponseHelper.ok(totalOrder, HttpStatus.OK, messageHelper.getMessage("admin.orderController.update.paymentStatus.info.success"));
+        return paymentStatus.equals(CoreConstants.PAYMENT_STATUS.PAID) ?
+            ResponseHelper.ok(totalOrder, HttpStatus.OK, messageHelper.getMessage("admin.orderController.update.paymentStatus.paid.info.success"))
+        : ResponseHelper.ok(totalOrder, HttpStatus.OK, messageHelper.getMessage("admin.orderController.update.paymentStatus.unpaid.info.success"));
+    }
+
+    @Override
+    public ResponseEntity<?> updateTotalOrderStatus(UpdateTotalOrderStatusRequest updateTotalOrderStatusRequest) throws Exception {
+        String totalOrderId = updateTotalOrderStatusRequest.getTotalOrderId();
+        Integer totalOrderStatus = updateTotalOrderStatusRequest.getStatus();
+
+        if (ValidationUtils.isNullOrEmpty(updateTotalOrderStatusRequest)) {
+            throw new ValidationException(
+                messageHelper.getMessage("admin.orderController.update.totalOrder.status.error.validation.totalOrderId")
+            );
+        }
+
+        TotalOrder totalOrder = totalOrderRepository.findTotalOrderByTotalOrderId(totalOrderId);
+        totalOrder.setStatus(totalOrderStatus == 1 ? CoreConstants.TOTAL_ORDER_STATUS.ACTIVE : CoreConstants.TOTAL_ORDER_STATUS.INACTIVE);
+        totalOrder.setModifyUser(CoreConstants.ROLE.ADMIN);
+        totalOrder.setModifyDatetime(LocalDateTime.now());
+        totalOrderRepository.save(totalOrder);
+
+        return totalOrderStatus.equals(CoreConstants.TOTAL_ORDER_STATUS.ACTIVE) ?
+            ResponseHelper.ok(
+                totalOrder, HttpStatus.OK,  messageHelper.getMessage("admin.orderController.update.totalOrder.status.activate.info.success")
+            )
+            : ResponseHelper.ok(
+                totalOrder, HttpStatus.OK,  messageHelper.getMessage("admin.orderController.update.totalOrder.status.deactivate.info.success")
+            );
     }
 }

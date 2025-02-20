@@ -2,6 +2,7 @@ package com.ecom.entities;
 
 import com.ecom.constant.CoreConstants;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -42,10 +43,6 @@ public class Order {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @NotNull
-    @Column(name = "order_number", nullable = false)
-    private Integer orderNumber;
-
     @Size(max = 100)
     @NotNull
     @Column(name = "create_user", nullable = false, length = 100)
@@ -65,8 +62,9 @@ public class Order {
     @JsonFormat(pattern = CoreConstants.DateTimePattern.FORMAT_24H)
     private LocalDateTime modifyDatetime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id", referencedColumnName = "total_order_id", insertable = false, updatable = false)
+    @JsonIgnore
     private TotalOrder totalOrder;
 
 }
