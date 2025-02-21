@@ -8,6 +8,8 @@ import { EditItemForm } from '../modal/EditItemForm.tsx'
 import { CreateItemForm } from '../modal/CreateItemForm.tsx'
 import { HttpStatusCode } from 'axios'
 import { TableData } from '../types'
+import { Tag } from 'antd'
+import {BadgeInfo, HighlightInfo} from "types"
 
 interface TableColumn {
     title: string
@@ -26,6 +28,10 @@ const sortFunctions: Function[] = [
 
     (a: number, b: number) => {
         return a - b
+    },
+
+    (_a: any, _b: any) => {
+        return 0
     }
 ]
 
@@ -51,8 +57,8 @@ export const ItemList = () => {
         reFetchItemList,
     } = useItemManagementContext()
     const {messageApi} = useMessageContext()
-    const columnNames = ['Item name', 'Category code', 'Category name', 'Item price ($)', 'Image', 'Quantity', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
-    const columnDataIndexes = ['name', 'categoryCode', 'categoryName', 'price', 'imageUrl', 'quantity', 'createUser', 'createDatetime', 'modifyUser', 'modifyDatetime']
+    const columnNames = ['Item name', 'Category code', 'Category name', 'Item price ($)', 'Image', 'Quantity', 'Highlights', 'Badges', 'Number of reviews', 'Rate', 'Create user', 'Create date time', 'Modify user', 'Modify date time']
+    const columnDataIndexes = ['name', 'categoryCode', 'categoryName', 'price', 'imageUrl', 'quantity', 'highlights', 'badges', 'numberOfReviews', 'rate', 'createUser', 'createDatetime', 'modifyUser', 'modifyDatetime']
 
     const onClickSearchBtn = () => {
         const searchBar = document.getElementById('item-search-bar') as HTMLInputElement
@@ -99,9 +105,6 @@ export const ItemList = () => {
                     console.log('INDEX - Item deleted successfully!')
                     messageApi.success('Item deleted successfully!')
                 }
-                // else {
-                //     console.log('INDEX - Item deleted failed!')
-                // }
             }
         }
         catch (error) {
@@ -118,7 +121,7 @@ export const ItemList = () => {
     }
 
     const handleCreate = () => {
-        setIsOpenCreateForm(true)
+        setIsOpenCreateForm(!!1)
     }
 
     const handleTableChange = (pagination: any) => {
@@ -159,21 +162,10 @@ export const ItemList = () => {
                 return {
                     key: index.toString(),
                     categoryName: resolvedCategories[index]?.name,
-                    categoryCode: resolvedCategories[index]?.code,
-                    itemId: item.itemId,
-                    categoryId: item.categoryId,
-                    name: item.name,
-                    price: item.price,
-                    imageMinioGetUrl: item.imageMinioGetUrl,
-                    imageMinioPutUrl: item.imageMinioPutUrl,
-                    quantity: item.quantity,
-                    createUser: item.createUser,
-                    createDatetime: item.createDatetime,
-                    modifyUser: item.modifyUser,
-                    modifyDatetime: item.modifyDatetime,
+                    categoryCode:resolvedCategories[index]?.code,
+                    ...item
                 } as TableData
             })
-
             if (updatedData && updatedData.length > 0) {
                 const tableColumns: TableColumn[] = [
                     ...(columnNames.map((columnName, index) => ({
@@ -188,23 +180,59 @@ export const ItemList = () => {
                             const valueA = a[columnDataIndexes[index]]
                             const valueB = b[columnDataIndexes[index]]
                             return type === 'string' ? sortFunctions[0](valueA, valueB)
-                                : sortFunctions[1](valueA, valueB)
+                                : (type === 'number' ? sortFunctions[1](valueA, valueB)
+                                : sortFunctions[2](valueA, valueB))
                         }
                     })))
                 ]
 
-                tableColumns[tableColumns.findIndex(col => col.dataIndex === 'imageUrl')]
-                    = {
+                tableColumns[tableColumns.findIndex(col => col.dataIndex === 'imageUrl')] = {
                     title: 'Image',
                     dataIndex: '',
                     key: tableColumns.findIndex(col => col.dataIndex === 'image').toString(),
-                    render: (record: TableData) => {
+                    render: (record: any) => {
                         if (record.imageMinioGetUrl)
                             return <img src={record.imageMinioGetUrl} style={{width: '100px', height: 'auto'}} alt={''}/>
                         return <></>
                     }
                 }
-
+                let highlightsColumnIndex = tableColumns.findIndex(col => col.dataIndex === 'highlights')
+                let badgesColumnIndex = tableColumns.findIndex(col => col.dataIndex === 'badges')
+                tableColumns[highlightsColumnIndex].render = (record: HighlightInfo[]) => {
+                    return (
+                        <>
+                            { record ? record.map(highlight => {
+                                return (
+                                    <div>
+                                        <Tag color={"cyan"} bordered={true}>
+                                            { highlight.content }
+                                        </Tag>
+                                    </div>
+                                )
+                            }) : null
+                            }
+                        </>
+                    )
+                }
+                tableColumns[badgesColumnIndex].render = (record: BadgeInfo[]) => {
+                    return (
+                        <>
+                            { record && record.length > 0 ? record.map(badge => {
+                                return (
+                                    <div>
+                                        <Tag color={"magenta"} bordered={true}>
+                                            <div style={{display: "flex", textAlign: "center"}}>
+                                                <img src={badge.iconMinioGetUrl ?? '#'} alt="" style={{width: 15, height: 15, marginRight: 5, marginTop: 2}}  />
+                                                <span>{badge.description}</span>
+                                            </div>
+                                        </Tag>
+                                    </div>
+                                )
+                            }) : null
+                            }
+                        </>
+                    )
+                }
                 tableColumns.push({
                     title: 'Actions',
                     key: 'actions',
@@ -228,6 +256,7 @@ export const ItemList = () => {
                 setColumns(tableColumns)
             }
         }
+
         setUpData().then(() => {})
     }, [itemList])
 

@@ -1,4 +1,4 @@
-import {IBaseData} from 'types'
+import {BadgeInfo, HighlightInfo, IBaseData} from 'types'
 
 export interface ItemInfo extends IBaseData {
     itemId: string
@@ -8,4 +8,8 @@ export interface ItemInfo extends IBaseData {
     imageMinioGetUrl: string | null
     imageMinioPutUrl: string | null
     quantity: number
+    highlights: HighlightInfo[] | null
+    badges: BadgeInfo[] | null
+    numberOfReviews: number
+    rate: number | null
 }

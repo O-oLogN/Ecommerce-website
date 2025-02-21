@@ -1,11 +1,17 @@
 import {Modal, Form, Input, Upload, Select, message, FormInstance} from 'antd'
 import {UploadOutlined} from '@ant-design/icons'
 import React, {useState} from 'react'
-import {ItemInfo, CategoryInfo} from 'types'
-import {useEditItem, useSearchCategory} from 'services'
+import {ItemInfo, CategoryInfo, HighlightInfo, BadgeInfo} from 'types'
+import {
+    useEditItem,
+    useSearchCategory,
+    useSearchHighlight,
+    useSearchBadge,
+} from 'services'
 import {HttpStatusCode} from 'axios'
 import {IEditItemRequest} from 'services/types'
 import {TableData} from '../types'
+import {Tag} from 'antd'
 const {Dragger} = Upload
 
 interface EditItemFormProps {
@@ -69,10 +75,20 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
     const [imagesUploaded, setImagesUploaded] = useState<File[] | undefined>()
     const [categorySelected, setCategorySelected] = useState<CategoryInfo | undefined>(undefined)
     const [categories, setCategories] = useState<CategoryInfo[] | undefined>([])
-    
+    const [highlights, setHighlights] = useState<HighlightInfo[]>([])
+    const [badges, setBadges] = useState<BadgeInfo[]>([])
+    const [unusedHighlights, setUnusedHighlights] = useState<HighlightInfo[]>([])
+    const [unusedBadges, setUnusedBadges] = useState<BadgeInfo[]>([])
+
     const handleCancel = () => {
         form.resetFields()
         setIsOpenForm(false)
+    }
+    const onCloseHighlightTag = (highlightId: string) => {
+        setUnusedHighlights([...unusedHighlights, highlights.find(highlight => highlight.highlightId === highlightId)!])
+    }
+    const onCloseBadgeTag = (badgeId: string) => {
+        setUnusedBadges([...unusedBadges, badges.find(badge => badge.badgeId === badgeId)!])
     }
     const searchCategoryResponse = useSearchCategory({
         sample: {
@@ -86,6 +102,27 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
 
         }
     })
+    const searchHighlightResponse = useSearchHighlight({
+        sample: "",
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 100
+        },
+        ordersBy: {
+
+        }
+    })
+    const searchBadgeResponse = useSearchBadge({
+        sample: "",
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 100
+        },
+        ordersBy: {
+
+        }
+    })
+
     React.useEffect(() => {
         if (!searchCategoryResponse.data) {
             console.log('searchCategoryResponse.data is undefined!')
@@ -114,6 +151,40 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
         }
     }, [categorySelected, form])
 
+    React.useEffect(() => {
+        if (searchHighlightResponse.data?.data) {
+            const highlights = searchHighlightResponse.data.data.content!
+            let newUnusedHighlights: HighlightInfo[] = []
+            highlights.forEach(highlight => {
+                const index = initialValue && initialValue.highlights ? initialValue.highlights.find(initHighlight => initHighlight.highlightId === highlight.highlightId)
+                                    : null
+                if (!index) {
+                    newUnusedHighlights.push(highlight)
+                }
+            })
+
+            setHighlights(highlights)
+            setUnusedHighlights(newUnusedHighlights)
+        }
+    }, [searchHighlightResponse.data, initialValue])
+
+    React.useEffect(() => {
+        if (searchBadgeResponse.data?.data) {
+            const badges = searchBadgeResponse.data.data.content!
+            let newUnusedBadges: BadgeInfo[] = []
+            badges.forEach(badge => {
+                const index = initialValue && initialValue.badges ? initialValue.badges.find(initBadge => initBadge.badgeId === badge.badgeId)
+                    : null
+                if (!index) {
+                    newUnusedBadges.push(badge)
+                }
+            })
+
+            setBadges(badges)
+            setUnusedBadges(newUnusedBadges)
+        }
+    }, [searchBadgeResponse.data, initialValue])
+
     return (
         <Modal title="Update item form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
             <Form form={form}
@@ -125,6 +196,20 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                       const price = formVal.price || null
                       const image = imagesUploaded && imagesUploaded.length > 0 ? imagesUploaded![0] : null
                       const quantity = formVal.quantity
+                      let usedHighlightIds: string[] = []
+                      highlights.forEach(highlight => {
+                          if (!unusedHighlights.includes(highlight)) {
+                              usedHighlightIds.push(highlight.highlightId)
+                          }
+                      })
+                      let usedBadgeIds: string[] = []
+                      badges.forEach(badge => {
+                          if (!unusedBadges.includes(badge)) {
+                              usedBadgeIds.push(badge.badgeId)
+                          }
+                      })
+                      const numberOfReviews = formVal.numberOfReviews
+                      const rate = formVal.rate
 
                       await handleSubmitForm(
                           editHelper,
@@ -137,7 +222,11 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                               image,
                               imageMinioGetUrl: initialValue!.imageMinioGetUrl,
                               imageMinioPutUrl: initialValue!.imageMinioPutUrl,
-                              quantity
+                              quantity,
+                              highlightIds: usedHighlightIds,
+                              badgeIds: usedBadgeIds,
+                              numberOfReviews,
+                              rate,
                           },
                           reFetchItemList,
                           messageApi,
@@ -240,9 +329,9 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                             validator: (_, value) => {
                                 console.log(value)
                                 if (value < 0) {
-                                    return Promise.reject(new Error('Quantity cannot be less than 0'));
+                                    return Promise.reject(new Error('Quantity cannot be less than 0'))
                                 }
-                                return Promise.resolve();
+                                return Promise.resolve()
                             },
                         },
                     ]}
@@ -250,10 +339,84 @@ export const EditItemForm: React.FC<EditItemFormProps> = ({
                     <Input type="number"/>
                 </Form.Item>
                 <Form.Item
+                    label="Highlights"
+                >
+                    <Select
+                        defaultValue="--Choose highlights--"
+                        onChange={value => {
+                            let newUnusedHighlights = [...unusedHighlights]
+                            newUnusedHighlights.splice(newUnusedHighlights.findIndex(highlight => highlight.highlightId === value), 1)
+                            setUnusedHighlights(newUnusedHighlights)
+                        }}
+                        options={unusedHighlights.map(highlight => ({
+                            value: highlight.highlightId,
+                            label: highlight.content
+                        }))}
+                    />
+                    <div style={{width: 400, height: 200, border: "white 1px solid"}}>
+                        { highlights.map(highlight => {
+                            const index = unusedHighlights.find(unusedHighlight => unusedHighlight.highlightId === highlight.highlightId)
+                            if (!index) {
+                                return (
+                                    <Tag bordered={true} color="cyan" closable={true} onClose={() => onCloseHighlightTag(highlight.highlightId)}>
+                                        {highlight.content}
+                                    </Tag>
+                                )
+                            }
+                            return null
+                        }) }
+                    </div>
+                </Form.Item>
+                <Form.Item
+                    label="Badges"
+                >
+                    <Select
+                        defaultValue="--Choose badges--"
+                        onChange={value => {
+                            let newUnusedBadges = [...unusedBadges]
+                            newUnusedBadges.splice(newUnusedBadges.findIndex(badge => badge.badgeId === value), 1)
+                            setUnusedBadges(newUnusedBadges)
+                        }}
+                        options={unusedBadges.map(badge => ({
+                            value: badge.badgeId,
+                            label: badge.description
+                        }))}
+                    />
+                    <div style={{width: 400, height: 200, border: "white 0.5px solid"}}>
+                        { badges.map(badge => {
+                            const index = unusedBadges.find(unusedBadge => unusedBadge.badgeId === badge.badgeId)
+                            if (!index) {
+                                return (
+                                    <Tag bordered={true} color="magenta" closable={true} onClose={() => onCloseBadgeTag(badge.badgeId)}>
+                                        <img src={badge.iconMinioGetUrl ?? '#'} alt="" style={{width: 15, height: 15, marginRight: 5, marginTop: 2}}  />
+                                        <span>{badge.description}</span>
+                                    </Tag>
+                                )
+                            }
+                            return null
+                        }) }
+                    </div>
+                </Form.Item>
+                <Form.Item
+                    name="numberOfReviews"
+                    label="Number of reviews"
+                    rules={[{required: true}]}
+                    initialValue={initialValue ? initialValue.numberOfReviews : 0}
+                >
+                    <Input type="number"/>
+                </Form.Item>
+                <Form.Item
+                    name="rate"
+                    label="Rate"
+                    initialValue={initialValue ? initialValue.rate : null}
+                >
+                    <Input type="number"/>
+                </Form.Item>
+                <Form.Item
                     name="createUser"
                     label="Create user"
                 >
-                    <Input disabled />
+                    <Input disabled min={0} max={5.0} />
                 </Form.Item>
                 <Form.Item
                     name="createDatetime"

@@ -1,7 +1,9 @@
 import {AppContextProvider} from './hooks/AppContext.tsx'
 import {App} from './App.tsx'
 import {createRoot} from 'react-dom/client'
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
 
+const queryClient = new QueryClient()
 
 const AppWrapper = () => {
     return (
@@ -13,4 +15,8 @@ const AppWrapper = () => {
 
 const container = document.getElementById('root')
 const root = createRoot(container!)
-root.render(<AppWrapper />)
+root.render(
+    <QueryClientProvider client={queryClient}>
+        <AppWrapper />
+    </QueryClientProvider>
+)

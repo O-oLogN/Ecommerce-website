@@ -5,6 +5,8 @@ export const REQUEST_MAPPING = {
     USER: "/admin/user",
     ORDER: "/admin/order",
     ROLE: "/admin/role",
+    BADGE: "/admin/badge",
+    HIGHLIGHT: "/admin/highlight",
 }
 
 export const REQUEST_PATH = {
@@ -36,5 +38,15 @@ export const REQUEST_PATH = {
     DELETE_TOTAL_ORDER: "/delete-total-order",
     SEARCH_TOTAL_ORDER: "/search-total-order",
     UPDATE_PAYMENT_STATUS_TOTAL_ORDER: "/update-payment-status-total-order",
-};
+
+    UPDATE_BADGE: "/update",
+    DELETE_BADGE: "/delete",
+    CREATE_BADGE: "/create",
+    SEARCH_BADGE: "/search",
+
+    UPDATE_HIGHLIGHT: "/update",
+    DELETE_HIGHLIGHT: "/delete",
+    CREATE_HIGHLIGHT: "/create",
+    SEARCH_HIGHLIGHT: "/search",
+}
 

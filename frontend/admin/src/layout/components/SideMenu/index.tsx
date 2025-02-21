@@ -8,6 +8,7 @@ import {
 import { Menu, MenuProps } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import { REQUEST_MAPPING } from "constants/Path"
 
 export const SideMenu = () => {
     const navigate = useNavigate()
@@ -28,7 +29,7 @@ export const SideMenu = () => {
                     label: 'User management',
                     onClick: () => {
                         setSelectedKeys(['user-management'])
-                        return navigate('/user-management')
+                        return navigate(REQUEST_MAPPING.USER)
                     },
                 },
                 {
@@ -40,7 +41,7 @@ export const SideMenu = () => {
                     label: 'Category management',
                     onClick: () => {
                         setSelectedKeys(['category-management'])
-                        return navigate('/category-management')
+                        return navigate(REQUEST_MAPPING.CATEGORY)
                     },
                 },
                 {
@@ -52,7 +53,7 @@ export const SideMenu = () => {
                     label: 'Item management',
                     onClick: () => {
                         setSelectedKeys(['item-management'])
-                        return navigate('/item-management')
+                        return navigate(REQUEST_MAPPING.ITEM)
                     },
                 },
                 {
@@ -64,7 +65,7 @@ export const SideMenu = () => {
                     label: 'Order management',
                     onClick: () => {
                         setSelectedKeys(['order-management'])
-                        return navigate('/order-management')
+                        return navigate(REQUEST_MAPPING.ORDER)
                     },
                 },
             ],
@@ -78,7 +79,7 @@ export const SideMenu = () => {
             label: 'Role management',
             onClick: () => {
                 setSelectedKeys(['role-management'])
-                return navigate('/role-management')
+                return navigate(REQUEST_MAPPING.ROLE)
             },
         },
     ]

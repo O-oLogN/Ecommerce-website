@@ -6,6 +6,8 @@ export * from './UserInfo'
 export * from './CategoryInfo'
 export * from './ItemInfo'
 export * from './RoleInfo'
+export * from './HighlightInfo'
+export * from './BadgeInfo'
 
 export interface IBaseData {
     createUser: string | undefined

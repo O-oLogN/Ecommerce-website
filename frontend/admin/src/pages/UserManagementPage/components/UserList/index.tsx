@@ -115,7 +115,7 @@ export const UserList = () => {
     }
 
     const handleCreate = () => {
-        setIsOpenCreateForm(true)
+        setIsOpenCreateForm(!!1)
     }
 
     const handleTableChange = (pagination: any) => {

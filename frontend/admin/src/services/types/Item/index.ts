@@ -1,5 +1,6 @@
 import {ItemInfo} from 'types'
-                                    /* REQUESTS */
+
+                                        /* REQUESTS */
 export interface ISearchItemRequest {
     itemName: string | null
 }
@@ -9,10 +10,14 @@ export interface IEditItemRequest {
     categoryId: string
     name: string
     price: number | null
+    quantity: number
     image: File | null
     imageMinioGetUrl: string | null
     imageMinioPutUrl: string | null
-    quantity: number
+    highlightIds: string[]
+    badgeIds: string[]
+    numberOfReviews: number
+    rate: number | null
 }
 
 export interface IDeleteItemRequest {
@@ -25,6 +30,10 @@ export interface ICreateItemRequest {
     price: number | null
     image: File | null
     quantity: number
+    highlightIds: string[]
+    badgeIds: string[]
+    numberOfReviews: number
+    rate: number | null
 }
 
                                     /* RESPONSES */

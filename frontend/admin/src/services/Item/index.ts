@@ -1,6 +1,6 @@
 import {IPagingResponse, IQueryRequest} from "types"
-import {useQuery, useMutation} from "react-query"
-import {axiosInstance} from "../index.ts"
+import {useQuery, useMutation} from "@tanstack/react-query"
+import {getAxiosInstance} from "../index.ts"
 import {REQUEST_MAPPING, REQUEST_PATH} from "constants/Path"
 import {
     ISearchItemRequest,
@@ -16,28 +16,26 @@ import {
 
 export const useSearchItem=
     (params: IQueryRequest<ISearchItemRequest>) => {
-        return useQuery<IBaseResponse<IPagingResponse<ISearchItemResponse>>>(
-            ['search-item', params],
-            async () => {
-                const response = await axiosInstance.post<IBaseResponse<IPagingResponse<ISearchItemResponse>>>(
+        return useQuery<IBaseResponse<IPagingResponse<ISearchItemResponse>>>({
+            queryKey: ['search-item', params],
+            queryFn: async () => {
+                const response = await getAxiosInstance().post<IBaseResponse<IPagingResponse<ISearchItemResponse>>>(
                     REQUEST_MAPPING.ITEM + REQUEST_PATH.SEARCH_ITEM,
                     params
                 )
                 return response.data
             },
-            {
-                enabled: !!params,
-                // refetchInterval: 1000,
-                refetchOnWindowFocus: false,
-                refetchOnReconnect: false,
-            }
-        )
+            enabled: !!params,
+            // refetchInterval: 1000,
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+        })
     }
 
 export const useEditItem = () => {
-    return useMutation(
-        'edit-item',
-        (params: IEditItemRequest) => {
+    return useMutation({
+        mutationKey: ['edit-item'],
+        mutationFn: (params: IEditItemRequest) => {
             const formData = new FormData()
             formData.append('itemId', params.itemId)
             formData.append('categoryId', params.categoryId)
@@ -49,9 +47,9 @@ export const useEditItem = () => {
             }
             formData.append('imageMinioGetUrl', params.imageMinioGetUrl ?? '')
             formData.append('imageMinioPutUrl', params.imageMinioPutUrl ?? '')
-            return axiosInstance.post<IBaseResponse<IEditItemResponse>>(
+            return getAxiosInstance().post<IBaseResponse<IEditItemResponse>>(
                 REQUEST_MAPPING.ITEM + REQUEST_PATH.UPDATE_ITEM,
-                params,
+                formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -59,27 +57,27 @@ export const useEditItem = () => {
                 }
             )
         },
-    )
+    })
 }
 
 export const useDeleteItem= () => {
-    return useMutation(
-        'delete-item',
-        (params: IDeleteItemRequest) => {
+    return useMutation({
+        mutationKey: ['delete-item'],
+        mutationFn: (params: IDeleteItemRequest) => {
             const queryParams = new URLSearchParams({
                 itemId: params.itemId,
             }).toString()
-            return axiosInstance.post<IBaseResponse<IDeleteItemResponse>>(
+            return getAxiosInstance().post<IBaseResponse<IDeleteItemResponse>>(
                 `${REQUEST_MAPPING.ITEM}${REQUEST_PATH.DELETE_ITEM}?${queryParams}`
             )
         },
-    )
+    })
 }
 
 export const useCreateItem= () => {
-    return useMutation(
-        'create-item',
-        (params: ICreateItemRequest) => {
+    return useMutation({
+        mutationKey: ['create-item'],
+        mutationFn: (params: ICreateItemRequest) => {
             const formData = new FormData()
             formData.append('categoryId', params.categoryId)
             formData.append('name', params.name)
@@ -88,9 +86,9 @@ export const useCreateItem= () => {
             if (params.image) {
                 formData.append('image', params.image);
             }
-            return axiosInstance.post<IBaseResponse<ICreateItemResponse>>(
+            return getAxiosInstance().post<IBaseResponse<ICreateItemResponse>>(
                 REQUEST_MAPPING.ITEM + REQUEST_PATH.CREATE_ITEM,
-                params,
+                formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -98,5 +96,5 @@ export const useCreateItem= () => {
                 }
             )
         },
-    )
+    })
 }

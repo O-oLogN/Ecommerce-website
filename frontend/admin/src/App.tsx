@@ -1,5 +1,4 @@
 import {message} from 'antd'
-import {QueryClient, QueryClientProvider} from "react-query"
 import {useAppContext} from './hooks/AppContext.tsx'
 import {AppContextProps} from 'types'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
@@ -9,11 +8,15 @@ import {
     CategoryManagementPage,
     ItemManagementPage,
 } from 'pages'
-import {Layout} from 'layout'
-import {RoleManagementPage} from "pages/RoleManagementPage";
+import {SideMenu} from 'layout/components/SideMenu'
+import {RoleManagementPage} from "pages/RoleManagementPage"
+import {REQUEST_MAPPING, REQUEST_PATH} from "constants/Path"
+import {useNavigate} from 'react-router-dom'
+import React, {useEffect} from "react"
+
 
 export const App = () => {
-    const queryClient = new QueryClient()
+
     message.config({
         maxCount: 1,
     })
@@ -22,18 +25,51 @@ export const App = () => {
         setAuthenticated: setAppAuthenticated,
     } = useAppContext() as AppContextProps
     return (
-        <QueryClientProvider client={ queryClient }>
-            <Router>
-                <Routes>
-                        <Route path="/login" element={<LoginPage setAppAuthenticated={setAppAuthenticated} />} />
-                        <Route path="/" element={<Layout authenticated={authenticated}/>}>
-                            <Route path="user-management" element={<UserManagementPage/>}/>
-                            <Route path="category-management" element={<CategoryManagementPage/>}/>
-                            <Route path="item-management" element={<ItemManagementPage/>}/>
-                            <Route path="role-management" element={<RoleManagementPage/>}/>
-                        </Route>
-                </Routes>
-            </Router>
-        </QueryClientProvider>
+        <Router>
+            <Routes>
+                <Route path={REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN} element={<LoginPage setAppAuthenticated={setAppAuthenticated} />} />
+            </Routes>
+            <InternalZone authenticated={authenticated} />
+        </Router>
     )
+}
+
+interface InternalZoneProps {
+    authenticated: boolean
+}
+const InternalZone: React.FC<InternalZoneProps> = ({ authenticated }) => {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!authenticated) {
+            navigate(REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN)
+        }
+        else {
+            if (window.location.href === "http://localhost:5173" + REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN) {
+                navigate(REQUEST_MAPPING.USER)
+            }
+        }
+    }, [authenticated])
+
+    if (!authenticated) {
+        return <></>
+    }
+
+    return (
+       <>
+           <SideMenu/>
+           <Routes>
+               <Route path="/">
+                   <Route path={REQUEST_MAPPING.USER}
+                          element={<UserManagementPage/>}/>
+                   <Route path={REQUEST_MAPPING.CATEGORY}
+                          element={<CategoryManagementPage/>}/>
+                   <Route path={REQUEST_MAPPING.ITEM}
+                          element={<ItemManagementPage/>}/>
+                   <Route path={REQUEST_MAPPING.ROLE}
+                          element={<RoleManagementPage/>}/>
+               </Route>
+           </Routes>
+       </>
+   )
 }

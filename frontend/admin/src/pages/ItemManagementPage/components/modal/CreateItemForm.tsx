@@ -1,8 +1,8 @@
-import {Modal, Form, Input, Select, Upload, message} from 'antd'
+import {Modal, Form, Input, Select, Upload, message, Tag} from 'antd'
 import {UploadOutlined} from '@ant-design/icons'
 import React, {useState} from 'react'
-import {ItemInfo, CategoryInfo} from 'types'
-import {useCreateItem, useSearchCategory} from 'services'
+import {ItemInfo, CategoryInfo, HighlightInfo, BadgeInfo} from 'types'
+import {useCreateItem, useSearchBadge, useSearchCategory, useSearchHighlight} from 'services'
 import {HttpStatusCode} from 'axios'
 import {ICreateItemRequest} from 'services/types'
 const {Dragger} = Upload
@@ -33,9 +33,6 @@ const handleSubmitForm = async (
                 console.log('FORM - Item created successfully!')
                 messageApi.success('Item created successfully!')
             }
-            // else {
-            //     console.log('FORM - Item created failed!')
-            // }
         }
     }
     catch (error) {
@@ -67,6 +64,16 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
     const [categories, setCategories] = useState<CategoryInfo[] | undefined>([])
     const [categorySelected, setCategorySelected] = useState<CategoryInfo | undefined>()
     const [imagesUploaded, setImagesUploaded] = useState<File[] | undefined>()
+    const [highlights, setHighlights] = useState<HighlightInfo[]>([])
+    const [badges, setBadges] = useState<BadgeInfo[]>([])
+    const [unusedHighlights, setUnusedHighlights] = useState<HighlightInfo[]>([])
+    const [unusedBadges, setUnusedBadges] = useState<BadgeInfo[]>([])
+    const onCloseHighlightTag = (highlightId: string) => {
+        setUnusedHighlights([...unusedHighlights, highlights.find(highlight => highlight.highlightId === highlightId)!])
+    }
+    const onCloseBadgeTag = (badgeId: string) => {
+        setUnusedBadges([...unusedBadges, badges.find(badge => badge.badgeId === badgeId)!])
+    }
     const searchCategoryResponse = useSearchCategory({
         sample: {
             categoryName: '',
@@ -79,6 +86,27 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
 
         }
     })
+    const searchHighlightResponse = useSearchHighlight({
+        sample: "",
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 100
+        },
+        ordersBy: {
+
+        }
+    })
+    const searchBadgeResponse = useSearchBadge({
+        sample: "",
+        pageInfo: {
+            pageNumber: 0,
+            pageSize: 100
+        },
+        ordersBy: {
+
+        }
+    })
+
     React.useEffect(() => {
         if (!searchCategoryResponse.data) {
             console.log('searchCategoryResponse.data is undefined')
@@ -97,16 +125,46 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
         }
     }, [categorySelected])
 
+    React.useEffect(() => {
+        if (searchHighlightResponse.data?.data) {
+            const highlights = searchHighlightResponse.data.data.content!
+            setHighlights(highlights)
+            setUnusedHighlights(highlights)
+        }
+    }, [searchHighlightResponse.data])
+
+    React.useEffect(() => {
+        if (searchBadgeResponse.data?.data) {
+            const badges = searchBadgeResponse.data.data.content!
+            setBadges(badges)
+            setUnusedBadges(badges)
+        }
+    }, [searchBadgeResponse.data])
+
     return (
         <Modal title="Create item form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
             <Form form={form}
                   onFinish={async() => {
                       const formVal = await form.validateFields() as ItemInfo
-                      const categoryId =  categorySelected!.categoryId
                       const name = formVal.name
-                      const price = formVal.price || null
-                      const image = imagesUploaded && imagesUploaded.length > 0 ? imagesUploaded![0] : null
+                      const categoryId =  categorySelected!.categoryId
                       const quantity = formVal.quantity
+                      const image = imagesUploaded && imagesUploaded.length > 0 ? imagesUploaded![0] : null
+                      let usedBadgeIds: string[] = []
+                      badges.forEach(badge => {
+                          if (!unusedBadges.includes(badge)) {
+                              usedBadgeIds.push(badge.badgeId)
+                          }
+                      })
+                      let usedHighlightIds: string[] = []
+                      highlights.forEach(highlight => {
+                          if (!unusedHighlights.includes(highlight)) {
+                              usedHighlightIds.push(highlight.highlightId)
+                          }
+                      })
+                      const price = formVal.price || null
+                      const numberOfReviews = formVal.numberOfReviews
+                      const rate = formVal.rate
 
                       await handleSubmitForm(
                           createHelper,
@@ -116,7 +174,11 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                               name,
                               price,
                               image,
-                              quantity
+                              quantity,
+                              highlightIds: usedHighlightIds,
+                              badgeIds: usedBadgeIds,
+                              numberOfReviews,
+                              rate,
                           },
                           reFetchItemList,
                           messageApi,
@@ -228,6 +290,78 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                             },
                         },
                     ]}
+                >
+                    <Input type="number"/>
+                </Form.Item>
+                <Form.Item
+                    label="Highlights"
+                >
+                    <Select
+                        defaultValue="--Highlights--"
+                        onChange={value => {
+                            let newUnusedHighlights = [...unusedHighlights]
+                            newUnusedHighlights.splice(newUnusedHighlights.findIndex(highlight => highlight.highlightId === value), 1)
+                            setUnusedHighlights(newUnusedHighlights)
+                        }}
+                        options={unusedHighlights.map(highlight => ({
+                            value: highlight.highlightId,
+                            label: highlight.content
+                        }))}
+                    />
+                    <div style={{width: 400, height: 200, border: "white 1px solid"}}>
+                        { highlights.map(highlight => {
+                            const index = unusedHighlights.find(unusedHighlight => unusedHighlight.highlightId === highlight.highlightId)
+                            if (!index) {
+                                return (
+                                    <Tag bordered={true} color="cyan" closable={true} onClose={() => onCloseHighlightTag(highlight.highlightId)}>
+                                        {highlight.content}
+                                    </Tag>
+                                )
+                            }
+                            return null
+                        }) }
+                    </div>
+                </Form.Item>
+                <Form.Item
+                    label="Badges"
+                >
+                    <Select
+                        defaultValue="--Badges--"
+                        onChange={value => {
+                            let newUnusedBadges = [...unusedBadges]
+                            newUnusedBadges.splice(newUnusedBadges.findIndex(badge => badge.badgeId === value), 1)
+                            setUnusedBadges(newUnusedBadges)
+                        }}
+                        options={unusedBadges.map(badge => ({
+                            value: badge.badgeId,
+                            label: badge.description
+                        }))}
+                    />
+                    <div style={{width: 400, height: 200, border: "white 1px solid"}}>
+                        { badges.map(badge => {
+                            const index = unusedBadges.find(unusedBadge => badge.badgeId === unusedBadge.badgeId)
+                            if (!index) {
+                                return (
+                                    <Tag bordered={true} color="magenta" closable={true} onClose={() => onCloseBadgeTag(badge.badgeId)}>
+                                        <img src={badge.iconMinioGetUrl ?? '#'} alt="" style={{width: 15, height: 15, marginRight: 5, marginTop: 2}}  />
+                                        <span>{badge.description}</span>
+                                    </Tag>
+                                )
+                            }
+                            return null
+                        }) }
+                    </div>
+                </Form.Item>
+                <Form.Item
+                    name="numberOfReviews"
+                    rules={[{required: true}]}
+                    label="Number of reviews"
+                >
+                    <Input type="number"/>
+                </Form.Item>
+                <Form.Item
+                    name="rate"
+                    label="Rate"
                 >
                     <Input type="number"/>
                 </Form.Item>
