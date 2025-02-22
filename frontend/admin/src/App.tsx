@@ -58,24 +58,26 @@ const InternalZone: React.FC<InternalZoneProps> = ({ authenticated }) => {
     }
 
     return (
-       <>
+       <div style={{display: "flex"}}>
            <SideMenu/>
-           <Routes>
-               <Route path="/">
-                   <Route path={REQUEST_MAPPING.USER}
-                          element={<UserManagementPage/>}/>
-                   <Route path={REQUEST_MAPPING.CATEGORY}
-                          element={<CategoryManagementPage/>}/>
-                   <Route path={REQUEST_MAPPING.ITEM}
-                          element={<ItemManagementPage/>}/>
-                   <Route path={REQUEST_MAPPING.ROLE}
-                          element={<RoleManagementPage/>}/>
-                   <Route path={REQUEST_MAPPING.BADGE}
-                          element={<BadgeManagementPage/>}/>
-                   <Route path={REQUEST_MAPPING.HIGHLIGHT}
-                          element={<HighlightManagementPage/>}/>
-               </Route>
-           </Routes>
-       </>
+           <div style={{marginLeft: 50}}>
+               <Routes>
+                   <Route path="/">
+                       <Route path={REQUEST_MAPPING.USER}
+                              element={<UserManagementPage/>}/>
+                       <Route path={REQUEST_MAPPING.CATEGORY}
+                              element={<CategoryManagementPage/>}/>
+                       <Route path={REQUEST_MAPPING.ITEM}
+                              element={<ItemManagementPage/>}/>
+                       <Route path={REQUEST_MAPPING.ROLE}
+                              element={<RoleManagementPage/>}/>
+                       <Route path={REQUEST_MAPPING.BADGE}
+                              element={<BadgeManagementPage/>}/>
+                       <Route path={REQUEST_MAPPING.HIGHLIGHT}
+                              element={<HighlightManagementPage/>}/>
+                   </Route>
+               </Routes>
+           </div>
+       </div>
    )
 }
