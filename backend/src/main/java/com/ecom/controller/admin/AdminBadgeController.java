@@ -32,9 +32,9 @@ public class AdminBadgeController {
     })
     @PostMapping(AppRoutes.REQUEST_PATH.UPDATE_BADGE)
     public ResponseEntity<?> updateBadge(@RequestParam("badgeId") String badgeId,
-                                         @RequestParam("icon") MultipartFile icon,
-                                         @RequestParam("iconMinioGetUrl") String iconMinioGetUrl,
-                                         @RequestParam("iconMinioPutUrl") String iconMinioPutUrl,
+                                         @RequestParam(value = "icon", required = false) MultipartFile icon,
+                                         @RequestParam(value = "iconMinioGetUrl", required = false) String iconMinioGetUrl,
+                                         @RequestParam(value = "iconMinioPutUrl", required = false) String iconMinioPutUrl,
                                          @RequestParam("description") String description
 
      ) throws Exception {
@@ -54,8 +54,8 @@ public class AdminBadgeController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.CREATE_BADGE)
-    public ResponseEntity<?> createBadge(@RequestParam("icon")MultipartFile icon,
-                                        @RequestParam("description") String description
+    public ResponseEntity<?> createBadge(@RequestParam(value = "icon", required = false)MultipartFile icon,
+                                         @RequestParam("description") String description
     ) throws Exception {
         CreateBadgeRequest createBadgeRequest = CreateBadgeRequest.builder()
                                                                 .icon(icon)

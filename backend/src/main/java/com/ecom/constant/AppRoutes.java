@@ -8,7 +8,7 @@ public final class AppRoutes {
 
     public static final class REQUEST_MAPPING {
         public static final String AUTH = "/auth";
-        public static final String ROLE = "role";
+        public static final String ROLE = "/role";
         public static final String ITEM = "/item";
         public static final String CATEGORY = "/category";
         public static final String USER = "/user";

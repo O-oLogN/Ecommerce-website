@@ -29,7 +29,6 @@ public class AdminHighlightController {
     })
     @PostMapping(AppRoutes.REQUEST_PATH.UPDATE_HIGHLIGHT)
     public ResponseEntity<?> updateHighlight(@Valid @RequestBody UpdateHighlightRequest updateHighlightRequest) throws Exception {
-        log.error("REQUEST: {}", updateHighlightRequest.getContent());
         return highlightService.updateHighlight(updateHighlightRequest);
     }
 

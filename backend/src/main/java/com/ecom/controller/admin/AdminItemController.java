@@ -38,14 +38,14 @@ public class AdminItemController {
                                         @RequestParam("itemId") String itemId,
                                         @RequestParam("categoryId") String categoryId,
                                         @RequestParam("name") String name,
-                                        @RequestParam("price") Float price,
+                                        @RequestParam(value = "price", required = false) Float price,
                                         @RequestParam("quantity") Integer quantity,
-                                        @RequestParam("image") MultipartFile image,
-                                        @RequestParam("imageMinioGetUrl") String imageMinioGetUrl,
-                                        @RequestParam("imageMinioPutUrl") String imageMinioPutUrl,
+                                        @RequestParam(value = "image", required = false) MultipartFile image,
+                                        @RequestParam(value = "imageMinioGetUrl", required = false) String imageMinioGetUrl,
+                                        @RequestParam(value = "imageMinioPutUrl", required = false) String imageMinioPutUrl,
                                         @RequestParam("highlightIds") List<String> highlightIds,
                                         @RequestParam("badgeIds") List<String> badgeIds,
-                                        @RequestParam("rate") Float rate,
+                                        @RequestParam(value = "rate", required = false) Float rate,
                                         @RequestParam("numberOfReviews") Integer numberOfReviews
         ) throws Exception {
         return itemService.updateItem(UpdateItemRequest.builder()
@@ -72,12 +72,12 @@ public class AdminItemController {
     @PostMapping(AppRoutes.REQUEST_PATH.CREATE_ITEM)
     public ResponseEntity<?> createItem(@RequestParam("categoryId") String categoryId,
                                         @RequestParam("name") String name,
-                                        @RequestParam("price") Float price,
+                                        @RequestParam(value = "price", required = false) Float price,
                                         @RequestParam("quantity") Integer quantity,
-                                        @RequestParam("image") MultipartFile image,
+                                        @RequestParam(value = "image", required = false) MultipartFile image,
                                         @RequestParam("highlightIds") List<String> highlightIds,
                                         @RequestParam("badgeIds") List<String> badgeIds,
-                                        @RequestParam("rate") Float rate,
+                                        @RequestParam(value = "rate", required = false) Float rate,
                                         @RequestParam("numberOfReviews") Integer numberOfReviews
     ) throws Exception {
         return itemService.createItem(CreateItemRequest.builder()

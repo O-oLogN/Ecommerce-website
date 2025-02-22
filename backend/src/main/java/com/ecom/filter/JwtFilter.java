@@ -34,9 +34,9 @@ public class JwtFilter extends OncePerRequestFilter {
         if (path.equals(AppRoutes.REQUEST_BRANCH.ADMIN + AppRoutes.REQUEST_MAPPING.AUTH + AppRoutes.REQUEST_PATH.SIGN_IN)
             || path.equals(AppRoutes.REQUEST_BRANCH.CLIENT + AppRoutes.REQUEST_MAPPING.AUTH + AppRoutes.REQUEST_PATH.SIGN_IN)
             || path.equals(AppRoutes.REQUEST_BRANCH.CLIENT + AppRoutes.REQUEST_MAPPING.AUTH + AppRoutes.REQUEST_PATH.SIGN_UP)
-//            || path.equals(AppRoutes.REQUEST_MAPPING.USER + AppRoutes.REQUEST_PATH.CREATE_USER)
-//            || path.equals(AppRoutes.REQUEST_MAPPING.USER + AppRoutes.REQUEST_PATH.UPDATE_USER)
-//            || path.equals(AppRoutes.REQUEST_MAPPING.ROLE + AppRoutes.REQUEST_PATH.CREATE_ROLE)
+//            || path.equals(AppRoutes.REQUEST_BRANCH.USER + AppRoutes.REQUEST_PATH.CREATE_USER)
+//            || path.equals(AppRoutes.REQUEST_BRANCH.USER + AppRoutes.REQUEST_PATH.UPDATE_USER)
+//            || path.equals(AppRoutes.REQUEST_BRANCH.ROLE + AppRoutes.REQUEST_PATH.CREATE_ROLE)
             || path.startsWith("/swagger-ui")
             || path.startsWith("/v3/api-docs")){
 
