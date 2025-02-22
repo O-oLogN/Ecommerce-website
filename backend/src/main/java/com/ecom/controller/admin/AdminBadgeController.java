@@ -54,7 +54,7 @@ public class AdminBadgeController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.CREATE_BADGE)
-    public ResponseEntity<?> createBadge(@RequestParam(value = "icon", required = false)MultipartFile icon,
+    public ResponseEntity<?> createBadge(@RequestParam(value = "icon", required = false) MultipartFile icon,
                                          @RequestParam("description") String description
     ) throws Exception {
         CreateBadgeRequest createBadgeRequest = CreateBadgeRequest.builder()

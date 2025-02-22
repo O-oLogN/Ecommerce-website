@@ -70,9 +70,9 @@ public class BadgeServiceImpl implements BadgeService {
         }
 
         Badge newBadge = Badge.builder()
-        .badgeId(UUID.randomUUID().toString())
+                            .badgeId(UUID.randomUUID().toString())
                             .iconMinioGetUrl(iconMinioGetUrl == null ? "" : iconMinioGetUrl)
-                            .iconMinioPutUrl(iconMinioPutUrl == null? "" : iconMinioPutUrl)
+                            .iconMinioPutUrl(iconMinioPutUrl == null ? "" : iconMinioPutUrl)
                             .description(description)
                             .createUser(CoreConstants.ROLE.ADMIN)
                             .createDatetime(LocalDateTime.now())

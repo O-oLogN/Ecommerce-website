@@ -6,9 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/ItemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/ItemServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminBadgeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminBadgeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/BadgeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/BadgeServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/admin/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/admin/src/layout/components/SideMenu/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/layout/components/SideMenu/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/admin/src/pages/ItemManagementPage/components/modal/CreateItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/pages/ItemManagementPage/components/modal/CreateItemForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/admin/src/pages/ItemManagementPage/components/modal/EditItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/pages/ItemManagementPage/components/modal/EditItemForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/admin/src/pages/ItemManagementPage/hooks/ItemManagementContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/pages/ItemManagementPage/hooks/ItemManagementContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/admin/src/pages/RoleManagementPage/components/SearchBar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/pages/RoleManagementPage/components/SearchBar/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/admin/src/pages/RoleManagementPage/components/modal/CreateRoleForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/pages/RoleManagementPage/components/modal/CreateRoleForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/admin/src/services/Badge/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/services/Badge/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/admin/src/services/Item/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/services/Item/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -164,6 +170,9 @@
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Logical" />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="" />
@@ -223,7 +232,7 @@
       <workItem from="1739787946516" duration="91000" />
       <workItem from="1739799399700" duration="108000" />
       <workItem from="1739927561897" duration="21942000" />
-      <workItem from="1740158517712" duration="5050000" />
+      <workItem from="1740158517712" duration="10444000" />
     </task>
     <servers />
   </component>
@@ -249,11 +258,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/admin/service/impl/CategoryServiceImpl.java</url>
           <line>72</line>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ecom/service/impl/ItemServiceImpl.java</url>
-          <line>204</line>
-          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
