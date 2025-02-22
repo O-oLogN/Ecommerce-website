@@ -6,11 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/constant/AppRoutes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/constant/AppRoutes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminBadgeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminBadgeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminHighlightController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminHighlightController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/filter/JwtFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/filter/JwtFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/ItemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/ItemServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/admin/src/pages/ItemManagementPage/components/modal/CreateItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/pages/ItemManagementPage/components/modal/CreateItemForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/admin/src/pages/ItemManagementPage/components/modal/EditItemForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/pages/ItemManagementPage/components/modal/EditItemForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/admin/src/services/Item/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/services/Item/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,7 +223,7 @@
       <workItem from="1739787946516" duration="91000" />
       <workItem from="1739799399700" duration="108000" />
       <workItem from="1739927561897" duration="21942000" />
-      <workItem from="1740158517712" duration="2103000" />
+      <workItem from="1740158517712" duration="5050000" />
     </task>
     <servers />
   </component>
@@ -252,9 +251,9 @@
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/ecom/controller/admin/AdminItemController.java</url>
-          <line>169</line>
-          <option name="timeStamp" value="22" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/ecom/service/impl/ItemServiceImpl.java</url>
+          <line>204</line>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

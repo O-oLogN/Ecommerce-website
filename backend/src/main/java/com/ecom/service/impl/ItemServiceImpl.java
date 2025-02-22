@@ -16,9 +16,7 @@ import com.ecom.model.OrderBy;
 import com.ecom.model.PageInfo;
 import com.ecom.model.PagingResponse;
 import com.ecom.model.QueryRequest;
-import com.ecom.repository.BadgeRepository;
-import com.ecom.repository.HighlightRepository;
-import com.ecom.repository.ItemRepository;
+import com.ecom.repository.*;
 import com.ecom.service.ItemService;
 import com.ecom.service.MinioService;
 import com.ecom.specification.ItemSpecification;
@@ -202,6 +200,11 @@ public class ItemServiceImpl implements ItemService {
             }
         }
 
+        Set<ItemHighlight> newItemHighlights = convertHighlightIdsToSetItemHighlight(item, highlightIds);
+        Set<ItemBadge> newItemBadges = convertBadgeIdsToSetItemBadge(item, badgeIds);
+        item.getItemHighlights().addAll(newItemHighlights);
+        item.getItemBadges().addAll(newItemBadges);
+
         item.setCategoryId(categoryId);
         item.setName(name);
         item.setPrice(price);
@@ -212,10 +215,9 @@ public class ItemServiceImpl implements ItemService {
         item.setNumberOfReviews(numberOfReviews);
         item.setModifyUser(modifyUser);
         item.setModifyDatetime(modifyDatetime);
-        item.getItemHighlights().addAll(convertHighlightIdsToSetItemHighlight(item, highlightIds));
-        item.getItemBadges().addAll(convertBadgeIdsToSetItemBadge(item, badgeIds));
+        item.getItemHighlights().removeIf(itemHighlight -> !newItemHighlights.contains(itemHighlight));
+        item.getItemBadges().removeIf(itemBadge -> !newItemBadges.contains(itemBadge));
         itemRepository.save(item);
-
 
         return ResponseHelper.ok(item, HttpStatus.OK, messageHelper.getMessage("admin.itemController.update.info.success"));
     }
