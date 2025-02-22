@@ -43,9 +43,6 @@ const handleSubmitForm = async (
                 console.log('FORM - Item updated successfully!')
                 messageApi.success('Item updated successfully!')
             }
-            // else {
-            //     console.log('FORM - Item updated failed!')
-            // }
         }
     }
     catch (error) {

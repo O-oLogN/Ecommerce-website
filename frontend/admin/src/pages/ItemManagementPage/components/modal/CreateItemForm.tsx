@@ -240,7 +240,6 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                     rules={[
                         {
                             validator: (_, value) => {
-                                console.log(value)
                                 if (value < 0) {
                                     return Promise.reject(new Error('Price cannot be less than 0'));
                                 }

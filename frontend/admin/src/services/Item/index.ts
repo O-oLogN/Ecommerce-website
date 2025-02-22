@@ -47,6 +47,10 @@ export const useEditItem = () => {
             }
             formData.append('imageMinioGetUrl', params.imageMinioGetUrl ?? '')
             formData.append('imageMinioPutUrl', params.imageMinioPutUrl ?? '')
+            formData.append('numberOfReviews', params.numberOfReviews.toString())
+            formData.append('rate', params.rate ? params.rate.toString() : "")
+            formData.append('highlightIds', params.highlightIds.toString())
+            formData.append('badgeIds', params.badgeIds.toString())
             return getAxiosInstance().post<IBaseResponse<IEditItemResponse>>(
                 REQUEST_MAPPING.ITEM + REQUEST_PATH.UPDATE_ITEM,
                 formData,
@@ -86,6 +90,10 @@ export const useCreateItem= () => {
             if (params.image) {
                 formData.append('image', params.image);
             }
+            formData.append('numberOfReviews', params.numberOfReviews.toString())
+            formData.append('rate', params.rate ? params.rate.toString() : "")
+            formData.append('highlightIds', params.highlightIds.toString())
+            formData.append('badgeIds', params.badgeIds.toString())
             return getAxiosInstance().post<IBaseResponse<ICreateItemResponse>>(
                 REQUEST_MAPPING.ITEM + REQUEST_PATH.CREATE_ITEM,
                 formData,
