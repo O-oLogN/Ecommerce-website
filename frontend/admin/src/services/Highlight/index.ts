@@ -1,4 +1,4 @@
-import {useQuery} from "@tanstack/react-query"
+import {useQuery, useMutation} from "@tanstack/react-query"
 import {HighlightInfo, IPagingResponse, IQueryRequest} from "types"
 import {getAxiosInstance} from "services"
 import {IBaseResponse} from "services/types"
@@ -9,7 +9,6 @@ import {
     IEditHighlightRequest,
     IEditHighlightResponse
 } from "services/types/Highlight"
-import {useMutation} from "react-query"
 
 export const useSearchHighlight = (params: IQueryRequest<string>) => {
     return useQuery({
@@ -44,8 +43,7 @@ export const useCreateHighlight = () => {
         mutationKey: ['create-highlight'],
         mutationFn: async(params: ICreateHighlightRequest) => {
             return await getAxiosInstance().post<IBaseResponse<ICreateHighlightResponse>>(
-                REQUEST_MAPPING.HIGHLIGHT + REQUEST_PATH.CREATE_HIGHLIGHT,
-                params,
+                `${REQUEST_MAPPING.HIGHLIGHT + REQUEST_PATH.CREATE_HIGHLIGHT}?content=${params.content}`
             )
         }
     })

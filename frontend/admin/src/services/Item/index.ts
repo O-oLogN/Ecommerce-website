@@ -88,7 +88,7 @@ export const useCreateItem= () => {
             formData.append('price', params.price ? params.price.toString() : '')
             formData.append('quantity', params.quantity.toString())
             if (params.image) {
-                formData.append('image', params.image);
+                formData.append('image', params.image)
             }
             formData.append('numberOfReviews', params.numberOfReviews.toString())
             formData.append('rate', params.rate ? params.rate.toString() : "")

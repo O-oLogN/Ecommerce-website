@@ -13,6 +13,8 @@ import {RoleManagementPage} from "pages/RoleManagementPage"
 import {REQUEST_MAPPING, REQUEST_PATH} from "constants/Path"
 import {useNavigate} from 'react-router-dom'
 import React, {useEffect} from "react"
+import {BadgeManagementPage} from 'pages/BadgeManagementPage/index.tsx'
+import {HighlightManagementPage} from "pages/HighlightManagementPage"
 
 
 export const App = () => {
@@ -68,6 +70,10 @@ const InternalZone: React.FC<InternalZoneProps> = ({ authenticated }) => {
                           element={<ItemManagementPage/>}/>
                    <Route path={REQUEST_MAPPING.ROLE}
                           element={<RoleManagementPage/>}/>
+                   <Route path={REQUEST_MAPPING.BADGE}
+                          element={<BadgeManagementPage/>}/>
+                   <Route path={REQUEST_MAPPING.HIGHLIGHT}
+                          element={<HighlightManagementPage/>}/>
                </Route>
            </Routes>
        </>

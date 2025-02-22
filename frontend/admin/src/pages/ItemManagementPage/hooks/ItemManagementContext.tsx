@@ -35,6 +35,10 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
         imageMinioGetUrl: '',
         imageMinioPutUrl: '',
         quantity: 0,
+        numberOfReviews: 0,
+        rate: null,
+        highlightIds: [],
+        badgeIds: [],
     },
     deleteRequest: {
         itemId: '',
@@ -45,6 +49,10 @@ const ItemManagementContext = React.createContext<ItemManagementContextProps>({
         price: 0,
         image: null,
         quantity: 0,
+        numberOfReviews: 0,
+        rate: null,
+        highlightIds: [],
+        badgeIds: [],
     },
     setItemList: () => {},
     setSearchRequest: () => {},
@@ -87,6 +95,10 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         imageMinioGetUrl: '',
         imageMinioPutUrl: '',
         quantity: 0,
+        numberOfReviews: 0,
+        rate: null,
+        highlightIds: [],
+        badgeIds: [],
     })
     const [deleteRequest, setDeleteRequest] = useState<IDeleteItemRequest>
     ({
@@ -99,6 +111,10 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         price: 0,
         image: null,
         quantity: 0,
+        numberOfReviews: 0,
+        rate: null,
+        highlightIds: [],
+        badgeIds: [],
     })
     const [searchRequest, setSearchRequest] = useState<IQueryRequest<ISearchItemRequest>>
     ({
@@ -107,13 +123,13 @@ export const ItemManagementContextProvider = ({children}: {children: React.React
         },
         pageInfo: {
             pageNumber: 0,
-            pageSize: 10
+            pageSize: 100
         },
         ordersBy: {
 
         }
     })
-    /* Search */
+                                            /* Search */
     const searchResponse = useSearchItem(searchRequest)
     const reFetchItemList = searchResponse.refetch
 

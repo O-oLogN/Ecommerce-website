@@ -1,22 +1,22 @@
 import {Modal, Form, Input, message} from 'antd'
 import React from 'react'
-import {useCreateRole} from 'services'
+import {useCreateHighlight} from 'services'
 import {HttpStatusCode} from 'axios'
-import {ICreateRoleRequest} from 'services/types'
+import {ICreateHighlightRequest} from 'services/types'
 
-interface CreateRoleFormProps {
+interface CreateHighlightFormProps {
     isOpenForm: boolean
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>
-    createHelper: ReturnType<typeof useCreateRole>
-    reFetchRoleList: () => void
+    createHelper: ReturnType<typeof useCreateHighlight>
+    reFetchHighlightList: () => void
     messageApi: typeof message
 }
 
 const handleSubmitForm = async (
-    createHelper: ReturnType<typeof useCreateRole>,
+    createHelper: ReturnType<typeof useCreateHighlight>,
     setIsOpenForm: React.Dispatch<React.SetStateAction<boolean>>,
-    createRequest: ICreateRoleRequest,
-    reFetchRoleList: () => void,
+    createRequest: ICreateHighlightRequest,
+    reFetchHighlightList: () => void,
     messageApi: typeof message,
 ) => {
     try {
@@ -27,13 +27,13 @@ const handleSubmitForm = async (
             console.log('createResponse.data is undefined')
         } else {
             if (createResponse.data.status === HttpStatusCode.Ok || createResponse.data.status === HttpStatusCode.Created) {
-                console.log('FORM - Role created successfully!')
-                messageApi.success('Role created successfully!')
+                console.log('FORM - Highlight created successfully!')
+                messageApi.success('Highlight created successfully!')
             }
         }
     }
     catch (error) {
-        console.log('ERROR - Role created failed!')
+        console.log('ERROR - Highlight created failed!')
         const errObj = error as any
         messageApi.error(errObj.status + ' - '
             + errObj.code + ' - '
@@ -42,17 +42,17 @@ const handleSubmitForm = async (
     }
     finally {
         setIsOpenForm(false)
-        reFetchRoleList()
+        reFetchHighlightList()
     }
 }
 
-export const CreateRoleForm: React.FC<CreateRoleFormProps> = ({
-                                                              isOpenForm,
-                                                              setIsOpenForm,
-                                                              createHelper,
-                                                              reFetchRoleList,
-                                                              messageApi,
-                                                          }) => {
+export const CreateHighlightForm: React.FC<CreateHighlightFormProps> = ({
+                                                                  isOpenForm,
+                                                                  setIsOpenForm,
+                                                                  createHelper,
+                                                                  reFetchHighlightList,
+                                                                  messageApi,
+                                                              }) => {
     const [form] = Form.useForm()
 
     const handleCancel = () => {
@@ -61,27 +61,27 @@ export const CreateRoleForm: React.FC<CreateRoleFormProps> = ({
     }
 
     return (
-        <Modal title="Create role form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
+        <Modal title="Create highlight form" open={isOpenForm} onOk={form.submit} onCancel={handleCancel}>
             <Form form={form}
                   onFinish={async() => {
-                      const formVal = await form.validateFields() as ICreateRoleRequest
-                      const roleName = formVal.roleName
+                      const formVal = await form.validateFields() as ICreateHighlightRequest
+                      const content = formVal.content
 
                       await handleSubmitForm(
                           createHelper,
                           setIsOpenForm,
                           {
-                              roleName,
+                              content,
                           },
-                          reFetchRoleList,
+                          reFetchHighlightList,
                           messageApi,
                       )
                   }}
             >
                 <Form.Item
-                    name="roleName"
-                    label="Role name"
-                    rules={[{required: true, message: 'Role name is required'}]}
+                    name="content"
+                    label="Content"
+                    rules={[{required: true, message: 'Highlight content is required'}]}
                 >
                     <Input />
                 </Form.Item>

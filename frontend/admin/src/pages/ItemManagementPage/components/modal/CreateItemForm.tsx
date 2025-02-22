@@ -258,7 +258,7 @@ export const CreateItemForm: React.FC<CreateItemFormProps> = ({
                 >
                     <Dragger
                         name="file"
-                        accept="image/png"
+                        accept="image/png, image/jpeg"
                         fileList={imagesUploaded as any}
                         onChange={(info: any) => {
                             const {status} = info.file

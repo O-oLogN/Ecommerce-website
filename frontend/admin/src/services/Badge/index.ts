@@ -1,4 +1,4 @@
-import {useQuery} from "@tanstack/react-query"
+import {useQuery, useMutation} from "@tanstack/react-query"
 import {BadgeInfo, IPagingResponse, IQueryRequest} from "types"
 import {getAxiosInstance} from "services"
 import {IBaseResponse} from "services/types"
@@ -10,7 +10,6 @@ import {
     IEditBadgeRequest,
     IEditBadgeResponse
 } from "services/types/Badge"
-import {useMutation} from "react-query"
 
 export const useSearchBadge = (params: IQueryRequest<string>) => {
     return useQuery({
@@ -62,7 +61,7 @@ export const useCreateBadge = () => {
                 formData.append('icon', params.icon)
             }
             formData.append('description', params.description)
-            return getAxiosInstance().post<IBaseResponse<ICreateBadgeResponse>>(
+            return await getAxiosInstance().post<IBaseResponse<ICreateBadgeResponse>>(
                 REQUEST_MAPPING.BADGE + REQUEST_PATH.CREATE_BADGE,
                 formData,
                 {
@@ -75,7 +74,7 @@ export const useCreateBadge = () => {
     })
 }
 
-const useDeleteBadge = () => {
+export const useDeleteBadge = () => {
     return useMutation({
         mutationKey: ['delete-badge'],
         mutationFn: async(params: string) => {
