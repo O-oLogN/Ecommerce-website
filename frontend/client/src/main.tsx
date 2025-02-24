@@ -12,10 +12,11 @@ import HomePage from 'pages/HomePage/HomePage.tsx'
 import {HomePageContextProvider} from "pages/HomePage/hooks/HomePageContext.tsx"
 import ProductDetailsPage from "pages/ProductDetailsPage/ProductDetailsPage.tsx"
 import CartPage from "pages/CartPage/CartPage.tsx"
-import { CartContextProvider } from 'pages/CartPage/hooks/CartContext'
+import {CartContextProvider} from 'pages/CartPage/hooks/CartContext'
 import CheckoutPage from "pages/CheckoutPage/CheckoutPage.tsx"
 import cod from "assets/cod.png"
 import card from "assets/card.png"
+import {CheckoutContextProvider} from 'pages/CheckoutPage/hooks/CheckoutContext'
 
 const queryClient = new QueryClient()
 
@@ -36,32 +37,34 @@ const App = () => {
                         </Routes>
                     </HomePageContextProvider>
                     <CartContextProvider>
-                        <Routes>
-                            <Route path={REQUEST_MAPPING.CART} element={ <CartPage/> } />
-                            <Route path={REQUEST_MAPPING.CHECKOUT} element={ <CheckoutPage
-                                deliveryUnits={[
-                                    {
-                                        name: 'SPX',
-                                        price: 12.9,
-                                    },
-                                    {
-                                        name: 'GHTK',
-                                        price: 9.7,
-                                    }
-                                ]}
-                                paymentMethods={[
-                                    {
-                                        name: 'COD',
-                                        imageUrl: cod,
-                                    },
-                                    {
-                                        name: 'Card',
-                                        imageUrl: card,
-                                    }
-                                ]}
+                        <CheckoutContextProvider>
+                            <Routes>
+                                <Route path={REQUEST_MAPPING.CART} element={ <CartPage/> } />
+                                <Route path={REQUEST_MAPPING.CHECKOUT} element={ <CheckoutPage
+                                    deliveryUnits={[
+                                        {
+                                            name: 'SPX',
+                                            price: 12.9,
+                                        },
+                                        {
+                                            name: 'GHTK',
+                                            price: 9.7,
+                                        }
+                                    ]}
+                                    paymentMethods={[
+                                        {
+                                            name: 'COD',
+                                            imageUrl: cod,
+                                        },
+                                        {
+                                            name: 'Card',
+                                            imageUrl: card,
+                                        }
+                                    ]}
 
-                            /> } />
-                        </Routes>
+                                /> } />
+                            </Routes>
+                        </CheckoutContextProvider>
                     </CartContextProvider>
                 </NavbarContextProvider>
                 <Footer />

@@ -5,6 +5,7 @@ export const REQUEST_MAPPING = {
     HOMEPAGE: '/user/homepage',
     CART: '/user/cart',
     CHECKOUT: '/user/checkout',
+    PAY: '/user/pay',
 }
 
 export const REQUEST_PATH = {
@@ -15,4 +16,7 @@ export const REQUEST_PATH = {
     ITEM_DETAILS: '/details',
 
     SEARCH_CATEGORY_BY_ID: '/search-by-id',
+
+    GET_IP_ADDRESS: '/get-ip',
+    INIT_PAY_REQUEST: '/init-pay-request',
 }

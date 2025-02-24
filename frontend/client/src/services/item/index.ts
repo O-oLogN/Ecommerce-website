@@ -1,4 +1,4 @@
-import {axiosInstance} from "services"
+import {getAxiosInstance} from "services"
 import {
     ISearchItemCategoryRequest,
     ISearchItemCategoryResponse,
@@ -17,7 +17,7 @@ export const useSearchItem = (params: IQueryRequest<ISearchItemRequest>) => {
     return useQuery({
         queryKey: ['search', params],
         queryFn: async() => {
-            const response = await axiosInstance.post<IBaseResponse<IPagingResponse<ISearchItemResponse>>>(
+            const response = await getAxiosInstance().post<IBaseResponse<IPagingResponse<ISearchItemResponse>>>(
                 REQUEST_MAPPING.ITEM + REQUEST_PATH.SEARCH_ITEM,
                 params,
             )
@@ -33,7 +33,7 @@ export const useSearchCategoryById = () => {
     return useMutation({
         mutationKey: ['search-category-by-id'],
         mutationFn: async(params: ISearchItemCategoryRequest) => {
-            const response = await axiosInstance.post<IBaseResponse<ISearchItemCategoryResponse>>(
+            const response = await getAxiosInstance().post<IBaseResponse<ISearchItemCategoryResponse>>(
                 `${REQUEST_MAPPING.CATEGORY}${REQUEST_PATH.SEARCH_CATEGORY_BY_ID}?categoryId=${params.categoryId}`,
             )
             return response.data

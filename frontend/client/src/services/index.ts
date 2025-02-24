@@ -1,10 +1,10 @@
 import axios from "axios"
 
-export const axiosInstance = axios.create({
+export const getAxiosInstance = () => axios.create({
     baseURL: 'http://localhost:8081',
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${atob(localStorage.getItem('jwt')!)}`,
+        'Authorization': 'Bearer ' + atob(localStorage.getItem('jwt') ?? ''),
     },
 })
 

@@ -4,18 +4,27 @@ import RightCheckoutPanel from "pages/CheckoutPage/components/RightCheckoutPanel
 import {CheckoutPageProps, ShippingAddressFormProps} from "./types"
 import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx"
 import {useCartContext} from "pages/CartPage/hooks/CartContext.tsx"
+import {useCheckoutContext} from "pages/CheckoutPage/hooks/CheckoutContext.tsx"
 
 const CheckoutPage: React.FC<CheckoutPageProps> = (
     {
         deliveryUnits,
         paymentMethods,
     }) => {
+
     const {
         itemsInCart: products,
     } = useNavbarContext()
+
     const {
         subtotal,
     } = useCartContext()
+
+    const {
+        initPayRequestHelper,
+        ipAddress,
+    } = useCheckoutContext()
+
     const [shippingAddressForm, setShippingAddressForm] = useState<ShippingAddressFormProps>({
         firstName: '',
         lastName: '',
@@ -45,6 +54,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = (
                 subtotal={ subtotal }
                 shippingFee={ deliveryUnits.find(deliveryUnit => deliveryUnit.name === selectedDeliveryUnit)?.price ?? 0 }
                 taxes={0}
+                initPayRequestHelper={initPayRequestHelper}
+                ipAddress={ipAddress}
             />
         </div>
     )

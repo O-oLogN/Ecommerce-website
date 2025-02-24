@@ -1,4 +1,8 @@
-import {UserInfo, ItemInfo, CategoryInfo} from "types"
+import {
+    UserInfo,
+    ItemInfo,
+    CategoryInfo
+} from "types"
 
                                         /* REQUEST */
 /* Auth */
@@ -22,6 +26,13 @@ export interface ISearchItemCategoryRequest {
     categoryId: string
 }
 
+/* Pay */
+export interface IInitPayRequestRequest {
+    vnpLocale: string
+    vnpOrderInfo: string
+    vnpAmount: number
+    vnpIpAddr: string
+}
 
                                         /* RESPONSE */
 /* Auth */

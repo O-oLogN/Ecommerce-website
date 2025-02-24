@@ -1,5 +1,11 @@
 import React from "react"
 import {ItemInCart} from "types/ItemInCart"
+import {useInitPayRequest} from "services/pay"
+
+export interface CheckoutContextProps {
+    initPayRequestHelper: ReturnType<typeof useInitPayRequest>
+    ipAddress: string
+}
 
 export interface InputFieldProps {
     name: string
@@ -55,6 +61,8 @@ export interface InYourCartProps {
     shippingFee: number
     taxes: number
     products: ItemInCart[]
+    initPayRequestHelper: ReturnType<typeof useInitPayRequest>
+    ipAddress: string
 }
 
 export interface ProductListSummaryProps {
@@ -80,6 +88,8 @@ export interface RightCheckoutPanelProps {
     shippingFee: number
     taxes: number
     products: ItemInCart[]
+    initPayRequestHelper: ReturnType<typeof useInitPayRequest>
+    ipAddress: string
 }
 
 export interface CheckoutPageProps {

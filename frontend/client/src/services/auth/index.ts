@@ -1,4 +1,4 @@
-import {axiosInstance, IBaseResponse} from 'services'
+import {getAxiosInstance, IBaseResponse} from 'services'
 import {ILoginRequest, ISignUpRequest, ISignUpResponse} from "services/types"
 import {REQUEST_MAPPING, REQUEST_PATH} from "routes"
 import {useMutation} from "@tanstack/react-query"
@@ -7,7 +7,7 @@ export const useLogin= () => {
         return useMutation(
             {
                 mutationFn: async (params: ILoginRequest) => {
-                    const response = await axiosInstance.post<IBaseResponse<string>>(
+                    const response = await getAxiosInstance().post<IBaseResponse<string>>(
                         REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN,
                         params
                     )
@@ -25,7 +25,7 @@ export const useSignUp = () => {
                 password: params.password,
                 email: params.email,
             })
-            const response = await axiosInstance.post<ISignUpResponse>(
+            const response = await getAxiosInstance().post<ISignUpResponse>(
                 `${REQUEST_MAPPING.AUTH}${REQUEST_PATH.SIGN_UP}?${queryParams}`
             )
             return response.data
