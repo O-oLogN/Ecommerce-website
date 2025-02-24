@@ -15,6 +15,7 @@ public final class AppRoutes {
         public static final String ORDER = "/order";
         public static final String HIGHLIGHT = "/highlight";
         public static final String BADGE = "/badge";
+        public static final String PAY = "/pay";
     }
 
     public static final class REQUEST_PATH {
@@ -60,5 +61,8 @@ public final class AppRoutes {
         public static final String DELETE_BADGE = "/delete";
         public static final String CREATE_BADGE = "/create";
         public static final String SEARCH_BADGE = "/search";    
+
+        public static final String INIT_PAY_REQUEST = "/init-pay-request";
+        public static final String GET_IP = "/get-ip";
     }
 }
