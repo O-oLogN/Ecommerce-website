@@ -12,6 +12,7 @@ public interface OrderService {
     ResponseEntity<?> searchChildOrders(String totalOrderId) throws Exception;
     ResponseEntity<?> createTotalOrder(CreateTotalOrderRequest createTotalOrderRequest, String role);
     ResponseEntity<?> deleteChildOrder(DeleteChildOrderRequest deleteChildOrderRequest, String role) throws Exception;
+    ResponseEntity<?> findUserIdByUsername(String username) throws Exception;
     ResponseEntity<?> deleteTotalOrder(String totalOrderId) throws Exception;
     ResponseEntity<?> updateOrderPaymentStatus(UpdateTotalOrderPaymentStatusRequest updateTotalOrderPaymentStatusRequest, String role) throws Exception;
     ResponseEntity<?> updateTotalOrderStatus(UpdateTotalOrderStatusRequest updateTotalOrderStatusRequest) throws Exception;

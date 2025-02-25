@@ -14,6 +14,7 @@ import com.ecom.model.QueryRequest;
 import com.ecom.repository.ItemRepository;
 import com.ecom.repository.OrderRepository;
 import com.ecom.repository.TotalOrderRepository;
+import com.ecom.repository.UserRepository;
 import com.ecom.service.OrderService;
 import com.ecom.specification.TotalOrderSpecification;
 import com.ecom.utils.SortUtils;
@@ -42,6 +43,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final TotalOrderRepository totalOrderRepository;
+    private final UserRepository userRepository;
     private final ItemRepository itemRepository;
 
     private final MessageHelper messageHelper;
@@ -175,6 +177,18 @@ public class OrderServiceImpl implements OrderService {
 
         return ResponseHelper.ok(
             childOrders, HttpStatus.OK, messageHelper.getMessage("admin.orderController.delete.child.info.success")
+        );
+    }
+
+    @Override
+    public ResponseEntity<?> findUserIdByUsername(String username) throws Exception {
+        if (ValidationUtils.isNullOrEmpty(username)) {
+            throw new ValidationException(
+                messageHelper.getMessage("admin.orderController.create.totalOrder.error.validation.username")
+            );
+        }
+        return ResponseHelper.ok(
+            userRepository.findUserByUsername(username).getUserId(), HttpStatus.OK, ""
         );
     }
 

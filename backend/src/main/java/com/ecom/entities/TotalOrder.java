@@ -31,7 +31,7 @@ public class TotalOrder {
     @Column(name = "payment_status", nullable = false)
     private Integer paymentStatus;
     @Transient
-    @JsonProperty("paymentStatus")
+    @JsonProperty("payment_status")
     public String getPaymentStatusInText() {
         return this.paymentStatus.equals(CoreConstants.PAYMENT_STATUS.PAID) ? "PAID" : "UNPAID";
     }
@@ -77,7 +77,7 @@ public class TotalOrder {
     @Column(name = "status", nullable = false)
     private Integer status;
     @Transient
-    @JsonProperty("status")
+    @JsonProperty("order_status")
     public String getStatusInText() {
         return (this.status.equals(CoreConstants.TOTAL_ORDER_STATUS.ACTIVE) ? "ACTIVE" : "INACTIVE" );
     }

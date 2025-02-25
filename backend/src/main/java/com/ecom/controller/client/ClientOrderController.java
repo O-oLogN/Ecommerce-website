@@ -50,6 +50,16 @@ public class ClientOrderController {
         }
     }
 
+    @Operation(summary = "Find user ID by username")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Fail")
+    })
+    @PostMapping(AppRoutes.REQUEST_PATH.SEARCH_USER_ID_BY_USERNAME)
+    public ResponseEntity<?> findUserIdByUsername(@Valid @RequestParam String username) throws Exception {
+        return orderService.findUserIdByUsername(username);
+    }
+
     @Operation(summary = "Create total order")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success"),
