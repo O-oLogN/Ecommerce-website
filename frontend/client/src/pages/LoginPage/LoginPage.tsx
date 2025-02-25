@@ -18,7 +18,6 @@ const LoginPage = () => {
     const {
         handleLogin,
         authenticated,
-        setUsername,
     } = useLoginContext() as LoginContextProps
     const handleSubmitLoginForm = (event: any) => {
         event.preventDefault()
@@ -44,8 +43,6 @@ const LoginPage = () => {
         else {
             setIsPasswordError({ isError: false, alertMsg: '' })
         }
-
-        setUsername(username)
 
         handleLogin({
             username, password

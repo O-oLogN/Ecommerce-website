@@ -15,17 +15,18 @@ export const CheckoutContext = createContext<CheckoutContextProps>({
         isLoading: false,
         isSuccess: false
     } as unknown as ReturnType<typeof useCreateTotalOrder>,
+    setSearchUserIdByUsernameRequest: () => {},
     ipAddress: '',
     userId: '',
 })
 
 export const CheckoutContextProvider = ({ children }: { children: any }) => {
     const [ipAddress, setIpAddress] = useState<string>('')
-    const [searchUserIdByUsernameRequest, setSearchUserIdByUsernameRequest] = useState<string>('')
+    const [searchUserIdByUsernameRequest, setSearchUserIdByUsernameRequest] = useState<string>(localStorage.getItem('username') ?? '')
     const [userId, setUserId] = useState<string>('')
 
     const initPayRequestHelper = useInitPayRequest()
-    const searchUserIdByUsernameResponse = useSearchUserIdByUsername(searchUserIdByUsernameRequest)
+    const searchUserIdByUsernameResponse = useSearchUserIdByUsername(searchUserIdByUsernameRequest ?? '')
     const getIpAddressResponse = useGetIpAddress()
     const createTotalOrderHelper = useCreateTotalOrder()
 
@@ -36,14 +37,10 @@ export const CheckoutContextProvider = ({ children }: { children: any }) => {
     }, [getIpAddressResponse])
 
     useEffect(() => {
-        const getUserId = async() => {
-            const response = await searchUserIdByUsernameResponse
-            if (response && (response.status === HttpStatusCode.Ok || response.status === HttpStatusCode.Accepted)) {
-                setUserId(response.data ?? '')
-            }
+        const response = searchUserIdByUsernameResponse
+        if (response && response.data && (response.data.status === HttpStatusCode.Ok || response.data.status === HttpStatusCode.Accepted)) {
+            setUserId(response.data.data ?? '')
         }
-
-        getUserId().then(() => {})
     }, [searchUserIdByUsernameResponse])
 
     const value = {

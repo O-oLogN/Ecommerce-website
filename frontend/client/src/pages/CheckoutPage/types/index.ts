@@ -1,12 +1,13 @@
 import React from "react"
 import {ItemInCart} from "types/ItemInCart"
 import {useInitPayRequest} from "services/pay"
-import { useCreateTotalOrder } from "services/order"
+import {useCreateTotalOrder} from "services/order"
 
 export interface CheckoutContextProps {
     initPayRequestHelper: ReturnType<typeof useInitPayRequest>
     ipAddress: string
     userId: string
+    setSearchUserIdByUsernameRequest: React.Dispatch<React.SetStateAction<string>>
     createTotalOrderHelper: ReturnType<typeof useCreateTotalOrder>
 }
 

@@ -3,7 +3,6 @@ import LeftCheckoutPanel from "pages/CheckoutPage/components/LeftCheckoutPanel/L
 import RightCheckoutPanel from "pages/CheckoutPage/components/RightCheckoutPanel/RightCheckoutPanel.tsx"
 import {CheckoutPageProps, ShippingAddressFormProps} from "./types"
 import {useCartContext} from "pages/CartPage/hooks/CartContext.tsx"
-import {useCheckoutContext} from "pages/CheckoutPage/hooks/CheckoutContext.tsx"
 import {getItemsFromLocalStorage} from "utils/LocalStorageUtils"
 
 const CheckoutPage: React.FC<CheckoutPageProps> = (
@@ -15,12 +14,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = (
     const {
         subtotal,
     } = useCartContext()
-
-    const {
-        initPayRequestHelper,
-        createTotalOrderHelper,
-        ipAddress,
-    } = useCheckoutContext()
 
     const [shippingAddressForm, setShippingAddressForm] = useState<ShippingAddressFormProps>({
         firstName: '',
@@ -51,9 +44,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = (
                 subtotal={ subtotal }
                 shippingFee={ deliveryUnits.find(deliveryUnit => deliveryUnit.name === selectedDeliveryUnit)?.price ?? 0 }
                 taxes={0}
-                initPayRequestHelper={ initPayRequestHelper }
-                createTotalOrderHelper={ createTotalOrderHelper }
-                ipAddress={ ipAddress }
             />
         </div>
     )

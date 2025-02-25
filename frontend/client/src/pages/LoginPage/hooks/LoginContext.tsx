@@ -12,7 +12,7 @@ const LoginContext = createContext<LoginContextProps>({
 
 export const LoginContextProvider = ({children}: {children: ReactNode }) => {
     const [authenticated, setAuthenticated] = useState<boolean | undefined>(undefined)
-    const [username, setUsername] = useState<string | null>('')
+    const [username, setUsername] = useState<string>('')
     const loginMutation = useLogin()
     const handleLogin = async (loginRequest: ILoginRequest) => {
         if (!loginRequest) {
@@ -24,7 +24,7 @@ export const LoginContextProvider = ({children}: {children: ReactNode }) => {
             onSuccess: (loginResponse) => {
                 localStorage.setItem('jwt', btoa(loginResponse.data))
                 console.log('Sign in successfully')
-                localStorage.setItem('username', username!)
+                localStorage.setItem('username', loginRequest.username)
                 setAuthenticated(true)
             },
             onError: () => {

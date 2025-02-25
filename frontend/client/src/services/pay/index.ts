@@ -12,7 +12,9 @@ export const useGetIpAddress = () => {
                 REQUEST_MAPPING.PAY + REQUEST_PATH.GET_IP_ADDRESS
             )
             return response.data
-        }
+        },
+        refetchOnWindowFocus: false,
+        refetchInterval: false,
     })
 }
 

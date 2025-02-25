@@ -1,14 +1,22 @@
-import {useMutation} from "@tanstack/react-query"
+import {useMutation, useQuery} from "@tanstack/react-query"
 import {ICreateTotalOrderRequest, ICreateTotalOrderResponse} from "services/types"
 import { IBaseResponse } from "types"
 import {getAxiosInstance} from "services"
 import {REQUEST_MAPPING, REQUEST_PATH} from "routes"
 
-export const useSearchUserIdByUsername = async(username: string) => {
-    const response = await getAxiosInstance().post<IBaseResponse<string>>(
-        `${REQUEST_MAPPING.ORDER + REQUEST_PATH.SEARCH_USER_ID_BY_USERNAME}?username=${username}`,
-    )
-    return response.data
+export const useSearchUserIdByUsername = (username: string) => {
+    return useQuery({
+        queryKey: ['search-user-id-by-username', username],
+        queryFn: async() => {
+            const response = await getAxiosInstance().post<IBaseResponse<string>>(
+                `${REQUEST_MAPPING.ORDER + REQUEST_PATH.SEARCH_USER_ID_BY_USERNAME}?username=${username}`,
+            )
+            return response.data
+        },
+        enabled: !!username,
+        refetchInterval: false,
+        refetchOnWindowFocus: false,
+    })
 }
 
 export const useCreateTotalOrder = () => {

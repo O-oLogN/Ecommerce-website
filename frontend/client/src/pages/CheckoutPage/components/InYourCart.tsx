@@ -6,6 +6,7 @@ import {HttpStatusCode} from "axios"
 import {useCheckoutContext} from "../hooks/CheckoutContext"
 import {getItemsFromLocalStorage} from "utils/LocalStorageUtils"
 import {ItemInCart} from "types/ItemInCart"
+import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx"
 
 const InYourCart: React.FC<InYourCartProps> = (
     {
@@ -17,6 +18,7 @@ const InYourCart: React.FC<InYourCartProps> = (
     const {
         initPayRequestHelper,
         createTotalOrderHelper,
+        setSearchUserIdByUsernameRequest,
         ipAddress,
         userId,
     } = useCheckoutContext()
@@ -78,7 +80,3 @@ const InYourCart: React.FC<InYourCartProps> = (
 }
 
 export default InYourCart
-
-function useNavbarContext(): { setOrderNumber: any } {
-    throw new Error("Function not implemented.")
-}
