@@ -1,10 +1,13 @@
 import React from "react"
 import {ItemInCart} from "types/ItemInCart"
 import {useInitPayRequest} from "services/pay"
+import { useCreateTotalOrder } from "services/order"
 
 export interface CheckoutContextProps {
     initPayRequestHelper: ReturnType<typeof useInitPayRequest>
     ipAddress: string
+    userId: string
+    createTotalOrderHelper: ReturnType<typeof useCreateTotalOrder>
 }
 
 export interface InputFieldProps {
@@ -61,8 +64,6 @@ export interface InYourCartProps {
     shippingFee: number
     taxes: number
     products: ItemInCart[]
-    initPayRequestHelper: ReturnType<typeof useInitPayRequest>
-    ipAddress: string
 }
 
 export interface ProductListSummaryProps {
@@ -88,8 +89,6 @@ export interface RightCheckoutPanelProps {
     shippingFee: number
     taxes: number
     products: ItemInCart[]
-    initPayRequestHelper: ReturnType<typeof useInitPayRequest>
-    ipAddress: string
 }
 
 export interface CheckoutPageProps {

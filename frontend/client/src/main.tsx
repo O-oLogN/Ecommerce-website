@@ -17,6 +17,9 @@ import CheckoutPage from "pages/CheckoutPage/CheckoutPage.tsx"
 import cod from "assets/cod.png"
 import card from "assets/card.png"
 import {CheckoutContextProvider} from 'pages/CheckoutPage/hooks/CheckoutContext'
+import PaymentSuccess from "pages/PostPaymentPage/components/PaymentSuccess.tsx"
+import PaymentFailure from "pages/PostPaymentPage/components/PaymentFailure.tsx"
+import {PostPaymentContextProvider} from "pages/PostPaymentPage/hooks/PostPaymentContext.tsx"
 
 const queryClient = new QueryClient()
 
@@ -66,6 +69,12 @@ const App = () => {
                             </Routes>
                         </CheckoutContextProvider>
                     </CartContextProvider>
+                    <PostPaymentContextProvider>
+                        <Routes>
+                             <Route path={REQUEST_MAPPING.PAY + REQUEST_PATH.PAY_SUCCESS} element={<PaymentSuccess/>} />
+                             <Route path={REQUEST_MAPPING.PAY + REQUEST_PATH.PAY_FAILURE} element={<PaymentFailure/>} />
+                        </Routes>
+                    </PostPaymentContextProvider>
                 </NavbarContextProvider>
                 <Footer />
             </Router>

@@ -1,6 +1,7 @@
 import React, {useEffect} from "react"
 import bin from "assets/bin.png"
 import {ProductsOfCartProps} from "pages/CartPage/types"
+import {saveItemsToLocalStorage} from "utils/LocalStorageUtils"
 
 const ProductsOfCart: React.FC<ProductsOfCartProps> = (
     {
@@ -17,11 +18,13 @@ const ProductsOfCart: React.FC<ProductsOfCartProps> = (
     const onQuantityInputChange = (index: number, value: number) => {
         const newItemsInCart = [...itemsInCart]
         newItemsInCart.splice(index, 1, {...itemsInCart[index], purchaseQuantity: value})
+        saveItemsToLocalStorage(newItemsInCart)
         setItemsInCart(newItemsInCart)
     }
     const onDeleteButtonClick = (index: number) => {
         const newItemsInCart = [...itemsInCart]
         newItemsInCart.splice(index, 1)
+        saveItemsToLocalStorage(newItemsInCart)
         setItemsInCart(newItemsInCart)
     }
 

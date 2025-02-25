@@ -2,24 +2,23 @@ import ProductsOfCart from "pages/CartPage/components/ProductsOfCart.tsx"
 import {CartPageProps} from "pages/CartPage/types"
 import React from "react"
 import Summary from "./components/Summary"
-import {useCartContext} from "pages/CartPage/hooks/CartContext.tsx";
-import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx";
+import {useCartContext} from "pages/CartPage/hooks/CartContext.tsx"
+import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx"
+import {getItemsFromLocalStorage} from "utils/LocalStorageUtils"
 
 const CartPage: React.FC<CartPageProps> = () => {
     const {
-        itemsInCart,
         setItemsInCart,
     } = useNavbarContext()
     const {
         subtotal,
         setSubtotal,
-
     } = useCartContext()
 
     return (
         <div className="flex">
             <ProductsOfCart
-                itemsInCart={ itemsInCart }
+                itemsInCart={ getItemsFromLocalStorage() }
                 setItemsInCart={ setItemsInCart }
                 setSubtotal={ setSubtotal }
             />

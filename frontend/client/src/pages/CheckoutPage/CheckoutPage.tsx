@@ -2,9 +2,9 @@ import React, {useState} from "react"
 import LeftCheckoutPanel from "pages/CheckoutPage/components/LeftCheckoutPanel/LeftCheckoutPanel.tsx"
 import RightCheckoutPanel from "pages/CheckoutPage/components/RightCheckoutPanel/RightCheckoutPanel.tsx"
 import {CheckoutPageProps, ShippingAddressFormProps} from "./types"
-import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx"
 import {useCartContext} from "pages/CartPage/hooks/CartContext.tsx"
 import {useCheckoutContext} from "pages/CheckoutPage/hooks/CheckoutContext.tsx"
+import {getItemsFromLocalStorage} from "utils/LocalStorageUtils"
 
 const CheckoutPage: React.FC<CheckoutPageProps> = (
     {
@@ -13,15 +13,12 @@ const CheckoutPage: React.FC<CheckoutPageProps> = (
     }) => {
 
     const {
-        itemsInCart: products,
-    } = useNavbarContext()
-
-    const {
         subtotal,
     } = useCartContext()
 
     const {
         initPayRequestHelper,
+        createTotalOrderHelper,
         ipAddress,
     } = useCheckoutContext()
 
@@ -50,12 +47,13 @@ const CheckoutPage: React.FC<CheckoutPageProps> = (
                 setSelectedPaymentMethod={ setSelectedPaymentMethod }
             />
             <RightCheckoutPanel
-                products={ products }
+                products={ getItemsFromLocalStorage() }
                 subtotal={ subtotal }
                 shippingFee={ deliveryUnits.find(deliveryUnit => deliveryUnit.name === selectedDeliveryUnit)?.price ?? 0 }
                 taxes={0}
-                initPayRequestHelper={initPayRequestHelper}
-                ipAddress={ipAddress}
+                initPayRequestHelper={ initPayRequestHelper }
+                createTotalOrderHelper={ createTotalOrderHelper }
+                ipAddress={ ipAddress }
             />
         </div>
     )

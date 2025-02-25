@@ -1,8 +1,11 @@
 import Summary from "pages/CartPage/components/Summary.tsx"
-import { InYourCartProps } from "../types"
+import {InYourCartProps} from "../types"
 import React from "react"
 import ProductListSummary from "pages/CheckoutPage/components/ProductListSummary.tsx"
-import { HttpStatusCode } from "axios"
+import {HttpStatusCode} from "axios"
+import {useCheckoutContext} from "../hooks/CheckoutContext"
+import {getItemsFromLocalStorage} from "utils/LocalStorageUtils"
+import {ItemInCart} from "types/ItemInCart"
 
 const InYourCart: React.FC<InYourCartProps> = (
     {
@@ -10,9 +13,18 @@ const InYourCart: React.FC<InYourCartProps> = (
         shippingFee,
         taxes,
         products,
-        initPayRequestHelper,
-        ipAddress,
     }) => {
+    const {
+        initPayRequestHelper,
+        createTotalOrderHelper,
+        ipAddress,
+        userId,
+    } = useCheckoutContext()
+
+    const {
+        setOrderNumber,
+    } = useNavbarContext()
+
     const onClickGoToOrderButton = async() => {
         const now = new Date()
         const date = (now.getDate() < 10 ? '0' + now.getDate() : now.getDate()).toString()
@@ -31,7 +43,20 @@ const InYourCart: React.FC<InYourCartProps> = (
             return ''
         })
 
-        window.location.replace(vnpayPaymentGatewayUrl ?? '#')
+        if (userId && vnpayPaymentGatewayUrl) {
+            const products = getItemsFromLocalStorage() as ItemInCart[]
+            const response = await createTotalOrderHelper.mutateAsync({
+                userId: userId,
+                createChildOrderRequests: products.map(product => ({
+                    itemId: product.itemId,
+                    quantity: product.purchaseQuantity,
+                }))
+            })
+            if (response && (response.status === HttpStatusCode.Ok || response.status === HttpStatusCode.Accepted)) {
+                setOrderNumber(response.data!.totalOrder.orderNumber)
+                window.location.replace(vnpayPaymentGatewayUrl)
+            }
+        }
     }
 
     return (
@@ -53,3 +78,7 @@ const InYourCart: React.FC<InYourCartProps> = (
 }
 
 export default InYourCart
+
+function useNavbarContext(): { setOrderNumber: any } {
+    throw new Error("Function not implemented.")
+}

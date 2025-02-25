@@ -10,8 +10,6 @@ const RightCheckoutPanel: React.FC<RightCheckoutPanelProps> = (
         shippingFee,
         taxes,
         products,
-        initPayRequestHelper,
-        ipAddress,
     }) => {
     return (
         <div>
@@ -20,8 +18,6 @@ const RightCheckoutPanel: React.FC<RightCheckoutPanelProps> = (
                 shippingFee={ shippingFee }
                 taxes={ taxes }
                 products={ products }
-                initPayRequestHelper={ initPayRequestHelper }
-                ipAddress={ ipAddress }
             />
         </div>
     )

@@ -3,6 +3,7 @@ import {
     ItemInfo,
     CategoryInfo
 } from "types"
+import {OrderInfo, TotalOrderInfo} from "types/OrderInfo"
 
                                         /* REQUEST */
 /* Auth */
@@ -34,6 +35,17 @@ export interface IInitPayRequestRequest {
     vnpIpAddr: string
 }
 
+/* Order */
+interface ICreateChildOrderRequest {
+    itemId: string
+    quantity: number
+}
+
+export interface ICreateTotalOrderRequest {
+    userId: string
+    createChildOrderRequests: ICreateChildOrderRequest[]
+}
+
                                         /* RESPONSE */
 /* Auth */
 export interface ISignUpResponse extends UserInfo {}
@@ -42,3 +54,10 @@ export interface ISignUpResponse extends UserInfo {}
 export interface ISearchItemResponse extends ItemInfo {}
 
 export interface ISearchItemCategoryResponse extends CategoryInfo {}
+
+/* Order */
+export interface ICreateTotalOrderResponse {
+    totalOrder: TotalOrderInfo
+    numberOfChildOrders: number
+    childOrders: OrderInfo[]
+}

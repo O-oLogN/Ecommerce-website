@@ -7,11 +7,12 @@ import {useLogin} from "services"
 const LoginContext = createContext<LoginContextProps>({
     handleLogin: async () => {},
     authenticated: undefined,
+    setUsername: () => {},
 })
 
 export const LoginContextProvider = ({children}: {children: ReactNode }) => {
     const [authenticated, setAuthenticated] = useState<boolean | undefined>(undefined)
-
+    const [username, setUsername] = useState<string | null>('')
     const loginMutation = useLogin()
     const handleLogin = async (loginRequest: ILoginRequest) => {
         if (!loginRequest) {
@@ -23,6 +24,7 @@ export const LoginContextProvider = ({children}: {children: ReactNode }) => {
             onSuccess: (loginResponse) => {
                 localStorage.setItem('jwt', btoa(loginResponse.data))
                 console.log('Sign in successfully')
+                localStorage.setItem('username', username!)
                 setAuthenticated(true)
             },
             onError: () => {
@@ -36,6 +38,7 @@ export const LoginContextProvider = ({children}: {children: ReactNode }) => {
         <LoginContext.Provider value={{
             handleLogin,
             authenticated,
+            setUsername,
         }}>
             {children}
         </LoginContext.Provider>

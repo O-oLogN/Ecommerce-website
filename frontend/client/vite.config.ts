@@ -4,7 +4,7 @@ import * as path from 'path'
 
 const aliasPaths = ['assets', 'components', 'config', 'constants',
     'hooks', 'layout', 'pages', 'routes', 'services', 'tools',
-    'types']
+    'types', 'utils']
 
 export default defineConfig({
     plugins: [react()],
