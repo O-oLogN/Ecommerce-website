@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="" />
+    <list default="true" id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/entities/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/entities/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/CheckoutPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/components/InYourCart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/components/InYourCart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/hooks/CheckoutContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/hooks/CheckoutContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/types/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/types/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/hooks/LoginContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/hooks/LoginContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/types/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/types/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/services/order/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/services/order/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/services/pay/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/services/pay/index.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -224,6 +236,7 @@
       <workItem from="1740158517712" duration="17486000" />
       <workItem from="1740362502203" duration="23663000" />
       <workItem from="1740420939472" duration="2989000" />
+      <workItem from="1740498555961" duration="3918000" />
     </task>
     <servers />
   </component>
@@ -252,6 +265,11 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="SpringBootApplicationConfigurationType">
+        <watch expression="@Override&#10;    public ResponseEntity&lt;?&gt; createTotalOrder(CreateTotalOrderRequest createTotalOrderRequest, String role) {&#10;        String userId = createTotalOrderRequest.getUserId();&#10;        List&lt;CreateChildOrderRequest&gt; createChildOrderRequests = createTotalOrderRequest.getCreateChildOrderRequests();&#10;&#10;        TotalOrder newTotalOrder = TotalOrder.builder()&#10;                .totalOrderId(UUID.randomUUID().toString())&#10;                .userId(userId)&#10;                .status(CoreConstants.TOTAL_ORDER_STATUS.ACTIVE)&#10;                .paymentStatus(CoreConstants.PAYMENT_STATUS.UNPAID)&#10;                .orderNumber(++orderNumber)&#10;                .createUser(role)&#10;                .createDatetime(LocalDateTime.now())&#10;                .build();&#10;&#10;        Set&lt;Order&gt; childOrders = new HashSet&lt;&gt;();&#10;        AtomicReference&lt;Float&gt; totalPrice = new AtomicReference&lt;&gt;(0f);&#10;        createChildOrderRequests.forEach(request -&gt; {&#10;            Order order = Order.builder()&#10;                    .orderId(UUID.randomUUID().toString())&#10;                    .userId(userId)&#10;                    .itemId(request.getItemId())&#10;                    .parentId(newTotalOrder.getTotalOrderId())&#10;                    .quantity(request.getQuantity())&#10;                    .createUser(role)&#10;                    .createDatetime(LocalDateTime.now())&#10;                    .build();&#10;&#10;            childOrders.add(order);&#10;            totalPrice.updateAndGet(v -&gt; v + itemRepository.findItemByItemId(order.getItemId()).getPrice() * request.getQuantity());&#10;        });&#10;&#10;        newTotalOrder.setOrders(childOrders);&#10;        newTotalOrder.setPrice(totalPrice.get());&#10;        totalOrderRepository.save(newTotalOrder);&#10;&#10;        return ResponseHelper.ok(&#10;            CreateTotalOrderResponse.builder()&#10;                    .totalOrder(newTotalOrder)&#10;                    .numberOfChildOrders(childOrders.size())&#10;                    .childOrders(childOrders)&#10;                    .build(),&#10;            HttpStatus.OK, messageHelper.getMessage(&quot;admin.orderController.create.totalOrder.info.success&quot;)&#10;        );&#10;    }" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

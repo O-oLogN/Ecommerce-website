@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "order")
+@Table(name = "`order`")  // Add backticks around the table name since 'order' is a keyword in SQL
 public class Order {
     @Id
     @Size(max = 50)
