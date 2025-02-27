@@ -43,6 +43,7 @@ interface ICreateChildOrderRequest {
 
 export interface ICreateTotalOrderRequest {
     userId: string
+    orderCode: string
     createChildOrderRequests: ICreateChildOrderRequest[]
 }
 

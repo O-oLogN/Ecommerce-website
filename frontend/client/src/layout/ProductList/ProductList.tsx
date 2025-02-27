@@ -17,7 +17,6 @@ const ProductList: React.FC<ProductListProps> = (props) => {
             tmpProductsMappedByCategories[categoriesArrIndex].push(products[productsArrIndex])
             if ((productsArrIndex < products.length - 1 && products[productsArrIndex].categoryId !== products[productsArrIndex + 1].categoryId)
                 || productsArrIndex === products.length - 1) {
-                console.log(productsArrIndex, productsMappedByCategories[categoriesArrIndex])
                 ++categoriesArrIndex
             }
             ++productsArrIndex

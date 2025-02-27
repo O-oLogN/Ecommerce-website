@@ -20,9 +20,20 @@ export const REQUEST_PATH = {
 
     SEARCH_USER_ID_BY_USERNAME: '/search-user-id-by-username',
     CREATE_TOTAL_ORDER: '/create-total-order',
+    GET_LATEST_ORDER_CODE: '/get-latest-order-code',
 
     GET_IP_ADDRESS: '/get-ip',
     INIT_PAY_REQUEST: '/init-pay-request',
-    PAY_SUCCESS: '/pay-success',
-    PAY_FAILURE: '/pay-fail',
+    PAY_RESULT: '/pay-result',
 }
+
+export const REQUEST_URLS = [
+    '/user/auth/sign_in',
+    '/user/auth/sign_up',
+    '/user/item/search',
+    '/user/item/details',
+    '/user/homepage',
+    '/user/checkout',
+    '/user/cart',
+    '/user/pay/pay-result',
+]

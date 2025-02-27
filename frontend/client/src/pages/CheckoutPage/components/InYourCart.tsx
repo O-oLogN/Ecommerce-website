@@ -1,12 +1,14 @@
 import Summary from "pages/CartPage/components/Summary.tsx"
 import {InYourCartProps} from "../types"
-import React from "react"
+import React, {useEffect} from "react"
 import ProductListSummary from "pages/CheckoutPage/components/ProductListSummary.tsx"
 import {HttpStatusCode} from "axios"
 import {useCheckoutContext} from "../hooks/CheckoutContext"
 import {getItemsFromLocalStorage} from "utils/LocalStorageUtils"
 import {ItemInCart} from "types/ItemInCart"
 import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx"
+import {useCartContext} from "pages/CartPage/hooks/CartContext.tsx"
+import {getRandomString} from "utils/RandomUtils"
 
 const InYourCart: React.FC<InYourCartProps> = (
     {
@@ -18,14 +20,17 @@ const InYourCart: React.FC<InYourCartProps> = (
     const {
         initPayRequestHelper,
         createTotalOrderHelper,
-        setSearchUserIdByUsernameRequest,
         ipAddress,
         userId,
     } = useCheckoutContext()
 
     const {
-        setOrderNumber,
+        setOrderCode,
     } = useNavbarContext()
+
+    const {
+        setSubtotal,
+    } = useCartContext()
 
     const onClickGoToOrderButton = async() => {
         const now = new Date()
@@ -47,19 +52,33 @@ const InYourCart: React.FC<InYourCartProps> = (
 
         if (userId && vnpayPaymentGatewayUrl) {
             const products = getItemsFromLocalStorage() as ItemInCart[]
+            const randomOrderCode = getRandomString()
             const response = await createTotalOrderHelper.mutateAsync({
                 userId: userId,
+                orderCode: randomOrderCode,
                 createChildOrderRequests: products.map(product => ({
                     itemId: product.itemId,
                     quantity: product.purchaseQuantity,
                 }))
             })
-            if (response && (response.status === HttpStatusCode.Ok || response.status === HttpStatusCode.Accepted)) {
-                setOrderNumber(response.data!.totalOrder.orderNumber)
+            if (response && response.status === HttpStatusCode.Ok || response.status === HttpStatusCode.Accepted) {
+                setOrderCode(randomOrderCode)
                 window.location.replace(vnpayPaymentGatewayUrl)
+                // window.location.replace("https://good-musical-joey.ngrok-free.app/user/pay/pay-result")
+                // window.location.replace("/user/pay/pay-result")
             }
         }
     }
+    const calcSubtotal = () => {
+        let subtotal = 0
+        const productsInCart = getItemsFromLocalStorage() as ItemInCart[]
+        productsInCart.forEach((product, index) => subtotal += (product.price ?? 0) * productsInCart[index].purchaseQuantity)
+        return subtotal
+    }
+
+    useEffect(() => {
+        setSubtotal(calcSubtotal())
+    }, [getItemsFromLocalStorage()])
 
     return (
         <div>

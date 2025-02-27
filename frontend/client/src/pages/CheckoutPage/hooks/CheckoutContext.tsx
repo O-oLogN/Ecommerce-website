@@ -22,7 +22,8 @@ export const CheckoutContext = createContext<CheckoutContextProps>({
 
 export const CheckoutContextProvider = ({ children }: { children: any }) => {
     const [ipAddress, setIpAddress] = useState<string>('')
-    const [searchUserIdByUsernameRequest, setSearchUserIdByUsernameRequest] = useState<string>(localStorage.getItem('username') ?? '')
+    const [searchUserIdByUsernameRequest, setSearchUserIdByUsernameRequest] = useState<string>(localStorage.getItem('username') ?? '' +
+        '')
     const [userId, setUserId] = useState<string>('')
 
     const initPayRequestHelper = useInitPayRequest()

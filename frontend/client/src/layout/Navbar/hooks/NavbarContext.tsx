@@ -5,21 +5,21 @@ import {ItemInCart} from "types/ItemInCart"
 
 const navbarContext = createContext<NavbarContextProps>({
 	itemsInCart: [],
-	orderNumber: 0,
+	orderCode: '',
 	setItemsInCart: () => {},
-	setOrderNumber: () => {},
+	setOrderCode: () => {},
 })
 
 export const NavbarContextProvider = ({ children }: { children: any }) => {
 	const [itemsInCart, setItemsInCart] = useState<ItemInCart[]>([])
-	const [orderNumber, setOrderNumber] = useState<number>(0)
+	const [orderCode, setOrderCode] = useState<string>('')
 
 	return (
-		<navbarContext.Provider value={{ 
+		<navbarContext.Provider value={{
 			itemsInCart,
-			orderNumber,
+			orderCode,
 			setItemsInCart,
-			setOrderNumber,
+			setOrderCode,
 		}}>
             {children}
         </navbarContext.Provider>

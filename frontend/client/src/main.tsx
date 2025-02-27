@@ -3,9 +3,9 @@ import SignUpPageWrapper from 'pages/SignUpPage/SignUpPage.tsx'
 import "./../index.css"
 import {createRoot} from "react-dom/client"
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom'
 import {REQUEST_MAPPING, REQUEST_PATH} from "routes"
-import StickyNavbar from "layout/Navbar/Navbar.tsx"
+import StickyNavbar from "layout/Navbar/StickyNavbar.tsx"
 import Footer from "layout/Footer/Footer.tsx"
 import {NavbarContextProvider} from 'layout/Navbar/hooks/NavbarContext.tsx'
 import HomePage from 'pages/HomePage/HomePage.tsx'
@@ -17,68 +17,92 @@ import CheckoutPage from "pages/CheckoutPage/CheckoutPage.tsx"
 import cod from "assets/cod.png"
 import card from "assets/card.png"
 import {CheckoutContextProvider} from 'pages/CheckoutPage/hooks/CheckoutContext'
-import PaymentSuccess from "pages/PostPaymentPage/components/PaymentSuccess.tsx"
-import PaymentFailure from "pages/PostPaymentPage/components/PaymentFailure.tsx"
-import {PostPaymentContextProvider} from "pages/PostPaymentPage/hooks/PostPaymentContext.tsx"
+import PaymentResultPage from "pages/PaymentResultPage/PaymentResultPage.tsx"
+import React, {useEffect, useState} from "react"
+import NotFoundPage from "pages/404NotFoundPage/404NotFoundPage.tsx"
 
 const queryClient = new QueryClient()
 
 const App = () => {
+    const [authenticated, setAuthenticated] = useState<boolean | undefined>(true)
     return (
-        <>
-            <Router>
-                <Routes>
-                    <Route path={REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN} element={<LoginPageWrapper/>}/>
-                    <Route path={REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_UP} element={<SignUpPageWrapper/>}/>
-                </Routes>
-                <NavbarContextProvider>
-                    <StickyNavbar />
-                    <HomePageContextProvider>
-                        <Routes>
-                            <Route path={REQUEST_MAPPING.HOMEPAGE} element={<HomePage/>} />
-                            <Route path={REQUEST_MAPPING.ITEM + REQUEST_PATH.ITEM_DETAILS} element={<ProductDetailsPage/>} />
-                        </Routes>
-                    </HomePageContextProvider>
-                    <CartContextProvider>
-                        <CheckoutContextProvider>
-                            <Routes>
-                                <Route path={REQUEST_MAPPING.CART} element={ <CartPage/> } />
-                                <Route path={REQUEST_MAPPING.CHECKOUT} element={ <CheckoutPage
-                                    deliveryUnits={[
-                                        {
-                                            name: 'SPX',
-                                            price: 12.9,
-                                        },
-                                        {
-                                            name: 'GHTK',
-                                            price: 9.7,
-                                        }
-                                    ]}
-                                    paymentMethods={[
-                                        {
-                                            name: 'COD',
-                                            imageUrl: cod,
-                                        },
-                                        {
-                                            name: 'Card',
-                                            imageUrl: card,
-                                        }
-                                    ]}
+        <div className="w-full overflow-x-hidden">
+            <div className="min-h-[700px]">
+                <Router>
+                    <Routes>
+                        <Route path={REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN} element={<LoginPageWrapper setAuthenticated={ setAuthenticated }/>}/>
+                        <Route path={REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_UP} element={<SignUpPageWrapper/>}/>
+                    </Routes>
+                    <InternalZone authenticated={ authenticated } />
+                    <Routes>
+                        <Route path="*" element={<NotFoundPage/>} />
+                    </Routes>
+                </Router>
+            </div>
+            <Footer />
+        </div>
+    )
+}
 
-                                /> } />
-                            </Routes>
-                        </CheckoutContextProvider>
-                    </CartContextProvider>
-                    <PostPaymentContextProvider>
-                        <Routes>
-                             <Route path={REQUEST_MAPPING.PAY + REQUEST_PATH.PAY_SUCCESS} element={<PaymentSuccess/>} />
-                             <Route path={REQUEST_MAPPING.PAY + REQUEST_PATH.PAY_FAILURE} element={<PaymentFailure/>} />
-                        </Routes>
-                    </PostPaymentContextProvider>
-                </NavbarContextProvider>
-                <Footer />
-            </Router>
-        </>
+interface InternalZoneProps {
+    authenticated: boolean | undefined
+}
+
+const InternalZone: React.FC<InternalZoneProps> = ({ authenticated }) => {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (authenticated && window.location.pathname === REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN) {
+            navigate(REQUEST_MAPPING.HOMEPAGE)
+        }
+        else if (!authenticated) {
+            navigate(REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN)
+        }
+    }, [authenticated])
+
+    if (!authenticated) return <></>
+
+    return (
+        <NavbarContextProvider>
+            <StickyNavbar />
+            <HomePageContextProvider>
+                <Routes>
+                    <Route path={REQUEST_MAPPING.HOMEPAGE} element={<HomePage/>} />
+                    <Route path={REQUEST_MAPPING.ITEM + REQUEST_PATH.ITEM_DETAILS} element={<ProductDetailsPage/>} />
+                </Routes>
+            </HomePageContextProvider>
+            <CartContextProvider>
+                <CheckoutContextProvider>
+                    <Routes>
+                        <Route path={REQUEST_MAPPING.CART} element={ <CartPage/> } />
+                        <Route path={REQUEST_MAPPING.CHECKOUT} element={ <CheckoutPage
+                            deliveryUnits={[
+                                {
+                                    name: 'SPX',
+                                    price: 12.9,
+                                },
+                                {
+                                    name: 'GHTK',
+                                    price: 9.7,
+                                }
+                            ]}
+                            paymentMethods={[
+                                {
+                                    name: 'COD',
+                                    imageUrl: cod,
+                                },
+                                {
+                                    name: 'Card',
+                                    imageUrl: card,
+                                }
+                            ]}
+
+                        /> } />
+                        <Route path={REQUEST_MAPPING.PAY + REQUEST_PATH.PAY_RESULT} element={<PaymentResultPage/>} />
+                    </Routes>
+                </CheckoutContextProvider>
+            </CartContextProvider>
+        </NavbarContextProvider>
     )
 }
 

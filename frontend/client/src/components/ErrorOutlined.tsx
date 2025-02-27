@@ -1,5 +1,8 @@
-import {ErrorOutlinedProps} from "../pages/LoginPage/components/types"
 import React from "react"
+
+interface ErrorOutlinedProps {
+    styles: string
+}
 
 const ErrorOutlined: React.FC<ErrorOutlinedProps> = ({ styles }) => {
     return (

@@ -2,7 +2,6 @@ import {ItemInCart} from "types/ItemInCart"
 
 export const saveItemsToLocalStorage = (itemsArray: ItemInCart[]) => {
     localStorage.setItem('cartItems', JSON.stringify(itemsArray))
-    console.log(localStorage.getItem('cartItems'))
 }
 
 export const getItemsFromLocalStorage = () => {

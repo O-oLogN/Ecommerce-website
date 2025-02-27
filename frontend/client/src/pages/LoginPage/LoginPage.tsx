@@ -3,22 +3,23 @@ import UsernameInput from "components/UsernameInput.tsx"
 import PasswordInput from "components/PasswordInput.tsx"
 import SubmitButton from "components/SubmitButton.tsx"
 import SignUpTitle from "pages/LoginPage/components/SignUpTitle.tsx"
-import {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {useLoginContext} from "pages/LoginPage/hooks/LoginContext.tsx"
-import {LoginContextProps} from "pages/LoginPage/types"
+import {LoginPageProps, LoginPageWrapperProps} from "pages/LoginPage/types"
 import SuccessAlert from "components/SuccessAlert.tsx"
 import ErrorAlert from "components/ErrorAlert.tsx"
 import {LoginContextProvider} from "pages/LoginPage/hooks/LoginContext.tsx"
 
-const LoginPage = () => {
+const LoginPage: React.FC<LoginPageProps> = ({ setAuthenticated }) => {
     const [isUsernameError, setIsUsernameError] = useState({ isError: false, alertMsg: '' })
     const [isPasswordError, setIsPasswordError] = useState({ isError: false, alertMsg: '' })
     const [formValues, setFormValues] = useState({ username: '', password: '' })
 
     const {
         handleLogin,
-        authenticated,
-    } = useLoginContext() as LoginContextProps
+        loginContextAuthenticated,
+    } = useLoginContext()
+
     const handleSubmitLoginForm = (event: any) => {
         event.preventDefault()
 
@@ -49,13 +50,17 @@ const LoginPage = () => {
         }).then(() => {})
     }
 
+    useEffect(() => {
+        setAuthenticated(loginContextAuthenticated)
+    }, [loginContextAuthenticated])
+
     return (
         <>
-            { authenticated && <SuccessAlert
+            { loginContextAuthenticated && <SuccessAlert
                 message='Login successfully'
                 description='Login successfully!'
             /> }
-            { authenticated === false && <ErrorAlert
+            { loginContextAuthenticated === false && <ErrorAlert
                 message='Login failed'
                 description='Invalid username or password'
             /> }
@@ -84,10 +89,10 @@ const LoginPage = () => {
     )
 }
 
-const LoginPageWrapper = () => {
+const LoginPageWrapper: React.FC<LoginPageWrapperProps> = ({ setAuthenticated }) => {
     return (
         <LoginContextProvider>
-            <LoginPage/>
+            <LoginPage setAuthenticated={ setAuthenticated }/>
         </LoginContextProvider>
     )
 }

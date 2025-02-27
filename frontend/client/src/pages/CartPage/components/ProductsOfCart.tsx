@@ -1,7 +1,8 @@
 import React, {useEffect} from "react"
 import bin from "assets/bin.png"
 import {ProductsOfCartProps} from "pages/CartPage/types"
-import {saveItemsToLocalStorage} from "utils/LocalStorageUtils"
+import {getItemsFromLocalStorage, saveItemsToLocalStorage} from "utils/LocalStorageUtils"
+import {ItemInCart} from "types/ItemInCart"
 
 const ProductsOfCart: React.FC<ProductsOfCartProps> = (
     {
@@ -12,7 +13,8 @@ const ProductsOfCart: React.FC<ProductsOfCartProps> = (
 
     const calcSubtotal = () => {
         let subtotal = 0
-        itemsInCart.forEach((product, index) => subtotal += (product.price ?? 0) * itemsInCart[index].purchaseQuantity)
+        const productsInCart = getItemsFromLocalStorage() as ItemInCart[]
+        productsInCart.forEach((product, index) => subtotal += (product.price ?? 0) * productsInCart[index].purchaseQuantity)
         return subtotal
     }
     const onQuantityInputChange = (index: number, value: number) => {
@@ -30,7 +32,7 @@ const ProductsOfCart: React.FC<ProductsOfCartProps> = (
 
     useEffect(() => {
         setSubtotal(calcSubtotal())
-    }, [itemsInCart])
+    }, [getItemsFromLocalStorage()])
 
     return (
         <div className="text-left mt-[40px] ml-[20px]">

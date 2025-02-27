@@ -32,3 +32,16 @@ export const useCreateTotalOrder = () => {
         }
     })
 }
+
+export const useGetLatestOrderCode = () => {
+    return useQuery({
+        queryKey: ['get-latest-order-code'],
+        queryFn: async() => {
+            const response = await getAxiosInstance().post<IBaseResponse<string>>(
+                REQUEST_MAPPING.ORDER + REQUEST_PATH.GET_LATEST_ORDER_CODE,
+            )
+
+            return response.data
+        }
+    })
+}

@@ -5,6 +5,6 @@ export interface TotalOrderInfo extends IBaseData {
     paymentStatus: string
     userId: string
     price: number
-    orderNumber: number
+    orderCode: number
     orderStatus: string
 }

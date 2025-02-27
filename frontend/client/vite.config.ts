@@ -12,6 +12,9 @@ export default defineConfig({
         watch: {
             usePolling: true,
         },
+        allowedHosts: [
+            'good-musical-joey.ngrok-free.app',
+        ],
     },
     resolve: {
         alias: Object.fromEntries(
@@ -20,5 +23,5 @@ export default defineConfig({
     },
     define: {
         'process.env': {}
-    }
+    },
 });

@@ -4,9 +4,9 @@ import {ItemInCart} from "types/ItemInCart"
 
 export interface NavbarContextProps {
     itemsInCart: ItemInCart[]
-    orderNumber: number
     setItemsInCart: React.Dispatch<React.SetStateAction<ItemInCart[]>>
-    setOrderNumber: React.Dispatch<React.SetStateAction<number>>
+    orderCode: string
+    setOrderCode: React.Dispatch<React.SetStateAction<string>>
 }
 
 export interface ProductListProps {
