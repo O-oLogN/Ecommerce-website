@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class TotalOrderSpecification {
-    public Specification<TotalOrder> getSpecification(String orderNumber) {
+    public Specification<TotalOrder> getSpecification(String orderCode) {
         return (root, _, cb) ->
                 cb.createTupleQuery()
-                        .where(getWhereCondition(cb, root, orderNumber))
+                        .where(getWhereCondition(cb, root, orderCode))
                         .getRestriction();
     }
 

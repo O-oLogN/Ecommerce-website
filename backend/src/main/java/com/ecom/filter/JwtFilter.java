@@ -34,6 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (path.equals(AppRoutes.REQUEST_BRANCH.ADMIN + AppRoutes.REQUEST_MAPPING.AUTH + AppRoutes.REQUEST_PATH.SIGN_IN)
             || path.equals(AppRoutes.REQUEST_BRANCH.CLIENT + AppRoutes.REQUEST_MAPPING.AUTH + AppRoutes.REQUEST_PATH.SIGN_IN)
             || path.equals(AppRoutes.REQUEST_BRANCH.CLIENT + AppRoutes.REQUEST_MAPPING.AUTH + AppRoutes.REQUEST_PATH.SIGN_UP)
+            || path.equals(AppRoutes.REQUEST_BRANCH.CLIENT + AppRoutes.REQUEST_MAPPING.ORDER + AppRoutes.REQUEST_PATH.GET_LATEST_ORDER_CODE)
 //            || path.equals(AppRoutes.REQUEST_BRANCH.USER + AppRoutes.REQUEST_PATH.CREATE_USER)
 //            || path.equals(AppRoutes.REQUEST_BRANCH.USER + AppRoutes.REQUEST_PATH.UPDATE_USER)
 //            || path.equals(AppRoutes.REQUEST_BRANCH.ROLE + AppRoutes.REQUEST_PATH.CREATE_ROLE)

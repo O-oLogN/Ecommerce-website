@@ -6,16 +6,28 @@
   <component name="ChangeListManager">
     <list default="true" id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/entities/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/entities/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/CheckoutPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/config/CorsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/constant/AppRoutes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/constant/AppRoutes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/controller/client/ClientOrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/controller/client/ClientOrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/entities/TotalOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/entities/TotalOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/filter/JwtFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/filter/JwtFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/specification/TotalOrderSpecification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/specification/TotalOrderSpecification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/components/ErrorOutlined.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/components/ErrorOutlined.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/layout/Footer/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/layout/Footer/Footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/layout/Navbar/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/layout/Navbar/StickyNavbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/layout/Navbar/hooks/NavbarContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/layout/Navbar/hooks/NavbarContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CartPage/components/ProductsOfCart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CartPage/components/ProductsOfCart.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/components/InYourCart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/components/InYourCart.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/hooks/CheckoutContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/hooks/CheckoutContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/types/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/types/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/LoginPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/hooks/LoginContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/hooks/LoginContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/types/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/LoginPage/types/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/PostPaymentPage/components/PaymentSuccess.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/PostPaymentPage/components/PaymentSuccess.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/routes/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/routes/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/client/src/services/order/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/services/order/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/services/pay/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/services/pay/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/types/OrderInfo/TotalOrder/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/types/OrderInfo/TotalOrder/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/utils/LocalStorageUtils/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/utils/LocalStorageUtils/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/vite.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -236,7 +248,8 @@
       <workItem from="1740158517712" duration="17486000" />
       <workItem from="1740362502203" duration="23663000" />
       <workItem from="1740420939472" duration="2989000" />
-      <workItem from="1740498555961" duration="3918000" />
+      <workItem from="1740498555961" duration="14453000" />
+      <workItem from="1740557615081" duration="8080000" />
     </task>
     <servers />
   </component>

@@ -52,6 +52,7 @@ public final class AppRoutes {
         public static final String SEARCH_USER_ID_BY_USERNAME = "/search-user-id-by-username";
         public static final String UPDATE_PAYMENT_STATUS_TOTAL_ORDER = "/update-payment-status-total-order";
         public static final String UPDATE_TOTAL_ORDER_STATUS = "/update-total-order-status";
+        public static final String GET_LATEST_ORDER_CODE = "/get-latest-order-code";
 
         public static final String UPDATE_HIGHLIGHT = "/update";
         public static final String DELETE_HIGHLIGHT = "/delete";

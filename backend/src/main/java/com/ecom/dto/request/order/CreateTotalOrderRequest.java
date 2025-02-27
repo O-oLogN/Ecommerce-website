@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateTotalOrderRequest {
     private String userId;
+    private String orderCode;
     private List<CreateChildOrderRequest> createChildOrderRequests;
 }
 

@@ -70,6 +70,16 @@ public class ClientOrderController {
         return orderService.createTotalOrder(createTotalOrderRequest, CoreConstants.ROLE.USER);
     }
 
+    @Operation(summary = "Get the latest order code")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Fail")
+    })
+    @PostMapping(AppRoutes.REQUEST_PATH.GET_LATEST_ORDER_CODE)
+    public ResponseEntity<?> getLatestOrderCode() {
+        return orderService.getLatestOrderCode();
+    }
+
     @Operation(summary = "Delete child order")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success"),

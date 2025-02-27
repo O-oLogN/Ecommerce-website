@@ -46,8 +46,8 @@ public class TotalOrder {
     private Float price;
 
     @NotNull
-    @Column(name = "order_number", nullable = false)
-    private Integer orderNumber;
+    @Column(name = "order_code", nullable = false)
+    private String orderCode;
 
     @Size(max = 100)
     @NotNull

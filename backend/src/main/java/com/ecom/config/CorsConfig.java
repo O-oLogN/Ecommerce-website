@@ -14,7 +14,8 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(@NotNull CorsRegistry registry) {
                 registry.addMapping("/**") // Allow all endpoints
-                        .allowedOrigins("http://localhost:5173, http://localhost:5174, http://localhost:8081") // Allow frontend's origin or all origins
+                        .allowedOrigins("https://good-musical-joey.ngrok-free.app", "http://localhost:5174", "http://localhost:8081", "http://localhost:5173") // Allow frontend's origin or all origins
+//                        .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Specify allowed HTTP methods
                         .allowedHeaders("*") // Allow all headers
                         .allowCredentials(true); // Allow cookies/auth headers

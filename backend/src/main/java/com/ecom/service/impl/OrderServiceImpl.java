@@ -30,10 +30,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
@@ -49,8 +46,6 @@ public class OrderServiceImpl implements OrderService {
     private final MessageHelper messageHelper;
 
     private final TotalOrderSpecification totalOrderSpecification;
-
-    private static Integer orderNumber = 0;
 
     @Override
     public ResponseEntity<?> searchTotalOrder(QueryRequest<String> searchTotalOrderRequest) {
@@ -100,6 +95,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseEntity<?> createTotalOrder(CreateTotalOrderRequest createTotalOrderRequest, String role) {
         String userId = createTotalOrderRequest.getUserId();
+        String orderCode = createTotalOrderRequest.getOrderCode();
         List<CreateChildOrderRequest> createChildOrderRequests = createTotalOrderRequest.getCreateChildOrderRequests();
 
         TotalOrder newTotalOrder = TotalOrder.builder()
@@ -107,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
                 .userId(userId)
                 .status(CoreConstants.TOTAL_ORDER_STATUS.ACTIVE)
                 .paymentStatus(CoreConstants.PAYMENT_STATUS.UNPAID)
-                .orderNumber(++orderNumber)
+                .orderCode(orderCode)
                 .createUser(role)
                 .createDatetime(LocalDateTime.now())
                 .build();
@@ -190,6 +186,15 @@ public class OrderServiceImpl implements OrderService {
         return ResponseHelper.ok(
             userRepository.findUserByUsername(username).getUserId(), HttpStatus.OK, ""
         );
+    }
+
+    @Override
+    public ResponseEntity<?> getLatestOrderCode() {
+        List<TotalOrder> totalOrders = totalOrderRepository.findAll(
+            SortUtils.buildSort(
+                Collections.singletonList(OrderBy.builder().property("createDatetime").direction("desc").build()))
+        );
+        return ResponseHelper.ok(totalOrders.getFirst().getOrderCode(), HttpStatus.OK, "");
     }
 
     @Override
