@@ -66,5 +66,6 @@ public final class AppRoutes {
 
         public static final String INIT_PAY_REQUEST = "/init-pay-request";
         public static final String GET_IP = "/get-ip";
+        public static final String GET_VNPAY_TRANSACTION = "/get-vnpay-transaction";
     }
 }

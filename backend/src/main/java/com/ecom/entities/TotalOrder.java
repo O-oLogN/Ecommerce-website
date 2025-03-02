@@ -49,6 +49,10 @@ public class TotalOrder {
     @Column(name = "order_code", nullable = false)
     private String orderCode;
 
+    @NotNull
+    @Column(name = "vnp_txn_ref", nullable = false)
+    private String vnpTxnRef;
+
     @Size(max = 100)
     @NotNull
     @Column(name = "create_user", nullable = false, length = 100)

@@ -12,6 +12,7 @@ import java.util.List;
 public class CreateTotalOrderRequest {
     private String userId;
     private String orderCode;
+    private String vnpTxnRef;
     private List<CreateChildOrderRequest> createChildOrderRequests;
 }
 

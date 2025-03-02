@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class InitPayRequest {
     private String vnpLocale;
+    private String vnpTxnRef;
     private String vnpOrderInfo;
     private Long vnpAmount;
     private String vnpIpAddr;

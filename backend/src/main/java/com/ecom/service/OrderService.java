@@ -17,4 +17,5 @@ public interface OrderService {
     ResponseEntity<?> deleteTotalOrder(String totalOrderId) throws Exception;
     ResponseEntity<?> updateOrderPaymentStatus(UpdateTotalOrderPaymentStatusRequest updateTotalOrderPaymentStatusRequest, String role) throws Exception;
     ResponseEntity<?> updateTotalOrderStatus(UpdateTotalOrderStatusRequest updateTotalOrderStatusRequest) throws Exception;
+    void updateItemsWhenPaymentSuccessful(String totalOrderId);
 }

@@ -3,18 +3,13 @@ package com.ecom.service.impl;
 import com.ecom.constant.CoreConstants;
 import com.ecom.dto.request.order.*;
 import com.ecom.dto.response.order.CreateTotalOrderResponse;
+import com.ecom.entities.Item;
 import com.ecom.entities.Order;
 import com.ecom.entities.TotalOrder;
 import com.ecom.helper.MessageHelper;
 import com.ecom.helper.ResponseHelper;
-import com.ecom.model.OrderBy;
-import com.ecom.model.PageInfo;
-import com.ecom.model.PagingResponse;
-import com.ecom.model.QueryRequest;
-import com.ecom.repository.ItemRepository;
-import com.ecom.repository.OrderRepository;
-import com.ecom.repository.TotalOrderRepository;
-import com.ecom.repository.UserRepository;
+import com.ecom.model.*;
+import com.ecom.repository.*;
 import com.ecom.service.OrderService;
 import com.ecom.specification.TotalOrderSpecification;
 import com.ecom.utils.SortUtils;
@@ -96,6 +91,7 @@ public class OrderServiceImpl implements OrderService {
     public ResponseEntity<?> createTotalOrder(CreateTotalOrderRequest createTotalOrderRequest, String role) {
         String userId = createTotalOrderRequest.getUserId();
         String orderCode = createTotalOrderRequest.getOrderCode();
+        String vnpTxnRef = createTotalOrderRequest.getVnpTxnRef();
         List<CreateChildOrderRequest> createChildOrderRequests = createTotalOrderRequest.getCreateChildOrderRequests();
 
         TotalOrder newTotalOrder = TotalOrder.builder()
@@ -104,6 +100,7 @@ public class OrderServiceImpl implements OrderService {
                 .status(CoreConstants.TOTAL_ORDER_STATUS.ACTIVE)
                 .paymentStatus(CoreConstants.PAYMENT_STATUS.UNPAID)
                 .orderCode(orderCode)
+                .vnpTxnRef(vnpTxnRef)
                 .createUser(role)
                 .createDatetime(LocalDateTime.now())
                 .build();
@@ -261,5 +258,17 @@ public class OrderServiceImpl implements OrderService {
             : ResponseHelper.ok(
                 totalOrder, HttpStatus.OK,  messageHelper.getMessage("admin.orderController.update.totalOrder.status.deactivate.info.success")
             );
+    }
+
+    @Override
+    public void updateItemsWhenPaymentSuccessful(String totalOrderId) {
+        List<Order> childOrders = orderRepository.findOrdersByParentId(totalOrderId);
+        childOrders.forEach(order -> {
+            Item item = itemRepository.findItemByItemId(order.getItemId());
+            item.setQuantity(item.getQuantity() - order.getQuantity());
+            item.setModifyUser(CoreConstants.ROLE.ADMIN);
+            item.setModifyDatetime(LocalDateTime.now());
+            itemRepository.save(item);
+        });
     }
 }
