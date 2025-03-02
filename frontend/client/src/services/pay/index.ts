@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import {getAxiosInstance} from "services"
 import {IBaseResponse} from "types";
 import {REQUEST_MAPPING, REQUEST_PATH} from "routes"
-import {IInitPayRequestRequest} from "services/types"
+import {IInitPayRequestRequest, ISearchVnpayTransactionResponse} from "services/types"
 
 export const useGetIpAddress = () => {
     return useQuery({
@@ -25,6 +25,18 @@ export const useInitPayRequest = () => {
             const response = await getAxiosInstance().post<IBaseResponse<string>>(
                 REQUEST_MAPPING.PAY + REQUEST_PATH.INIT_PAY_REQUEST,
                 params
+            )
+            return response.data
+        }
+    })
+}
+
+export const useGetVnpayTransaction = () => {
+    return useMutation({
+        mutationKey: ['get-vnp-transaction'],
+        mutationFn: async(vnp_TransactionNo: string) => {
+            const response  = await getAxiosInstance().post<IBaseResponse<ISearchVnpayTransactionResponse>>(
+                `${REQUEST_MAPPING.PAY + REQUEST_PATH.GET_VNPAY_TRANSACTION}?vnp_TransactionNo=${vnp_TransactionNo}`,
             )
             return response.data
         }

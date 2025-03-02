@@ -1,7 +1,7 @@
 import {
     UserInfo,
     ItemInfo,
-    CategoryInfo
+    CategoryInfo, VnpayTransactionInfo
 } from "types"
 import {OrderInfo, TotalOrderInfo} from "types/OrderInfo"
 
@@ -30,6 +30,7 @@ export interface ISearchItemCategoryRequest {
 /* Pay */
 export interface IInitPayRequestRequest {
     vnpLocale: string
+    vnpTxnRef: string
     vnpOrderInfo: string
     vnpAmount: number
     vnpIpAddr: string
@@ -44,6 +45,7 @@ interface ICreateChildOrderRequest {
 export interface ICreateTotalOrderRequest {
     userId: string
     orderCode: string
+    vnpTxnRef: string
     createChildOrderRequests: ICreateChildOrderRequest[]
 }
 
@@ -62,3 +64,6 @@ export interface ICreateTotalOrderResponse {
     numberOfChildOrders: number
     childOrders: OrderInfo[]
 }
+
+/* VnpayTransaction */
+export interface ISearchVnpayTransactionResponse extends VnpayTransactionInfo {}

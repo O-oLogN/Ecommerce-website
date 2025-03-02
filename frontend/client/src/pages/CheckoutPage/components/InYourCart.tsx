@@ -8,7 +8,7 @@ import {getItemsFromLocalStorage} from "utils/LocalStorageUtils"
 import {ItemInCart} from "types/ItemInCart"
 import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx"
 import {useCartContext} from "pages/CartPage/hooks/CartContext.tsx"
-import {getRandomString} from "utils/RandomUtils"
+import {getRandomString, getRandomVnpTxnRef} from "utils/RandomUtils"
 
 const InYourCart: React.FC<InYourCartProps> = (
     {
@@ -33,16 +33,16 @@ const InYourCart: React.FC<InYourCartProps> = (
     } = useCartContext()
 
     const onClickGoToOrderButton = async() => {
-        const now = new Date()
-        const date = (now.getDate() < 10 ? '0' + now.getDate() : now.getDate()).toString()
-        const month = (now.getMonth() < 9 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1)).toString()
-        const year = now.getFullYear().toString()
+
+        const vnpTxnRef = getRandomVnpTxnRef()
+        const randomOrderCode = getRandomString()
         const vnpayPaymentGatewayUrl = await initPayRequestHelper.mutateAsync({
             vnpLocale: 'vn',
+            vnpTxnRef: vnpTxnRef,
             vnpIpAddr: ipAddress,
             // vnpAmount: (subtotal + shippingFee + taxes) * 100,
-            vnpAmount: 100000,
-            vnpOrderInfo: 'Order created - ' + date + "/" + month + "/" + year,
+            vnpAmount: 10000,
+            vnpOrderInfo: "OrderCode " + randomOrderCode,
         }).then(res => {
             if (res.status === HttpStatusCode.Ok || res.status === HttpStatusCode.Accepted) {
                 return res.data
@@ -52,10 +52,10 @@ const InYourCart: React.FC<InYourCartProps> = (
 
         if (userId && vnpayPaymentGatewayUrl) {
             const products = getItemsFromLocalStorage() as ItemInCart[]
-            const randomOrderCode = getRandomString()
             const response = await createTotalOrderHelper.mutateAsync({
                 userId: userId,
                 orderCode: randomOrderCode,
+                vnpTxnRef: vnpTxnRef,
                 createChildOrderRequests: products.map(product => ({
                     itemId: product.itemId,
                     quantity: product.purchaseQuantity,
@@ -64,7 +64,7 @@ const InYourCart: React.FC<InYourCartProps> = (
             if (response && response.status === HttpStatusCode.Ok || response.status === HttpStatusCode.Accepted) {
                 setOrderCode(randomOrderCode)
                 window.location.replace(vnpayPaymentGatewayUrl)
-                // window.location.replace("https://good-musical-joey.ngrok-free.app/user/pay/pay-result")
+                // window.location.replace("https://jleoxhe6d1tg.share.zrok.io/user/pay/pay-result")
                 // window.location.replace("/user/pay/pay-result")
             }
         }

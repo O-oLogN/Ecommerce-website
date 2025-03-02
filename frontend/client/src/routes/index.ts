@@ -25,9 +25,10 @@ export const REQUEST_PATH = {
     GET_IP_ADDRESS: '/get-ip',
     INIT_PAY_REQUEST: '/init-pay-request',
     PAY_RESULT: '/pay-result',
+    GET_VNPAY_TRANSACTION: '/get-vnpay-transaction',
 }
 
-export const REQUEST_URLS = [
+export const PAGES = [
     '/user/auth/sign_in',
     '/user/auth/sign_up',
     '/user/item/search',

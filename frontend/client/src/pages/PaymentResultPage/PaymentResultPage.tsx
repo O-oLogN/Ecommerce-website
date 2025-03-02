@@ -1,46 +1,82 @@
 import {useEffect, useState} from "react"
-import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx"
+import {useGetVnpayTransaction} from "services/pay"
+import {HttpStatusCode} from "axios"
+import {VnpayTransactionInfo} from "types"
+
+interface PaymentResult {
+    isSuccess: boolean | undefined,
+    createTime: string,
+    orderCode: string
+}
 
 const PaymentResultPage = () => {
-    const [isTransactionSucceeded, setIsTransactionSucceeded] = useState<boolean | undefined>(undefined)
+    const [paymentResult, setPaymentResult] = useState<PaymentResult>({
+        isSuccess: undefined,
+        createTime: '',
+        orderCode: '',
+    })
 
-    const {
-        orderCode,
-    } = useNavbarContext()
+    const getVnpayTransaction = useGetVnpayTransaction()
 
     useEffect(() => {
-        console.log(orderCode)
-        const vnpTransactionQueryParamsStr = window.location.search
-        const params: {key: string, value: string}[] = vnpTransactionQueryParamsStr.slice(1).split("&")
-            .map(token => ({ key: token.split("=")[0], value: token.split("=")[1] }))
-        for (let i = 0; i < params.length; ++i) {
-            if (params[i].key === 'vnp_ResponseCode') {
-                if (params[i].value === '00') {
-                    setIsTransactionSucceeded(true)
+       const postPaymentProcess = async() => {
+            const vnpTransactionQueryParamsStr = window.location.search
+            const params: { key: string, value: string }[] = vnpTransactionQueryParamsStr.slice(1).split("&")
+                .map(token => ({key: token.split("=")[0], value: token.split("=")[1]}))
+
+           const now = new Date()
+           const hours = (now.getHours() < 10 ? '0' : '') + now.getHours()
+           const minutes = (now.getMinutes() < 10 ? '0' : '') + now.getMinutes()
+           const seconds = (now.getSeconds() < 10 ? '0' : '') + now.getSeconds()
+           const date = (now.getDate() < 10 ? '0' + now.getDate() : now.getDate()).toString()
+           const month = (now.getMonth() < 9 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1)).toString()
+           const year = now.getFullYear().toString()
+           const createTime = date + "/" + month + "/" + year + " " + hours + ":" + minutes + ":" + seconds
+
+           let isSuccess: boolean | undefined = undefined
+           let orderCode: string = ''
+
+           for (let i = 0; i < params.length; ++i) {
+                if (params[i].key === 'vnp_TransactionNo') {
+                    const response = await getVnpayTransaction.mutateAsync(params[i].value)
+                    if (response && (response.status === HttpStatusCode.Ok || response.status === HttpStatusCode.Accepted)) {
+                        const vnpayTransaction = response.data as VnpayTransactionInfo
+                        if (vnpayTransaction.vnp_TransactionStatus === "00") {
+                            isSuccess = true
+                        }
+                    }
                 }
-                else {
-                    setIsTransactionSucceeded(false)
+                else if (params[i].key === 'vnp_OrderInfo') {   // OrderCode+{code}
+                   orderCode = params[i].value.split("+")[1]
                 }
-                break
-            }
+           }
+
+           setPaymentResult({
+               isSuccess,
+               createTime,
+               orderCode,
+           })
         }
+
+        postPaymentProcess().then(() => {})
+
     }, [window.location.search])
 
     return (
         <div className="w-full ml-[500px] mt-[150px]">
-            { isTransactionSucceeded &&
+            { paymentResult.isSuccess &&
                 <>
                     <p className="text-[3.2rem] font-semibold">Thank you!</p>
                     <p className="text-[2.2rem]">Your order was placed successfully.</p>
                 </> }
-            { !isTransactionSucceeded &&
+            { !paymentResult.isSuccess &&
                 <>
                     <p className="text-[3.2rem] font-semibold">Payment failed!</p>
                     <p className="text-[2.2rem]">Your order has met problem successfully.</p>
                 </> }
 
-            <p className="text-[1.2rem] mt-[20px]">Order date: {new Date().toDateString()}</p>
-            <p className="text-blue-500 mt-[5px]">Order code: { orderCode } </p>
+            <p className="text-[1.2rem] mt-[20px]">Order time: { paymentResult.createTime }</p>
+            <p className="text-blue-500 mt-[5px]">Order code: { paymentResult.orderCode } </p>
         </div>
     )
 }

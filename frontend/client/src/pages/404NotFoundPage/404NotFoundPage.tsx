@@ -1,7 +1,7 @@
-import {REQUEST_URLS} from "routes"
+import {PAGES} from "routes"
 
 const NotFoundPage = () => {
-    if (REQUEST_URLS.includes(window.location.pathname)) {
+    if (PAGES.includes(window.location.pathname)) {
         return <></>
     }
     return (

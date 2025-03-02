@@ -14,6 +14,7 @@ export default defineConfig({
         },
         allowedHosts: [
             'good-musical-joey.ngrok-free.app',
+            'jleoxhe6d1tg.share.zrok.io',
         ],
     },
     resolve: {

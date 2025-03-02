@@ -6,5 +6,6 @@ export interface TotalOrderInfo extends IBaseData {
     userId: string
     price: number
     orderCode: number
+    vnpTxnRef: string
     orderStatus: string
 }
