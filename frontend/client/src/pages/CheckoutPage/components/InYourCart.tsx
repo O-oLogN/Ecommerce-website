@@ -43,6 +43,21 @@ const InYourCart: React.FC<InYourCartProps> = (
             // vnpAmount: (subtotal + shippingFee + taxes) * 100,
             vnpAmount: 10000,
             vnpOrderInfo: "OrderCode " + randomOrderCode,
+            vnpBillMobile: ($(".phone-input") as unknown as HTMLInputElement).value,
+            vnpBillEmail: ($(".email-input") as unknown as HTMLInputElement).value,
+            vnpBillFirstName: ($(".first-name-input") as unknown as HTMLInputElement).value,
+            vnpBillLastName: ($(".last-name-input") as unknown as HTMLInputElement).value,
+            vnpBillAddress: ($(".address-input") as unknown as HTMLInputElement).value,
+            vnpBillCity: ($(".city-input") as unknown as HTMLInputElement).value,
+            vnpBillCountry: "VN",
+            vnpBillState: "",
+            vnpInvPhone: "",
+            vnpInvCustomer: "",
+            vnpInvEmail: "",
+            vnpInvAddress: "",
+            vnpInvCompany: "",
+            vnpInvTaxCode: "",
+            vnpInvType: "",
         }).then(res => {
             if (res.status === HttpStatusCode.Ok || res.status === HttpStatusCode.Accepted) {
                 return res.data

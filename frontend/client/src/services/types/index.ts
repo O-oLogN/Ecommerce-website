@@ -34,6 +34,21 @@ export interface IInitPayRequestRequest {
     vnpOrderInfo: string
     vnpAmount: number
     vnpIpAddr: string
+    vnpBillMobile: string,
+    vnpBillEmail: string,
+    vnpBillFirstName: string,
+    vnpBillLastName: string,
+    vnpBillAddress: string,
+    vnpBillCity: string,
+    vnpBillCountry: string,
+    vnpBillState: string,
+    vnpInvPhone: string,
+    vnpInvCustomer: string,
+    vnpInvEmail: string,
+    vnpInvAddress: string,
+    vnpInvCompany: string,
+    vnpInvTaxCode: string,
+    vnpInvType: string,
 }
 
 /* Order */

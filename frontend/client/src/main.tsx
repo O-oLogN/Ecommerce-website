@@ -91,7 +91,7 @@ const InternalZone: React.FC<InternalZoneProps> = ({ authenticated }) => {
                         <Route path={REQUEST_MAPPING.CHECKOUT} element={ <CheckoutPage
                             deliveryUnits={[
                                 {
-                                    name: 'S^PX',
+                                    name: 'SPX',
                                     price: 12.9,
                                 },
                                 {
