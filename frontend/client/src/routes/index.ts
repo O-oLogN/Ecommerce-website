@@ -12,6 +12,7 @@ export const REQUEST_MAPPING = {
 export const REQUEST_PATH = {
     SIGN_IN: '/sign_in',
     SIGN_UP: '/sign_up',
+    VERIFY_TOKEN: '/verify-token',
 
     SEARCH_ITEM: '/search',
     ITEM_DETAILS: '/details',

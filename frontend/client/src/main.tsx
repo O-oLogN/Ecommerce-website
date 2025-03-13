@@ -18,13 +18,19 @@ import cod from "assets/cod.png"
 import card from "assets/card.png"
 import {CheckoutContextProvider} from 'pages/CheckoutPage/hooks/CheckoutContext'
 import PaymentResultPage from "pages/PaymentResultPage/PaymentResultPage.tsx"
-import React, {useEffect, useState} from "react"
+import React, {useEffect} from "react"
 import NotFoundPage from "pages/404NotFoundPage/404NotFoundPage.tsx"
+import {AppContextProvider, useAppContext} from "hooks/AppContext.tsx"
 
 const queryClient = new QueryClient()
 
 const App = () => {
-    const [authenticated, setAuthenticated] = useState<boolean | undefined>(true)
+    // const [authenticated, setAuthenticated] = useState<boolean | undefined>(true)
+    const {
+        authenticated,
+        setAuthenticated,
+    } = useAppContext()
+
     return (
         <div className="w-full overflow-x-hidden">
             <div className="min-h-[700px]">
@@ -50,12 +56,19 @@ interface InternalZoneProps {
 
 const InternalZone: React.FC<InternalZoneProps> = ({ authenticated }) => {
     const navigate = useNavigate()
-
     useEffect(() => {
-        if (authenticated && window.location.pathname === REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN) {
-            navigate(REQUEST_MAPPING.HOMEPAGE)
+        if (authenticated) {
+            if (window.location.pathname === REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN) {
+                navigate(REQUEST_MAPPING.HOMEPAGE)
+            }
+            else {
+                navigate(window.location.pathname)
+            }
         }
-        else if (!authenticated) {
+        else if (authenticated === undefined) { // Waiting to be verified
+            navigate(window.location.pathname)
+        }
+        else {
             navigate(REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN)
         }
     }, [authenticated])
@@ -78,7 +91,7 @@ const InternalZone: React.FC<InternalZoneProps> = ({ authenticated }) => {
                         <Route path={REQUEST_MAPPING.CHECKOUT} element={ <CheckoutPage
                             deliveryUnits={[
                                 {
-                                    name: 'SPX',
+                                    name: 'S^PX',
                                     price: 12.9,
                                 },
                                 {
@@ -110,6 +123,8 @@ const container = document.getElementById('root')
 const root = container && createRoot(container)
 root!.render(
     <QueryClientProvider client={ queryClient }>
-        <App/>
+        <AppContextProvider>
+            <App/>
+        </AppContextProvider>
     </QueryClientProvider>
 )

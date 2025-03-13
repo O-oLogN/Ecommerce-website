@@ -3,13 +3,11 @@ import React, {useEffect} from "react"
 import Divider from "pages/ProductDetailsPage/components/LeftPanel/Divider.tsx"
 import info from "assets/info.png"
 import Hint from "pages/CartPage/components/Hint.tsx"
-import {useNavigate} from "react-router-dom"
 import {REQUEST_MAPPING} from "routes"
 
 const Summary: React.FC<SummaryProps> = ({ name, subtotal, shippingFee, taxes, buttonName }) => {
-    const navigate = useNavigate()
     const onClickGoToCheckoutButton = () => {
-        navigate(REQUEST_MAPPING.CHECKOUT)
+        window.location.replace(REQUEST_MAPPING.CHECKOUT)
     }
     useEffect(() => {
         const subtotalHintIcon = document.querySelector('.subtotal-hint-icon')

@@ -32,3 +32,15 @@ export const useSignUp = () => {
         }
     })
 }
+
+export const useVerifyToken= () => {
+    return useMutation({
+        mutationKey: ['verify-token'],
+        mutationFn: async() => {
+            const response = await getAxiosInstance().post<IBaseResponse<String>>(
+                REQUEST_MAPPING.AUTH + REQUEST_PATH.VERIFY_TOKEN,
+            )
+            return response.data
+        },
+    })
+}

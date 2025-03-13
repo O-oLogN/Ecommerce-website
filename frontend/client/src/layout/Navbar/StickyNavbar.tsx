@@ -1,12 +1,10 @@
 import {useState} from "react"
-import {useNavigate} from "react-router-dom"
 import {REQUEST_MAPPING} from "routes"
 import {getItemsFromLocalStorage} from "utils/LocalStorageUtils"
 import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx"
 
 const StickyNavbar= () =>  {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
-    const navigate = useNavigate()
     const {
         itemsInCart,
     } = useNavbarContext()
@@ -15,7 +13,7 @@ const StickyNavbar= () =>  {
         setIsDropdownOpen(!isDropdownOpen)
     }
     const onCartButtonClick = () => {
-        navigate(REQUEST_MAPPING.CART)
+        window.location.replace(REQUEST_MAPPING.CART)
     }
 
     return (
