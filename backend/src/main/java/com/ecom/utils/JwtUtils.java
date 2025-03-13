@@ -6,14 +6,12 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.github.cdimascio.dotenv.Dotenv;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Set;
 
 @Component
-@AllArgsConstructor
 public class JwtUtils {
     public String generateToken(String username, Set<Role> rolesSet) throws Exception {
         String SECRET = getJwtSecretCode();

@@ -21,7 +21,8 @@ public final class AppRoutes {
     public static final class REQUEST_PATH {
         public static final String SIGN_IN = "/sign_in";
         public static final String SIGN_UP = "/sign_up";
-        public static final String SIGN_OUT = "/sign_out";     
+        public static final String SIGN_OUT = "/sign_out";
+        public static final String VERIFY_TOKEN = "/verify-token";
 
         public static final String SEARCH_ROLE = "/search";
         public static final String CREATE_ROLE = "/create";

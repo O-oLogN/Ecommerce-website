@@ -24,9 +24,9 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private final JwtUtils jwtUtils;
-
     private final CustomUserDetailsService customUserDetailsService;
+
+    private final JwtUtils jwtUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {

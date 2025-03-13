@@ -5,6 +5,7 @@ import com.ecom.constant.CoreConstants;
 import com.ecom.dto.request.auth.CreateUserRequest;
 import com.ecom.dto.request.auth.SignInRequest;
 import com.ecom.entities.Role;
+import com.ecom.helper.ResponseHelper;
 import com.ecom.repository.RoleRepository;
 import com.ecom.service.AuthService;
 import com.ecom.service.UserService;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,7 +50,7 @@ public class ClientAuthController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.SIGN_UP)
-    public ResponseEntity<?> signOut(@Valid @RequestParam("username") String username,
+    public ResponseEntity<?> signUp(@Valid @RequestParam("username") String username,
                                      @Valid @RequestParam("password") String password,
                                      @Valid @RequestParam("email") String email
     ) throws Exception {
@@ -61,5 +63,16 @@ public class ClientAuthController {
                 .build();
 
         return userService.createUser(createUserRequest);
+    }
+
+    @Operation(summary = "Verify token")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "500", description = "Fail")
+    })
+    @PostMapping(AppRoutes.REQUEST_PATH.VERIFY_TOKEN)
+    public ResponseEntity<?> verifyToken() {
+        return ResponseHelper.ok("", HttpStatus.OK, "");
+        // To reach here, request should pass Jwt filter where token has been verified
     }
 }
