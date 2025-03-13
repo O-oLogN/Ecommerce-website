@@ -6,20 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/constant/AppRoutes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/constant/AppRoutes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/controller/client/ClientAuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/controller/client/ClientAuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/filter/JwtFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/filter/JwtFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/AuthServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/utils/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/utils/JwtUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/entities/VnpayTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/entities/VnpayTransaction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/admin/src/constants/Path/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/constants/Path/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/admin/src/hooks/AppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/hooks/AppContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/admin/src/services/Auth/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/services/Auth/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/layout/Navbar/StickyNavbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/layout/Navbar/StickyNavbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CartPage/components/Summary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CartPage/components/Summary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/routes/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/routes/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/src/services/auth/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/services/auth/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/client/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/vite.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -249,7 +239,7 @@
       <workItem from="1741786912328" duration="1657000" />
       <workItem from="1741788782830" duration="116000" />
       <workItem from="1741789177998" duration="59000" />
-      <workItem from="1741842655339" duration="728000" />
+      <workItem from="1741842655339" duration="3012000" />
     </task>
     <servers />
   </component>
