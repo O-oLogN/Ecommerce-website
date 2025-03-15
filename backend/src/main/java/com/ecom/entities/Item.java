@@ -84,6 +84,10 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<ItemBadge> itemBadges;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<ItemCart> itemCarts;
     
     @Transient
     @JsonProperty("highlights")

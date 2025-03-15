@@ -6,10 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="b600b7cc-4dfe-4285-9e84-1ad4377daaf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/config/CorsConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/entities/VnpayTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/entities/VnpayTransaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/VnpayServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ecom/service/impl/VnpayServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/admin/src/constants/Path/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/constants/Path/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/admin/src/hooks/AppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/hooks/AppContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/admin/src/services/Auth/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/admin/src/services/Auth/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/hooks/AppContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/hooks/AppContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/components/InYourCart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/components/InYourCart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/components/ShippingAddress.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/CheckoutPage/components/ShippingAddress.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/pages/PaymentResultPage/PaymentResultPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/pages/PaymentResultPage/PaymentResultPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/src/utils/LocalStorageUtils/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/src/utils/LocalStorageUtils/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/client/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/client/vite.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,8 +61,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="com.intellij.jpb.JpaEntity" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -87,49 +98,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Gradle.Build admin.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Build backend.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.Admin Service.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.AdminApplication.executor&quot;: &quot;Debug&quot;,
-    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Code/Java/Projects/Final/Ecommerce-website/backend/client&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_interpreter_path&quot;: &quot;D:/Program Files/NodeJS/node&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;D:\\Program Files\\NodeJS\\npm.cmd&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.build.tools.auto.reload&quot;: &quot;SELECTIVE&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Gradle.Build admin.executor": "Run",
+    "Gradle.Build backend.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.Admin Service.executor": "Run",
+    "Spring Boot.AdminApplication.executor": "Debug",
+    "extract.method.default.visibility": "private",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Code/Java/Projects/Final/Ecommerce-website/backend/client",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "D:/Program Files/NodeJS/node",
+    "nodejs_package_manager_path": "D:\\Program Files\\NodeJS\\npm.cmd",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.build.tools.auto.reload": "SELECTIVE",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Code\Java\Projects\Final\Ecommerce-website\backend\src\main\java\com\ecom\assets" />
@@ -239,7 +250,7 @@
       <workItem from="1741786912328" duration="1657000" />
       <workItem from="1741788782830" duration="116000" />
       <workItem from="1741789177998" duration="59000" />
-      <workItem from="1741842655339" duration="3012000" />
+      <workItem from="1741842655339" duration="14620000" />
     </task>
     <servers />
   </component>

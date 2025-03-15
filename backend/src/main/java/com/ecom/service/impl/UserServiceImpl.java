@@ -4,6 +4,7 @@ import com.ecom.constant.CoreConstants;
 import com.ecom.dto.request.auth.CreateUserRequest;
 import com.ecom.dto.request.user.SearchUserRequest;
 import com.ecom.dto.request.user.UpdateUserRequest;
+import com.ecom.entities.Cart;
 import com.ecom.entities.Role;
 import com.ecom.entities.User;
 import com.ecom.entities.UserRole;
@@ -14,6 +15,7 @@ import com.ecom.helper.ResponseHelper;
 import com.ecom.model.PageInfo;
 import com.ecom.model.PagingResponse;
 import com.ecom.model.QueryRequest;
+import com.ecom.repository.CartRepository;
 import com.ecom.repository.RoleRepository;
 import com.ecom.repository.UserRepository;
 import com.ecom.repository.UserRoleRepository;
@@ -45,6 +47,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final UserRoleRepository userRoleRepository;
+    private final CartRepository cartRepository;
 
     private final UserSpecification userSpecification;
 
@@ -105,6 +108,14 @@ public class UserServiceImpl implements UserService {
         });
 
         newUser.setUserRoles(newUserRoles);         // Update roles in response
+        cartRepository.save(
+            Cart.builder()
+                .cartId(UUID.randomUUID().toString())
+                .userId(newUser.getUserId())
+                .createUser(CoreConstants.ROLE.ADMIN)
+                .createDatetime(LocalDateTime.now())
+                .build()
+        );
         return ResponseHelper.ok(newUser, HttpStatus.OK, messageHelper.getMessage("admin.userController.createUser.info.success"));
     }
 

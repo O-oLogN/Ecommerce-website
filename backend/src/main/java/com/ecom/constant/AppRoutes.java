@@ -10,6 +10,7 @@ public final class AppRoutes {
         public static final String AUTH = "/auth";
         public static final String ROLE = "/role";
         public static final String ITEM = "/item";
+        public static final String CART = "/cart";
         public static final String CATEGORY = "/category";
         public static final String USER = "/user";
         public static final String ORDER = "/order";
@@ -32,7 +33,11 @@ public final class AppRoutes {
         public static final String UPDATE_ITEM = "/update";     
         public static final String DELETE_ITEM = "/delete";     
         public static final String CREATE_ITEM = "/create";     
-        public static final String SEARCH_ITEM = "/search";     
+        public static final String SEARCH_ITEM = "/search";
+
+        public static final String REMOVE_ITEM_FROM_CART = "/remove-item-from-cart";
+        public static final String UPDATE_ITEM_IN_CART = "/update-item-in-cart";
+        public static final String GET_ITEMS = "/get-items";
 
         public static final String UPDATE_CATEGORY = "/update";     
         public static final String DELETE_CATEGORY = "/delete";     

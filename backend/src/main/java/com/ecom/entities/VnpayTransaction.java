@@ -83,49 +83,4 @@ public class VnpayTransaction {
     @Column(name = "modify_datetime")
     @JsonFormat(pattern = CoreConstants.DateTimePattern.FORMAT_24H)
     private LocalDateTime modifyDatetime;
-
-    @Column(name = "vnp_bill_mobile")
-    private String vnp_BillMobile;
-
-    @Column(name = "vnp_bill_email")
-    private String vnp_BillEmail;
-
-    @Column(name = "vnp_bill_firstname")
-    private String vnp_BillFirstName;
-
-    @Column(name = "vnp_bill_lastname")
-    private String vnp_BillLastName;
-
-    @Column(name = "vnp_bill_address")
-    private String vnp_BillAddress;
-
-    @Column(name = "vnp_bill_city")
-    private String vnp_BillCity;
-
-    @Column(name = "vnp_bill_country")
-    private String vnp_BillCountry;
-
-    @Column(name = "vnp_bill_state")
-    private String vnp_BillState;
-
-    @Column(name = "vnp_inv_phone")
-    private String vnp_InvPhone;
-
-    @Column(name = "vnp_inv_email")
-    private String vnp_InvEmail;
-
-    @Column(name = "vnp_inv_customer")
-    private String vnp_InvCustomer;
-
-    @Column(name = "vnp_inv_address")
-    private String vnp_InvAddress;
-
-    @Column(name = "vnp_inv_company")
-    private String vnp_InvCompany;
-
-    @Column(name = "vnp_inv_taxcode")
-    private String vnp_InvTaxCode;
-
-    @Column(name = "vnp_inv_type")
-    private String vnp_InvType;
 }
