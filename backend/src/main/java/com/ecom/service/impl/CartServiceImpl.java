@@ -10,6 +10,7 @@ import com.ecom.helper.ResponseHelper;
 import com.ecom.repository.CartRepository;
 import com.ecom.repository.ItemCartRepository;
 import com.ecom.repository.ItemRepository;
+import com.ecom.repository.UserRepository;
 import com.ecom.service.CartService;
 import com.ecom.utils.ValidationUtils;
 import jakarta.transaction.Transactional;
@@ -21,8 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -32,18 +32,19 @@ public class CartServiceImpl implements CartService {
     private final ItemCartRepository itemCartRepository;
     private final ItemRepository itemRepository;
     private final CartRepository cartRepository;
+    private final UserRepository userRepository;
 
     private final MessageHelper messageHelper;
 
     @Override
     public ResponseEntity<?> updateItem(UpdateItemInCartRequest updateItemInCartRequest) throws Exception {
-        String userId = updateItemInCartRequest.getUserId();
+        String username = updateItemInCartRequest.getUsername();
         String itemId = updateItemInCartRequest.getItemId();
         Integer itemQuantity = updateItemInCartRequest.getItemQuantity();
 
-        if (ValidationUtils.isNullOrEmpty(userId)) {
+        if (ValidationUtils.isNullOrEmpty(username)) {
             throw new ValidationException(
-                messageHelper.getMessage("admin.cartController.update.item.error.validation.userId")
+                messageHelper.getMessage("admin.cartController.update.item.error.validation.username")
             );
         }
         if (ValidationUtils.isNullOrEmpty(itemId)) {
@@ -57,6 +58,7 @@ public class CartServiceImpl implements CartService {
             );
         }
 
+        String userId = userRepository.findUserByUsername(username).getUserId();
         Cart cart = cartRepository.findCartByUserId(userId);
         Set<ItemCart> itemCarts = cart.getItemCarts();
         ItemCart targetItemCart = itemCarts.stream()
@@ -83,7 +85,7 @@ public class CartServiceImpl implements CartService {
             itemCartRepository.save(targetItemCart);
         }
         return ResponseHelper.ok(
-            cart.getItemCarts(),
+            sortItemsInCart(cart.getItemCarts()),
             HttpStatus.OK,
             messageHelper.getMessage("admin.cartController.update.item.info.success")
         );
@@ -91,12 +93,12 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public ResponseEntity<?> removeItemFromCart(RemoveItemFromCartRequest removeItemFromCartRequest) throws Exception {
-        String userId = removeItemFromCartRequest.getUserId();
+        String username = removeItemFromCartRequest.getUsername();
         String itemId = removeItemFromCartRequest.getItemId();
 
-        if (ValidationUtils.isNullOrEmpty(userId)) {
+        if (ValidationUtils.isNullOrEmpty(username)) {
             throw new ValidationException(
-                messageHelper.getMessage("admin.cartController.remove.item.error.validation.userId")
+                messageHelper.getMessage("admin.cartController.remove.item.error.validation.username")
             );
         }
         if (ValidationUtils.isNullOrEmpty(itemId)) {
@@ -105,36 +107,38 @@ public class CartServiceImpl implements CartService {
             );
         }
 
+        String userId = userRepository.findUserByUsername(username).getUserId();
         Cart cart = cartRepository.findCartByUserId(userId);
         Set<ItemCart> itemCarts = cart.getItemCarts();
         itemCarts.removeIf(itemCart -> itemCart.getItem().getItemId().equals(itemId));
         cart.setItemCarts(itemCarts);
 
         return ResponseHelper.ok(
-            cart.getItemCarts(),
+            sortItemsInCart(cart.getItemCarts()),
             HttpStatus.OK,
             messageHelper.getMessage("admin.cartController.remove.item.info.success")
         );
     }
 
     @Override
-    public ResponseEntity<?> getItems(String userId) throws Exception {
-        if (ValidationUtils.isNullOrEmpty(userId)) {
+    public ResponseEntity<?> getItems(String username) throws Exception {
+        if (ValidationUtils.isNullOrEmpty(username)) {
             throw new ValidationException(
-                messageHelper.getMessage("admin.cartController.get.item.error.validation.userId")
+                messageHelper.getMessage("admin.cartController.get.item.error.validation.username")
             );
         }
 
-        Cart cart = cartRepository.findCartByUserId(userId);
+        String userId = userRepository.findUserByUsername(username).getUserId();
+        Cart cart = cartRepository.findCartByUserId(userId  );
         return ResponseHelper.ok(
-            cart.getItemCarts(),
+            sortItemsInCart(cart.getItemCarts()),
             HttpStatus.OK,
     ""
         );
     }
 
     @Override
-    public ResponseEntity<?> clearCart(String userId) throws Exception {
+    public void clearCart(String userId) throws Exception {
         if (ValidationUtils.isNullOrEmpty(userId)) {
             throw new ValidationException(
                 messageHelper.getMessage("admin.cartController.clear.cart.error.validation.userId")
@@ -145,6 +149,12 @@ public class CartServiceImpl implements CartService {
         cart.getItemCarts().clear();
         cartRepository.save(cart);
 
-        return ResponseHelper.ok(cart.getItemCarts(), HttpStatus.OK, "");
+        ResponseHelper.ok(cart.getItemCarts(), HttpStatus.OK, "");
+    }
+
+    private List<ItemCart> sortItemsInCart(Set<ItemCart> unsortedItemsSet) {
+        List<ItemCart> itemList = new ArrayList<>(unsortedItemsSet);
+        itemList.sort(Comparator.comparing(ItemCart::getCreateDatetime));
+        return itemList;
     }
 }

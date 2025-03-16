@@ -31,7 +31,7 @@ public class ClientItemController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.SEARCH_ITEM)
-    public ResponseEntity<?> signIn(@Valid @RequestBody QueryRequest<SearchItemRequest> searchItemRequest) {
+    public ResponseEntity<?> searchItem(@Valid @RequestBody QueryRequest<SearchItemRequest> searchItemRequest) {
         return itemService.searchItem(searchItemRequest);
     }
 }

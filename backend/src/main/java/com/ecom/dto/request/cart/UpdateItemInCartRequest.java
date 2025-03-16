@@ -9,6 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 public class UpdateItemInCartRequest {
     private String itemId;
-    private String userId;
+    private String username;
     private Integer itemQuantity;
 }

@@ -9,5 +9,5 @@ import lombok.*;
 @AllArgsConstructor
 public class RemoveItemFromCartRequest {
     private String itemId;
-    private String userId;
+    private String username;
 }

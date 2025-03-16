@@ -48,7 +48,7 @@ public class ClientCartController {
             @ApiResponse(responseCode = "500", description = "Fail")
     })
     @PostMapping(AppRoutes.REQUEST_PATH.GET_ITEMS)
-    public ResponseEntity<?> getItems(@RequestParam String userId) throws Exception {
-        return cartService.getItems(userId);
+    public ResponseEntity<?> getItems(@RequestParam String username) throws Exception {
+        return cartService.getItems(username);
     }
 }
