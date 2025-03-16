@@ -9,7 +9,6 @@ const RightCheckoutPanel: React.FC<RightCheckoutPanelProps> = (
         subtotal,
         shippingFee,
         taxes,
-        products,
     }) => {
     return (
         <div>
@@ -17,7 +16,6 @@ const RightCheckoutPanel: React.FC<RightCheckoutPanelProps> = (
                 subtotal={ subtotal }
                 shippingFee={ shippingFee }
                 taxes={ taxes }
-                products={ products }
             />
         </div>
     )

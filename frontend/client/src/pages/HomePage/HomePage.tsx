@@ -1,27 +1,59 @@
 import ProductList from "layout/ProductList/ProductList.tsx"
 import {useHomePageContext} from "./hooks/HomePageContext.tsx"
-import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx"
+import { Select } from "antd"
 
 const HomePage = () => {
     const {
         categories,
         products,
         setSelectedProduct,
+        setSearchItemRequest,
     } = useHomePageContext()
 
-    const {
-        itemsInCart,
-        setItemsInCart,
-    } = useNavbarContext()
+    const handleChange = (value: any) => {
+        setSearchItemRequest({
+            sample: {
+                itemName: '',
+            },
+            pageInfo: {
+                pageNumber: 0,
+                pageSize: 100,
+            },
+            orders: [{
+                property: value,
+                direction: 'asc'
+            }]
+        })
+    }
 
     return (
-        <ProductList
-            categories={ categories }
-            products={ products }
-            itemsInCart={ itemsInCart }
-            setItemsInCart={ setItemsInCart }
-            setSelectedProduct={ setSelectedProduct }
-        />
+        <>
+            <Select
+                defaultValue="Sort by"
+                style={{
+                    width: "120px",
+                    position: "absolute",
+                    marginLeft: "1200px",
+                    marginTop: "50px",
+                }}
+                onChange={ handleChange }
+                options={[
+                    {
+                        label: "Rating",
+                        value: "rate",
+                    },
+                    {
+                        label: "Price",
+                        value: "price",
+                    }
+                ]}
+            />
+            <ProductList
+                categories={ categories }
+                products={ products }
+                setSelectedProduct={ setSelectedProduct }
+            />
+        </>
     )
 }
 

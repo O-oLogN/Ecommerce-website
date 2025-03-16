@@ -3,7 +3,6 @@ import LeftCheckoutPanel from "pages/CheckoutPage/components/LeftCheckoutPanel/L
 import RightCheckoutPanel from "pages/CheckoutPage/components/RightCheckoutPanel/RightCheckoutPanel.tsx"
 import {CheckoutPageProps, ShippingAddressFormProps} from "./types"
 import {useCartContext} from "pages/CartPage/hooks/CartContext.tsx"
-import {getItemsFromLocalStorage} from "utils/LocalStorageUtils"
 
 const CheckoutPage: React.FC<CheckoutPageProps> = (
     {
@@ -40,7 +39,6 @@ const CheckoutPage: React.FC<CheckoutPageProps> = (
                 setSelectedPaymentMethod={ setSelectedPaymentMethod }
             />
             <RightCheckoutPanel
-                products={ getItemsFromLocalStorage() }
                 subtotal={ subtotal }
                 shippingFee={ deliveryUnits.find(deliveryUnit => deliveryUnit.name === selectedDeliveryUnit)?.price ?? 0 }
                 taxes={0}

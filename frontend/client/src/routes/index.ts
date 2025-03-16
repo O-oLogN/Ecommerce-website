@@ -23,6 +23,10 @@ export const REQUEST_PATH = {
     CREATE_TOTAL_ORDER: '/create-total-order',
     GET_LATEST_ORDER_CODE: '/get-latest-order-code',
 
+    GET_ITEMS_IN_CART: '/get-items',
+    UPDATE_ITEM_IN_CART: '/update-item-in-cart',
+    REMOVE_ITEM_FROM_CART: '/remove-item-from-cart',
+
     GET_IP_ADDRESS: '/get-ip',
     INIT_PAY_REQUEST: '/init-pay-request',
     PAY_RESULT: '/pay-result',

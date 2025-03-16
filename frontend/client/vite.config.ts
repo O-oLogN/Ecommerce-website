@@ -8,6 +8,10 @@ const aliasPaths = ['assets', 'components', 'config', 'constants',
 
 export default defineConfig({
     plugins: [react()],
+    define: {
+        'process.env.VITE_PORT': JSON.stringify(process.env.VITE_PORT),
+        'process.env.VITE_BASE_DOMAIN': JSON.stringify(process.env.VITE_BASE_DOMAIN),
+    },
     server: {
         port: 5173,
         strictPort: true,
@@ -15,16 +19,12 @@ export default defineConfig({
             usePolling: true,
         },
         allowedHosts: [
-            'good-musical-joey.ngrok-free.app',
-            'jleoxhe6d1tg.share.zrok.io',
+            "bntffgh96eu9.share.zrok.io",
         ],
     },
     resolve: {
         alias: Object.fromEntries(
             aliasPaths.map((name) => [name, path.resolve(__dirname, `./src/${name}`)])
         )
-    },
-    define: {
-        'process.env': {}
     },
 });

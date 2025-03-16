@@ -44,8 +44,6 @@ const ProductList: React.FC<ProductListProps> = (props) => {
                                     quantity={product.quantity}
                                     rate={product.rate}
                                     numberOfReviews={product.numberOfReviews}
-                                    itemsInCart={props.itemsInCart}
-                                    setItemsInCart={props.setItemsInCart}
                                     setSelectedProduct={props.setSelectedProduct}
                                     createUser={product.createUser}
                                     createDatetime={product.createDatetime}

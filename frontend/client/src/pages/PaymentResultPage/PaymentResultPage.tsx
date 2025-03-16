@@ -2,6 +2,7 @@ import {useEffect, useState} from "react"
 import {useGetVnpayTransaction} from "services/pay"
 import {HttpStatusCode} from "axios"
 import {VnpayTransactionInfo} from "types"
+import {deleteItemFromLocalStorage} from "utils/LocalStorageUtils"
 
 interface PaymentResult {
     isSuccess: boolean | undefined,
@@ -49,6 +50,9 @@ const PaymentResultPage = () => {
                 else if (params[i].key === 'vnp_OrderInfo') {   // OrderCode+{code}
                    orderCode = params[i].value.split("+")[1]
                 }
+           }
+           if (isSuccess) {
+               deleteItemFromLocalStorage("cartItems")
            }
 
            setPaymentResult({

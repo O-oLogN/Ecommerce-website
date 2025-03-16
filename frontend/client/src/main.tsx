@@ -65,7 +65,7 @@ const InternalZone: React.FC<InternalZoneProps> = ({ authenticated }) => {
                 navigate(window.location.pathname)
             }
         }
-        else if (authenticated === undefined) { // Waiting to be verified
+        else if (authenticated === undefined) { // Waiting to be verified or auth status of VNPAY return URL
             navigate(window.location.pathname)
         }
         else {
@@ -73,7 +73,16 @@ const InternalZone: React.FC<InternalZoneProps> = ({ authenticated }) => {
         }
     }, [authenticated])
 
-    if (!authenticated) return <></>
+    if (!authenticated) {
+        if (window.location.origin === "https://" + process.env.VITE_BASE_DOMAIN) {
+            return (
+                <Routes>
+                    <Route path={REQUEST_MAPPING.PAY + REQUEST_PATH.PAY_RESULT} element={<PaymentResultPage/>}/>
+                </Routes>
+            )
+        }
+        return <></>
+    }
 
     return (
         <NavbarContextProvider>

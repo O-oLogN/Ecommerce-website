@@ -1,22 +1,26 @@
 import {createContext, useContext, useEffect, useState} from "react"
 import {HomePageContextProps} from "pages/HomePage/types"
-import {CategoryInfo, ItemInfo} from "types"
+import {CategoryInfo, IQueryRequest, ItemInfo} from "types"
 import {useSearchCategoryById, useSearchItem} from "services"
 import {HttpStatusCode} from "axios"
+import { ISearchItemRequest } from "services/types"
 
 const HomePageContext = createContext<HomePageContextProps>({
     categories: [],
     products: [],
     selectedProduct: null,
     setSelectedProduct: () => {},
+    setSearchItemRequest: () => {},
 })
 
 export const HomePageContextProvider = ({ children } : { children: any })=> {
     const [products, setProducts] = useState<ItemInfo[]>([])
     const [categories, setCategories] = useState<CategoryInfo[]>([])
     const [selectedProduct, setSelectedProduct] = useState<ItemInfo | null>(null)
+    const [searchItemRequest, setSearchItemRequest] = useState<IQueryRequest<ISearchItemRequest> | undefined>(undefined)
+
     const searchCategoryMutation = useSearchCategoryById()
-    const searchProductsResponse = useSearchItem({
+    const searchProductsResponse = useSearchItem(!searchItemRequest ? {
         sample: {
             itemName: ''
         },
@@ -25,7 +29,7 @@ export const HomePageContextProvider = ({ children } : { children: any })=> {
             pageSize: 100,
         },
         orders: [],
-    })
+    } : searchItemRequest)
 
     useEffect(() => {
         if (searchProductsResponse.data?.status === HttpStatusCode.Ok) {
@@ -59,6 +63,7 @@ export const HomePageContextProvider = ({ children } : { children: any })=> {
         products,
         selectedProduct,
         setSelectedProduct,
+        setSearchItemRequest,
     }
     return (
         <HomePageContext.Provider value={ value } >

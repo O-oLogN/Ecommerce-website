@@ -1,7 +1,7 @@
 import React from "react"
-import {ItemInCart} from "types/ItemInCart"
 import {useInitPayRequest} from "services/pay"
 import {useCreateTotalOrder} from "services/order"
+import { CartInfo } from "types"
 
 export interface CheckoutContextProps {
     initPayRequestHelper: ReturnType<typeof useInitPayRequest>
@@ -64,11 +64,10 @@ export interface InYourCartProps {
     subtotal: number
     shippingFee: number
     taxes: number
-    products: ItemInCart[]
 }
 
 export interface ProductListSummaryProps {
-    products: ItemInCart[]
+    products: CartInfo[]
 }
 
 export interface PaymentMethodProps {
@@ -89,7 +88,6 @@ export interface RightCheckoutPanelProps {
     subtotal: number
     shippingFee: number
     taxes: number
-    products: ItemInCart[]
 }
 
 export interface CheckoutPageProps {

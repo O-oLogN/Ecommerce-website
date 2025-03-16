@@ -8,10 +8,14 @@ import {ItemInfo} from "types"
 import {REQUEST_MAPPING, REQUEST_PATH} from "routes"
 import {useNavigate} from "react-router-dom"
 import details from "assets/details.png"
-import { ItemInCart } from "types/ItemInCart"
-import {saveItemsToLocalStorage} from "utils/LocalStorageUtils"
+import {getItemFromLocalStorage} from "utils/LocalStorageUtils"
+import {useAppContext} from "hooks/AppContext.tsx"
 
 const ProductCard: React.FC<ProductCardProps> = (props) => {
+    const {
+        setUpdateItemInCartRequest,
+    } = useAppContext()
+
     const navigate = useNavigate()
     const [love, setLove] = useState<boolean>(false)
 
@@ -35,16 +39,11 @@ const ProductCard: React.FC<ProductCardProps> = (props) => {
     }
     const onAddToCartButtonClick = () => {
         const thisItem = props as ItemInfo
-        const existedItem = props.itemsInCart.find(item => item.itemId === thisItem.itemId)
-        if (!existedItem) {
-            props.setItemsInCart(prevItemsInCart => {
-                saveItemsToLocalStorage(
-                    [...prevItemsInCart, { purchaseQuantity: Math.min(props.quantity, 1), ...props } as ItemInCart]
-                )
-                return [...prevItemsInCart, { purchaseQuantity: Math.min(props.quantity, 1), ...props } as ItemInCart]
-            })
-            return
-        }
+        setUpdateItemInCartRequest({
+            username: getItemFromLocalStorage("username") ?? '@',
+            itemId: thisItem.itemId,
+            itemQuantity: Math.min(props.quantity, 1)
+        })
     }
     const onDetailsButtonClick = () => {
         props.setSelectedProduct(props as ItemInfo)

@@ -13,7 +13,10 @@ export interface IBaseResponse<T> {
 }
 
 export * from './ItemInfo'
+export * from './ItemInCart'
 export * from './UserInfo'
+export * from './CartInfo'
+export * from './OrderInfo'
 export * from './QueryRequest'
 export * from './PagingResponse'
 export * from './VnpayTransactionInfo'

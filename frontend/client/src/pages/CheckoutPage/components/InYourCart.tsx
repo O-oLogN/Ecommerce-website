@@ -4,19 +4,22 @@ import React, {useEffect} from "react"
 import ProductListSummary from "pages/CheckoutPage/components/ProductListSummary.tsx"
 import {HttpStatusCode} from "axios"
 import {useCheckoutContext} from "../hooks/CheckoutContext"
-import {getItemsFromLocalStorage} from "utils/LocalStorageUtils"
-import {ItemInCart} from "types/ItemInCart"
 import {useNavbarContext} from "layout/Navbar/hooks/NavbarContext.tsx"
 import {useCartContext} from "pages/CartPage/hooks/CartContext.tsx"
 import {getRandomString, getRandomVnpTxnRef} from "utils/RandomUtils"
+import {useAppContext} from "hooks/AppContext"
 
 const InYourCart: React.FC<InYourCartProps> = (
     {
         subtotal,
         shippingFee,
         taxes,
-        products,
     }) => {
+
+    const {
+        itemsInCart,
+    } = useAppContext()
+
     const {
         initPayRequestHelper,
         createTotalOrderHelper,
@@ -43,12 +46,12 @@ const InYourCart: React.FC<InYourCartProps> = (
             // vnpAmount: (subtotal + shippingFee + taxes) * 100,
             vnpAmount: 10000,
             vnpOrderInfo: "OrderCode " + randomOrderCode,
-            vnpBillMobile: ($(".phone-input") as unknown as HTMLInputElement).value,
-            vnpBillEmail: ($(".email-input") as unknown as HTMLInputElement).value,
-            vnpBillFirstName: ($(".first-name-input") as unknown as HTMLInputElement).value,
-            vnpBillLastName: ($(".last-name-input") as unknown as HTMLInputElement).value,
-            vnpBillAddress: ($(".address-input") as unknown as HTMLInputElement).value,
-            vnpBillCity: ($(".city-input") as unknown as HTMLInputElement).value,
+            vnpBillMobile: (document.querySelector(".phone-input") as unknown as HTMLInputElement).value,
+            vnpBillEmail: (document.querySelector(".email-input") as unknown as HTMLInputElement).value,
+            vnpBillFirstName: (document.querySelector(".first-name-input") as unknown as HTMLInputElement).value,
+            vnpBillLastName: (document.querySelector(".last-name-input") as unknown as HTMLInputElement).value,
+            vnpBillAddress: (document.querySelector(".address-input") as unknown as HTMLInputElement).value,
+            vnpBillCity: (document.querySelector(".city-input") as unknown as HTMLInputElement).value,
             vnpBillCountry: "VN",
             vnpBillState: "",
             vnpInvPhone: "",
@@ -66,34 +69,32 @@ const InYourCart: React.FC<InYourCartProps> = (
         })
 
         if (userId && vnpayPaymentGatewayUrl) {
-            const products = getItemsFromLocalStorage() as ItemInCart[]
             const response = await createTotalOrderHelper.mutateAsync({
                 userId: userId,
                 orderCode: randomOrderCode,
                 vnpTxnRef: vnpTxnRef,
-                createChildOrderRequests: products.map(product => ({
-                    itemId: product.itemId,
-                    quantity: product.purchaseQuantity,
+                createChildOrderRequests: itemsInCart.map(productInCart => ({
+                    itemId: productInCart.item.itemId,
+                    quantity: productInCart.itemQuantity,
                 }))
             })
             if (response && response.status === HttpStatusCode.Ok || response.status === HttpStatusCode.Accepted) {
                 setOrderCode(randomOrderCode)
                 window.location.replace(vnpayPaymentGatewayUrl)
-                // window.location.replace("https://jleoxhe6d1tg.share.zrok.io/user/pay/pay-result")
+                // window.location.replace(process.env.VITE_BASE_DOMAIN)
                 // window.location.replace("/user/pay/pay-result")
             }
         }
     }
     const calcSubtotal = () => {
         let subtotal = 0
-        const productsInCart = getItemsFromLocalStorage() as ItemInCart[]
-        productsInCart.forEach((product, index) => subtotal += (product.price ?? 0) * productsInCart[index].purchaseQuantity)
+        itemsInCart.forEach((productInCart, index) => subtotal += (productInCart.item.price ?? 0) * itemsInCart[index].itemQuantity)
         return subtotal
     }
 
     useEffect(() => {
         setSubtotal(calcSubtotal())
-    }, [getItemsFromLocalStorage()])
+    }, [itemsInCart])
 
     return (
         <div>
@@ -103,7 +104,7 @@ const InYourCart: React.FC<InYourCartProps> = (
                 shippingFee={ shippingFee }
                 taxes={ taxes }
             />
-            <ProductListSummary products={ products } />
+            <ProductListSummary products={ itemsInCart } />
             <button className="text-center w-[400px] mt-[30px] ml-[70px] bg-gray-800 py-2 hover:bg-light-gray"
                     onClick={ onClickGoToOrderButton }
             >

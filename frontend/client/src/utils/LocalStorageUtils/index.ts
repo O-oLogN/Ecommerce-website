@@ -1,10 +1,7 @@
-import {ItemInCart} from "types/ItemInCart"
-
-export const saveItemsToLocalStorage = (itemsArray: ItemInCart[]) => {
-    localStorage.setItem('cartItems', JSON.stringify(itemsArray))
+export const getItemFromLocalStorage = (key: string) => {
+    return localStorage.getItem(key)
 }
 
-export const getItemsFromLocalStorage = () => {
-    const itemsString = localStorage.getItem('cartItems')
-    return itemsString ? JSON.parse(itemsString) : []
+export const deleteItemFromLocalStorage = (name: string) => {
+    localStorage.removeItem(name)
 }

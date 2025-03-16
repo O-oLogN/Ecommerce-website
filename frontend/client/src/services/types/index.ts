@@ -3,6 +3,7 @@ import {
     ItemInfo,
     CategoryInfo, VnpayTransactionInfo
 } from "types"
+import { CartInfo } from "types/CartInfo"
 import {OrderInfo, TotalOrderInfo} from "types/OrderInfo"
 
                                         /* REQUEST */
@@ -25,6 +26,18 @@ export interface ISearchItemRequest {
 
 export interface ISearchItemCategoryRequest {
     categoryId: string
+}
+
+/* Cart */
+export interface IUpdateItemInCartRequest {
+    username: string
+    itemId: string
+    itemQuantity: number
+}
+
+export interface IRemoveItemFromCartRequest {
+    username: string
+    itemId: string
 }
 
 /* Pay */
@@ -79,6 +92,11 @@ export interface ICreateTotalOrderResponse {
     numberOfChildOrders: number
     childOrders: OrderInfo[]
 }
+
+/* Cart */
+export interface IUpdateItemInCartResponse extends CartInfo {}
+
+export interface IRemoveItemFromCartResponse extends CartInfo {}
 
 /* VnpayTransaction */
 export interface ISearchVnpayTransactionResponse extends VnpayTransactionInfo {}

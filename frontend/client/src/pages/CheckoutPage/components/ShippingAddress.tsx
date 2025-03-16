@@ -83,7 +83,7 @@ const ShippingAddress: React.FC<ShippingAddressProps> = ({ status, setStatus, se
                         <InputField name="email" label="Email" required={true} clss="email-input" type="email" style="ml-[35px] w-[203px]" defaultValue={ shippingAddressForm.email } />
                     </div>
                     <div className="mt-[8px] ml-[20px]">
-                        <InputField name="last-name" label="Last name" required={true} clss="last-name-inut" style="ml-[40px]" defaultValue={ shippingAddressForm.lastName } />
+                        <InputField name="last-name" label="Last name" required={true} clss="last-name-input" style="ml-[40px]" defaultValue={ shippingAddressForm.lastName } />
                         <InputField name="company" label="Company" clss="company-input" style="ml-[45px]" defaultValue={ shippingAddressForm.company } />
                         <InputField name="city" label="City" required={true} clss="city-input" style="ml-[85px]" defaultValue={ shippingAddressForm.city }/>
                         <InputField name="state-province" label="State/Province" clss="state-province-input" style="ml-[10px] mt-[5px]" defaultValue={ shippingAddressForm.stateProvince } />

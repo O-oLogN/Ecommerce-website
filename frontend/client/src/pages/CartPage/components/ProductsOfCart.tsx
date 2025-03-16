@@ -1,38 +1,38 @@
 import React, {useEffect} from "react"
 import bin from "assets/bin.png"
 import {ProductsOfCartProps} from "pages/CartPage/types"
-import {getItemsFromLocalStorage, saveItemsToLocalStorage} from "utils/LocalStorageUtils"
-import {ItemInCart} from "types/ItemInCart"
+import {getItemFromLocalStorage} from "utils/LocalStorageUtils"
+import {useAppContext} from "hooks/AppContext.tsx"
 
-const ProductsOfCart: React.FC<ProductsOfCartProps> = (
-    {
+const ProductsOfCart: React.FC<ProductsOfCartProps> = ({ setSubtotal }) => {
+    const {
         itemsInCart,
-        setSubtotal,
-        setItemsInCart,
-    }) => {
+        setUpdateItemInCartRequest,
+        setRemoveItemFromCartRequest,
+    } = useAppContext()
 
     const calcSubtotal = () => {
         let subtotal = 0
-        const productsInCart = getItemsFromLocalStorage() as ItemInCart[]
-        productsInCart.forEach((product, index) => subtotal += (product.price ?? 0) * productsInCart[index].purchaseQuantity)
+        itemsInCart.forEach((product, index) => subtotal += (product.item.price ?? 0) * itemsInCart[index].itemQuantity)
         return subtotal
     }
     const onQuantityInputChange = (index: number, value: number) => {
-        const newItemsInCart = [...itemsInCart]
-        newItemsInCart.splice(index, 1, {...itemsInCart[index], purchaseQuantity: value})
-        saveItemsToLocalStorage(newItemsInCart)
-        setItemsInCart(newItemsInCart)
+        setUpdateItemInCartRequest({
+            username: getItemFromLocalStorage("username") ?? '@',
+            itemId: itemsInCart[index].item.itemId,
+            itemQuantity: value
+        })
     }
     const onDeleteButtonClick = (index: number) => {
-        const newItemsInCart = [...itemsInCart]
-        newItemsInCart.splice(index, 1)
-        saveItemsToLocalStorage(newItemsInCart)
-        setItemsInCart(newItemsInCart)
+        setRemoveItemFromCartRequest({
+            username: getItemFromLocalStorage("username") ?? '@',
+            itemId: itemsInCart[index].item.itemId,
+        })
     }
 
     useEffect(() => {
         setSubtotal(calcSubtotal())
-    }, [getItemsFromLocalStorage()])
+    }, [itemsInCart])
 
     return (
         <div className="text-left mt-[40px] ml-[20px]">
@@ -49,24 +49,24 @@ const ProductsOfCart: React.FC<ProductsOfCartProps> = (
                     </tr>
                 </thead>
                 <tbody>
-                    { itemsInCart.map((product, index) =>
+                    { itemsInCart.map((productInCart, index) =>
                         <tr className="border-b">
                             <td>
                                 <img className="bg-light-gray my-[5px]" height={110} width={110} src={ 'https://next.medusajs.com/_next/image?url=https%3A%2F%2Fmedusa-server-testing.s3.us-east-1.amazonaws.com%2Fheadphones-nobg-1700675136219.png&w=1080&q=50' } alt={ "Product " + index}/>
                             </td>
-                            <td>{ product.name }</td>
+                            <td>{ productInCart.item.name }</td>
                             <td>
                                 <input type="number"
                                        className="text-center w-[50px] bg-transparent border rounded-[5px]"
-                                       min={ Math.min(1, product.quantity) }
-                                       max={ product.quantity }
-                                       value={ product.purchaseQuantity }
+                                       min={ Math.min(1, productInCart.item.quantity) }
+                                       max={ productInCart.item.quantity }
+                                       value={ productInCart.itemQuantity }
                                        onChange={ (e) => onQuantityInputChange(index, Number(e.target.value)) }
                                 />
                             </td>
-                            <td className="text-blue-700">${ product.price }</td>
+                            <td className="text-blue-700">${ productInCart.item.price }</td>
                             <td className="text-blue-700">
-                                ${ ((product.price ?? 0) * product.purchaseQuantity).toFixed(1) }
+                                ${ ((productInCart.item.price ?? 0) * productInCart.itemQuantity).toFixed(1) }
                             </td>
                             <td>
                                 <button
