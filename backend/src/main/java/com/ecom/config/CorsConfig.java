@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(@NotNull CorsRegistry registry) {
                 registry.addMapping("/**") // Allow all endpoints
-                        .allowedOrigins("https://bntffgh96eu9.share.zrok.io", "http://localhost:5174", "http://localhost:8081", "http://localhost:5173") // Allow frontend's origin or all origins
+                        .allowedOrigins("https://48dmukhyc0o8.share.zrok.io", "http://localhost:5174", "http://localhost:8081", "http://localhost:5173") // Allow frontend's origin or all origins
 //                        .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Specify allowed HTTP methods
                         .allowedHeaders("*") // Allow all headers
