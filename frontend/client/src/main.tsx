@@ -25,7 +25,6 @@ import {AppContextProvider, useAppContext} from "hooks/AppContext.tsx"
 const queryClient = new QueryClient()
 
 const App = () => {
-    // const [authenticated, setAuthenticated] = useState<boolean | undefined>(true)
     const {
         authenticated,
         setAuthenticated,
@@ -62,11 +61,11 @@ const InternalZone: React.FC<InternalZoneProps> = ({ authenticated }) => {
                 navigate(REQUEST_MAPPING.HOMEPAGE)
             }
             else {
-                navigate(window.location.pathname)
+                navigate(window.location.pathname + window.location.search)
             }
         }
         else if (authenticated === undefined) { // Waiting to be verified or auth status of VNPAY return URL
-            navigate(window.location.pathname)
+            navigate(window.location.pathname + window.location.search)
         }
         else {
             navigate(REQUEST_MAPPING.AUTH + REQUEST_PATH.SIGN_IN)

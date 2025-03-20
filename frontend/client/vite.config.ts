@@ -19,7 +19,7 @@ export default defineConfig({
             usePolling: true,
         },
         allowedHosts: [
-            "bntffgh96eu9.share.zrok.io",
+            "48dmukhyc0o8.share.zrok.io",
         ],
     },
     resolve: {
