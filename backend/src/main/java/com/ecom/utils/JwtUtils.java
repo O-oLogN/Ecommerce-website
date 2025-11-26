@@ -13,6 +13,8 @@ import java.util.Set;
 
 @Component
 public class JwtUtils {
+    private static final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+
     public String generateToken(String username, Set<Role> rolesSet) throws Exception {
         String SECRET = getJwtSecretCode();
         Role[] roles = rolesSet.toArray(new Role[0]);
@@ -37,10 +39,21 @@ public class JwtUtils {
     }
 
     private String getJwtSecretCode() throws Exception {
-        String SECRET = Dotenv.load().get("JWT_SECRET");
-        if (SECRET == null) {
+        String secret = System.getenv("JWT_SECRET");
+        if (secret == null) {
+            secret = getEnv("JWT_SECRET");
+        }
+        if (secret == null) {
             throw new Exception("JWT_SECRET not found");
         }
-        return SECRET;
+        return secret;
+    }
+
+    private String getEnv(String key) {
+        String value = System.getenv(key);
+        if (value == null) {
+            value = dotenv.get(key);
+        }
+        return value;
     }
 }

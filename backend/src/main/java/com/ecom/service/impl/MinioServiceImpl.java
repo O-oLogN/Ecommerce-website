@@ -17,16 +17,16 @@ import java.util.UUID;
 @Service
 public class MinioServiceImpl implements MinioService {
     private final MinioClient minioClient;
-    
-    private final Dotenv dotenv = Dotenv.load();
+
+    private final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
     public MinioServiceImpl() throws Exception {
         minioClient = MinioClient.builder()
-                .endpoint(Objects.requireNonNull(dotenv.get("MINIO_ENDPOINT")))
-                .credentials(Objects.requireNonNull(dotenv.get("MINIO_ACCESS_KEY")), Objects.requireNonNull(dotenv.get("MINIO_SECRET_KEY")))
+                .endpoint(Objects.requireNonNull(getEnv("MINIO_ENDPOINT")))
+                .credentials(Objects.requireNonNull(getEnv("MINIO_ACCESS_KEY")), Objects.requireNonNull(getEnv("MINIO_SECRET_KEY")))
                 .build();
 
-        String bucketName = dotenv.get("MINIO_BUCKET_NAME");
+        String bucketName = getEnv("MINIO_BUCKET_NAME");
         if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
             minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
         }
@@ -41,7 +41,7 @@ public class MinioServiceImpl implements MinioService {
         String objectName = "upload/" + uploadDir + "/" + uniqueFileName;
         minioClient.uploadObject(
                 UploadObjectArgs.builder()
-                        .bucket(dotenv.get("MINIO_BUCKET_NAME"))
+                        .bucket(getEnv("MINIO_BUCKET_NAME"))
                         .object(objectName)
                         .filename(tempFile.getAbsolutePath())
                         .contentType(file.getContentType())
@@ -77,21 +77,29 @@ public class MinioServiceImpl implements MinioService {
     }
 
     /*=========================================================PRIVATE FUNCTIONS===========================================================================================================================================================================*/
+    private String getEnv(String key) {
+        String value = System.getenv(key);
+        if (value == null) {
+            value = dotenv.get(key);
+        }
+        return value;
+    }
+
     private String getObjectName(String presignedPutUrl) throws URISyntaxException {
         URI uri = new URI(presignedPutUrl);
         String filePath = uri.getPath();
-        return filePath.replaceFirst("/" + dotenv.get("MINIO_BUCKET_NAME") + "/", "");
+        return filePath.replaceFirst("/" + getEnv("MINIO_BUCKET_NAME") + "/", "");
     }
 
     private void removeObject(String objectName) throws Exception {
         minioClient.removeObject(
             RemoveObjectArgs.builder()
-                    .bucket(dotenv.get("MINIO_BUCKET_NAME"))
+                    .bucket(getEnv("MINIO_BUCKET_NAME"))
                     .object(objectName)
                     .build()
         );
     }
     private String getPublicUrl(String objectName) {
-        return dotenv.get("MINIO_ENDPOINT") + "/" + dotenv.get("MINIO_BUCKET_NAME") + "/" + objectName;
+        return getEnv("MINIO_ENDPOINT") + "/" + getEnv("MINIO_BUCKET_NAME") + "/" + objectName;
     }
 }

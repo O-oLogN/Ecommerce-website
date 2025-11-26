@@ -1,0 +1,90 @@
+# This is your docker-compose.yml file
+version: '3.8'
+
+services:
+  # 1. Your Spring Boot "admin" Application
+  admin-app:
+    build: .  # Assumes your Dockerfile is in the same directory
+    container_name: admin-app-container
+    ports:
+      - "8081:8081" # Matches your server.port
+    volumes:
+      - ./.env:/app/.env
+    environment:
+      # --- IMPORTANT: These OVERRIDE your application.properties ---
+      # Tells Spring to connect to the 'mysql-db' service, not 'localhost'
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/ecommerce_2
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate # Validates schema against your dump
+      - JWT_SECRET=VboAHozK06b8Lg26UgVAnxwT_zbmYqSZH83TQ0iq8zBXQZmwg9QUlzhsRwq-HpEubmgL1JqIaOBFHKAn9II4tg
+      - REFRESH_TOKEN_EXPIRY=604800000
+      - PERMITTED_PATHS=/admin/auth/**,/user/Xauth/**,/swagger-ui/**,/v3/api-docs/**,/user/order/get-latest-order-code,/user/pay/get-vnpay-transaction,/VNPayIPN
+      - ADMIN_ROLE_PATHS=/admin/item/**,/admin/role/**,/admin/category/**,/admin/user/**,/admin/order/**,/admin/highlight/**,/admin/badge/**
+      - USER_ROLE_PATHS=/user/item/**,/user/order/**,/user/cart/**,/user/category/search-by-id,/user/pay/**,/user/auth/verify-token
+      - VNPAY_IPN_URL=https://good-musical-joey.ngrok-free.app/VNPayIPN
+      - VNPAY_RETURN_URL=https://48dmukhyc0o8.share.zrok.io/user/pay/pay-result
+      - VNPAY_PAYMENT_GATEWAY_WEBSITE_URL=https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+      - VNPAY_VERSION=2.1.0
+      - VNPAY_PAY_COMMAND=pay
+      - VNPAY_TMN_CODE=N9ZL2G4E
+      - VNPAY_CURR_CODE=VND
+      - VNPAY_ORDER_TYPE=topup
+      - VNPAY_EXPIRE_TIME_IN_MINUTE=15
+      - VNPAY_SECRET_KEY=O617TNU3762VUVICSM5S2RTDVXEHX714
+
+      # --- Minio Configuration (Add these to your app) ---
+      # You must configure your app to read these properties
+      - MINIO_ENDPOINT=http://minio-server:9000
+      - MINIO_ACCESS_KEY=ADMIN
+      - MINIO_SECRET_KEY=\Dg%TywRopl}TND
+      - MINIO_BUCKET_NAME=my-bucket
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      minio-server:
+        condition: service_started
+
+  # 2. The MySQL Database Service
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db-container
+    ports:
+      - "3306:3306" # Optional: to connect from your PC's database client
+    environment:
+      # These MUST match your Spring app's credentials
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=ecommerce_2 # This DB is created automatically
+    volumes:
+      # Persists data even after the container stops
+      - mysql-data:/var/lib/mysql 
+      # --- This imports your existing data ---
+      # Assumes 'ecommerce_2.sql' is in the same directory
+      - ./ecommerce_2.sql:/docker-entrypoint-initdb.d/ecommerce_2.sql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  # 3. The Minio S3-Compatible Server
+  minio-server:
+    image: minio/minio:latest
+    container_name: minio-server-container
+    ports:
+      - "9000:9000" # Minio API port
+      - "9001:9001" # Minio Web Console port
+    environment:
+      # This creates the user that the Java App will use to login
+      - MINIO_ROOT_USER=ADMIN
+      # Use single quotes for special characters
+      - MINIO_ROOT_PASSWORD=\Dg%TywRopl}TND
+    volumes:
+      - minio-data:/data # Persists uploaded files
+    command: server /data --console-address ":9001"
+
+# Defines the volumes used for persistent data
+volumes:
+  mysql-data:
+  minio-data:

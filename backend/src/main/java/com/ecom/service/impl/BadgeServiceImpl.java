@@ -48,7 +48,7 @@ public class BadgeServiceImpl implements BadgeService {
 
     private final BadgeSpecification badgeSpecification;
 
-    private final Dotenv dotenv = Dotenv.load();
+    private final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
     @Override
     public ResponseEntity<?> createBadge(CreateBadgeRequest createBadgeRequest) throws Exception {
@@ -64,7 +64,7 @@ public class BadgeServiceImpl implements BadgeService {
         String iconMinioGetUrl = null;
         String iconMinioPutUrl = null;
         if (!ValidationUtils.isNullOrEmpty(icon)) {
-            UploadFileResponse response = minioService.uploadFile(icon, dotenv.get("MINIO_ICON_UPLOAD_DIR"));
+            UploadFileResponse response = minioService.uploadFile(icon, getEnv("MINIO_ICON_UPLOAD_DIR"));
             iconMinioGetUrl = response.getPresignedGetUrl();
             iconMinioPutUrl = response.getPresignedPutUrl();
         }
@@ -99,12 +99,12 @@ public class BadgeServiceImpl implements BadgeService {
 
         if (!ValidationUtils.isNullOrEmpty(icon)) {
             if (ValidationUtils.isNullOrEmpty(iconMinioPutUrl)) {
-                UploadFileResponse uploadResponse = minioService.uploadFile(icon, dotenv.get("MINIO_ICON_UPLOAD_DIR"));
+                UploadFileResponse uploadResponse = minioService.uploadFile(icon, getEnv("MINIO_ICON_UPLOAD_DIR"));
                 iconMinioGetUrl = uploadResponse.getPresignedGetUrl();
                 iconMinioPutUrl = uploadResponse.getPresignedPutUrl();
             }
             else {
-                EditFileResponse editResponse = minioService.editFile(icon, dotenv.get("MINIO_ICON_UPLOAD_DIR"), iconMinioPutUrl);
+                EditFileResponse editResponse = minioService.editFile(icon, getEnv("MINIO_ICON_UPLOAD_DIR"), iconMinioPutUrl);
                 iconMinioGetUrl = editResponse.getPresignedGetUrl();
                 iconMinioPutUrl = editResponse.getPresignedPutUrl();
             }
@@ -166,6 +166,14 @@ public class BadgeServiceImpl implements BadgeService {
         badgeRepository.delete(badge);
 
         return ResponseHelper.ok(badge, HttpStatus.OK, messageHelper.getMessage("admin.badgeController.delete.info.success"));
+    }
+
+    private String getEnv(String key) {
+        String value = System.getenv(key);
+        if (value == null) {
+            value = dotenv.get(key);
+        }
+        return value;
     }
     
 }

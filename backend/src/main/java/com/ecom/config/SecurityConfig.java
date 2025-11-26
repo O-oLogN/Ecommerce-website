@@ -32,13 +32,13 @@ public class SecurityConfig {
 
 //    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
-    private final Dotenv dotenv = Dotenv.load();
+    private final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        String permittedPathValue = dotenv.get("PERMITTED_PATHS");
-        String adminRolePathValue = dotenv.get("ADMIN_ROLE_PATHS");
-        String userRolePathValue = dotenv.get("USER_ROLE_PATHS");
+        String permittedPathValue = getEnv("PERMITTED_PATHS");
+        String adminRolePathValue = getEnv("ADMIN_ROLE_PATHS");
+        String userRolePathValue = getEnv("USER_ROLE_PATHS");
 
         List<String> permittedPaths = splitRolesString(permittedPathValue);
         List<String> adminRolePaths = splitRolesString(adminRolePathValue);
@@ -81,5 +81,13 @@ public class SecurityConfig {
         return rolesStr != null
                 ? Arrays.asList(rolesStr.split(","))
                 : Collections.emptyList();
+    }
+
+    private String getEnv(String key) {
+        String value = System.getenv(key);
+        if (value == null) {
+            value = dotenv.get(key);
+        }
+        return value;
     }
 }

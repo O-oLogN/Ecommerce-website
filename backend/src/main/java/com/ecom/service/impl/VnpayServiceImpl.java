@@ -46,7 +46,7 @@ public class VnpayServiceImpl implements VnpayService {
 
     private final MessageHelper messageHelper;
 
-    private final Dotenv dotenv = Dotenv.load();
+    private final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
     @Override
     public ResponseEntity<?> initPayRequest(InitPayRequest initPayRequest) throws Exception {
@@ -126,14 +126,14 @@ public class VnpayServiceImpl implements VnpayService {
                     .build()
         );
 
-        String vnp_Command = dotenv.get("VNPAY_PAY_COMMAND");
+        String vnp_Command = getEnv("VNPAY_PAY_COMMAND");
         Long vnp_CreateDate = DatetimeUtils.getVnpCreateDate();
-        String vnp_CurrCode = dotenv.get("VNPAY_CURR_CODE");
+        String vnp_CurrCode = getEnv("VNPAY_CURR_CODE");
         Long vnp_ExpireDate = DatetimeUtils.getVnpExpireDate();
-        String vnp_OrderType = dotenv.get("VNPAY_ORDER_TYPE");
-        String vnp_ReturnUrl = dotenv.get("VNPAY_RETURN_URL");
-        String vnp_TmnCode = dotenv.get("VNPAY_TMN_CODE");
-        String vnp_Version = dotenv.get("VNPAY_VERSION");
+        String vnp_OrderType = getEnv("VNPAY_ORDER_TYPE");
+        String vnp_ReturnUrl = getEnv("VNPAY_RETURN_URL");
+        String vnp_TmnCode = getEnv("VNPAY_TMN_CODE");
+        String vnp_Version = getEnv("VNPAY_VERSION");
 
 
         HashMap<String, String> params = new HashMap<>();
@@ -155,7 +155,7 @@ public class VnpayServiceImpl implements VnpayService {
         String vnp_SecureHash = HashUtils.getVnpSecureHash(queryParams);
 
         return ResponseHelper.ok(
-            dotenv.get("VNPAY_PAYMENT_GATEWAY_WEBSITE_URL") + "?" + queryParams + "&vnp_SecureHash=" + vnp_SecureHash,
+            getEnv("VNPAY_PAYMENT_GATEWAY_WEBSITE_URL") + "?" + queryParams + "&vnp_SecureHash=" + vnp_SecureHash,
             HttpStatus.OK, ""
         );
     }
@@ -206,5 +206,13 @@ public class VnpayServiceImpl implements VnpayService {
             ipAddress = request.getLocalAddr();
         }
         return ipAddress;
+    }
+
+    private String getEnv(String key) {
+        String value = System.getenv(key);
+        if (value == null) {
+            value = dotenv.get(key);
+        }
+        return value;
     }
 }

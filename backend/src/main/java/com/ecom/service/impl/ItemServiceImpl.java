@@ -55,7 +55,7 @@ public class ItemServiceImpl implements ItemService {
 
     private final MessageHelper messageHelper;
 
-    private final Dotenv dotenv = Dotenv.load();
+    private final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
     @Override
     public ResponseEntity<?> searchItem(QueryRequest<SearchItemRequest> searchItemRequest) {
@@ -118,7 +118,7 @@ public class ItemServiceImpl implements ItemService {
 
         UploadFileResponse uploadFileResponse = null;
         if (!ValidationUtils.isNullOrEmpty(image)) {
-            uploadFileResponse = minioService.uploadFile(image, dotenv.get("MINIO_IMAGE_UPLOAD_DIR"));
+            uploadFileResponse = minioService.uploadFile(image, getEnv("MINIO_IMAGE_UPLOAD_DIR"));
         }
 
         Item newItem = Item
@@ -189,12 +189,12 @@ public class ItemServiceImpl implements ItemService {
 
         if (!ValidationUtils.isNullOrEmpty(image)) {
             if (ValidationUtils.isNullOrEmpty(oldImageMinioPutUrl)) {
-                UploadFileResponse uploadFileResponse = minioService.uploadFile(image, dotenv.get("MINIO_IMAGE_UPLOAD_DIR"));
+                UploadFileResponse uploadFileResponse = minioService.uploadFile(image, getEnv("MINIO_IMAGE_UPLOAD_DIR"));
                 newImageMinioPutUrl = uploadFileResponse.getPresignedPutUrl();
                 newImageMinioGetUrl = uploadFileResponse.getPresignedGetUrl();
             }
             else {
-                EditFileResponse editFileResponse = minioService.editFile(image, dotenv.get("MINIO_IMAGE_UPLOAD_DIR"), oldImageMinioPutUrl);
+                EditFileResponse editFileResponse = minioService.editFile(image, getEnv("MINIO_IMAGE_UPLOAD_DIR"), oldImageMinioPutUrl);
                 newImageMinioPutUrl = editFileResponse.getPresignedPutUrl();
                 newImageMinioGetUrl = editFileResponse.getPresignedGetUrl();
             }
@@ -264,6 +264,14 @@ public class ItemServiceImpl implements ItemService {
                         .build()
                 )
                 .collect(Collectors.toSet());
+    }
+
+    private String getEnv(String key) {
+        String value = System.getenv(key);
+        if (value == null) {
+            value = dotenv.get(key);
+        }
+        return value;
     }
 }
 
