@@ -49,5 +49,4 @@ Built with performance and scalability in mind using **React (Vite)** on the fro
 **1. Backend Setup**
 ```bash
 cd backend
-# Configure application.properties with your MySQL and VNPAY credentials
 ./mvnw spring-boot:run
